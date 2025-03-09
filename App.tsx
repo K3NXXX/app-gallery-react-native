@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from 'expo-font'
+import * as SplashScreen from 'expo-splash-screen'
+import { useCallback } from 'react'
+import { View } from 'react-native'
+import SignUpScreen from './src/screens/SignUpScreen'
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+	const [isLoaded] = useFonts({
+		'inter-bold': require('./assets/fonts/Inter_18pt-Bold.ttf'),
+		'inter-regular': require('./assets/fonts/Inter_18pt-Regular.ttf'),
+		'inter-medium': require('./assets/fonts/Inter_18pt-Medium.ttf'),
+	})
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+	const handleOnLayout = useCallback(async () => {
+		if (isLoaded) {
+			await SplashScreen.hideAsync()
+		}
+	}, [isLoaded])
+
+	if (!isLoaded) {
+		return null
+	}
+	return (
+		<View onLayout={handleOnLayout}>
+      <SignUpScreen/>
+		</View>
+	)
+}
