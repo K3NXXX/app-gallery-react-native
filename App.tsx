@@ -1,7 +1,7 @@
 import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { useCallback } from 'react'
-import { View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import SignUpScreen from './src/screens/SignUpScreen'
 
 export default function App() {
@@ -21,8 +21,14 @@ export default function App() {
 		return null
 	}
 	return (
-		<View onLayout={handleOnLayout}>
+		<View style={styles.container} onLayout={handleOnLayout}>
       <SignUpScreen/>
 		</View>
 	)
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
+})
