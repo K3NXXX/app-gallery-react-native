@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
-import LogIn from './src/components/auth/LogIn/LogIn'
+import Navigation from './src/navigation/Navigation'
 
 export default function App() {
 	const [isLoaded] = useFonts({
@@ -22,8 +22,7 @@ export default function App() {
 	}
 	return (
 		<View style={styles.container} onLayout={handleOnLayout}>
-			{/* <SignUpScreen/> */}
-			<LogIn />
+			<Navigation />
 		</View>
 	)
 }

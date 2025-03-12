@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
 		width: '100%',
 		paddingTop: 80,
 		alignSelf: 'center',
-		paddingHorizontal: 15,
+		paddingHorizontal: 25,
 
 	},
 	title: {

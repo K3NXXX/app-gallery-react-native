@@ -1,16 +1,20 @@
 import React, { useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 
+import { useNavigation } from '@react-navigation/native'
 import { TextInput } from 'react-native-gesture-handler'
 import EmailIcon from '../../../../assets/images/sign-up/email.svg'
 import EyeHideIcon from '../../../../assets/images/sign-up/eye-hide.svg'
 import EyeShowIcon from '../../../../assets/images/sign-up/eye-show.svg'
 import PasswordIcon from '../../../../assets/images/sign-up/password.svg'
 import UserIcon from '../../../../assets/images/sign-up/user.svg'
+import { SCREENS } from '../../../constants/screens.constants'
 import { styles } from './SignUp.styles'
 
 const SignUp: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(true)
+	const navigation = useNavigation()
+	const { navigate } = useNavigation()
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>
@@ -72,7 +76,16 @@ const SignUp: React.FC = () => {
 					</TouchableOpacity>
 				</View>
 				<Text style={styles.haveAccount}>
-					Have an account? <Text style={styles.logIn}>Log in</Text>
+					Have an account?{' '}
+					<Text
+						onPress={() =>
+							//@ts-ignore
+							navigate(SCREENS.LOGIN)
+						}
+						style={styles.logIn}
+					>
+						Log in
+					</Text>
 				</Text>
 			</View>
 		</View>

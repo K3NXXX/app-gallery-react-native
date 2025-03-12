@@ -1,13 +1,16 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import EmailIcon from '../../../../assets/images/sign-up/email.svg'
 import EyeHideIcon from '../../../../assets/images/sign-up/eye-hide.svg'
 import EyeShowIcon from '../../../../assets/images/sign-up/eye-show.svg'
 import PasswordIcon from '../../../../assets/images/sign-up/password.svg'
+import { SCREENS } from '../../../constants/screens.constants'
 import { styles } from './LogIn.styles'
 
 const LogIn: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(true)
+	const { navigate } = useNavigation()
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>
@@ -56,7 +59,16 @@ const LogIn: React.FC = () => {
 					</TouchableOpacity>
 				</View>
 				<Text style={styles.haveAccount}>
-					Don't have an account? <Text style={styles.logIn}>Sign in</Text>
+					Don't have an account?{' '}
+					<Text
+						onPress={() =>
+							//@ts-ignore
+							navigate(SCREENS.SIGNUP)
+						}
+						style={styles.logIn}
+					>
+						Sign in
+					</Text>
 				</Text>
 			</View>
 		</View>
