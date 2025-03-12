@@ -1,10 +1,12 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { useCallback } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Navigation from './src/navigation/Navigation'
 
 export default function App() {
+	const queryClient = new QueryClient()
 	const [isLoaded] = useFonts({
 		'inter-bold': require('./assets/fonts/Inter_18pt-Bold.ttf'),
 		'inter-regular': require('./assets/fonts/Inter_18pt-Regular.ttf'),
@@ -21,9 +23,11 @@ export default function App() {
 		return null
 	}
 	return (
-		<View style={styles.container} onLayout={handleOnLayout}>
+		<QueryClientProvider client={queryClient}>
+			<View style={styles.container} onLayout={handleOnLayout}>
 				<Navigation />
-		</View>
+			</View>
+		</QueryClientProvider>
 	)
 }
 

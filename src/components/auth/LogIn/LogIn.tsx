@@ -9,6 +9,7 @@ import PasswordIcon from '../../../../assets/images/sign-up/password.svg'
 import { ILoginData } from '../../../@types/auth/login.types'
 import { SCREENS } from '../../../constants/screens.constants'
 import { styles } from './LogIn.styles'
+import { useLoginMutation } from '../../../hooks/auth/useLoginMutation'
 
 const LogIn: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(true)
@@ -27,8 +28,14 @@ const LogIn: React.FC = () => {
 		},
 	})
 
+	const {login, loginError} = useLoginMutation()
+
 	const onSubmit = (loginData: ILoginData) => {
-		console.log(loginData)
+		const data = {
+			email: loginData.email,
+			password: loginData.password
+		}
+		login(data)
 	}
 	return (
 		<View style={styles.root}>
@@ -118,6 +125,9 @@ const LogIn: React.FC = () => {
 						{errors.password && (
 							<Text style={styles.errorText}>{errors.password.message}</Text>
 						)}
+						{loginError && (
+							<Text style={styles.errorText}>Invalid email or password</Text>
+						) }
 					</View>
 					<TouchableOpacity
 						onPress={handleSubmit(onSubmit)}

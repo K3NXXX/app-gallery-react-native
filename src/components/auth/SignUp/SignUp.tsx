@@ -12,6 +12,9 @@ import UserIcon from '../../../../assets/images/sign-up/user.svg'
 import { ISignUpData } from '../../../@types/auth/signup.types'
 import { SCREENS } from '../../../constants/screens.constants'
 import { styles } from './SignUp.styles'
+import { useMutation } from '@tanstack/react-query'
+import { authService } from '../../../services/auth.service'
+import { useSignUpMutation } from '../../../hooks/auth/useSignUpMutation'
 
 const SignUp: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(true)
@@ -34,7 +37,15 @@ const SignUp: React.FC = () => {
 	})
 	const password = watch('password')
 
+	const {signup, emailError} = useSignUpMutation()
+
 	const onSubmit = (signupData: ISignUpData) => {
+		const data = {
+			name: signupData.name,
+			email: signupData.email,
+			password: signupData.password
+		}
+		signup(data)
 		console.log(signupData)
 	}
 	return (
@@ -116,6 +127,8 @@ const SignUp: React.FC = () => {
 						{errors.email && (
 							<Text style={styles.errorText}>{errors.email.message}</Text>
 						)}
+						{emailError  && (
+							<Text style={styles.errorText}>Email is already in use</Text> )}
 					</View>
 					<View style={styles.inputWrapper}>
 						<View style={styles.top}>
