@@ -1,35 +1,19 @@
 import React, { useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
-
-import { TextInput } from 'react-native-gesture-handler'
+import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import EmailIcon from '../../../../assets/images/sign-up/email.svg'
 import EyeHideIcon from '../../../../assets/images/sign-up/eye-hide.svg'
 import EyeShowIcon from '../../../../assets/images/sign-up/eye-show.svg'
 import PasswordIcon from '../../../../assets/images/sign-up/password.svg'
-import UserIcon from '../../../../assets/images/sign-up/user.svg'
-import { styles } from './SignUp.styles'
+import { styles } from './LogIn.styles'
 
-const SignUp: React.FC = () => {
+const LogIn: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(true)
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>
-				<Text style={styles.title}>Sign in</Text>
-				<Text style={styles.descr}>
-					Sign in to access an account and explore many things
-				</Text>
+				<Text style={styles.title}>Log in</Text>
+				<Text style={styles.descr}>Log in to account to use gallery</Text>
 				<View style={styles.form}>
-					<View style={styles.inputWrapper}>
-						<View style={styles.top}>
-							<Text style={styles.label}>Full name</Text>
-							<UserIcon width={20} height={20} />
-						</View>
-						<TextInput
-							placeholder='Enter your full name'
-							placeholderTextColor='rgb(97, 100, 107)'
-							style={styles.input}
-						/>
-					</View>
 					<View style={styles.inputWrapper}>
 						<View style={styles.top}>
 							<Text style={styles.label}>Email</Text>
@@ -68,15 +52,15 @@ const SignUp: React.FC = () => {
 						</View>
 					</View>
 					<TouchableOpacity style={styles.button}>
-						<Text style={styles.buttonText}>Sign in</Text>
+						<Text style={styles.buttonText}>Log in </Text>
 					</TouchableOpacity>
 				</View>
 				<Text style={styles.haveAccount}>
-					Have an account? <Text style={styles.logIn}>Log in</Text>
+					Don't have an account? <Text style={styles.logIn}>Sign in</Text>
 				</Text>
 			</View>
 		</View>
 	)
 }
 
-export default SignUp
+export default LogIn

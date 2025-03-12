@@ -11,7 +11,8 @@ export const styles = StyleSheet.create({
 		width: '100%',
 		paddingTop: 80,
 		alignSelf: 'center',
-		paddingHorizontal: 15
+		paddingHorizontal: 15,
+
 	},
 	title: {
 		fontFamily: 'inter-bold',
@@ -28,13 +29,13 @@ export const styles = StyleSheet.create({
 	},
 	form: {},
 	inputWrapper: {
-		marginBottom: 20
+		marginBottom: 20,
 	},
 	label: {
 		fontFamily: 'inter-bold',
 		color: 'rgb(39, 42, 49)',
 		fontSize: 14,
-		marginRight: 5
+		marginRight: 5,
 	},
 	input: {
 		borderStyle: 'solid',
@@ -52,40 +53,37 @@ export const styles = StyleSheet.create({
 		marginBottom: 8,
 	},
 	passwordWrapper: {
-		position: "relative"
+		position: 'relative',
 	},
 	eye: {
 		width: 25,
 		height: 25,
-		position: "absolute",
+		position: 'absolute',
 		top: 12,
-		right: 10
+		right: 10,
 	},
 	button: {
-		backgroundColor: "rgb(255, 167, 56);",
+		backgroundColor: 'rgb(255, 167, 56);',
 		borderRadius: 15,
-		display: "flex",
-		flexDirection: "row",
-		justifyContent: "center",
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
 		paddingVertical: 15,
-		marginTop: 50
+		marginTop: 50,
 	},
 	buttonText: {
-		color: "white",
+		color: 'white',
 		fontSize: 16,
-		fontFamily:"inter-bold",
-
-
+		fontFamily: 'inter-bold',
 	},
 	haveAccount: {
-		color: "rgb(97, 100, 107)",
+		color: 'rgb(97, 100, 107)',
 		fontSize: 16,
-		fontFamily:"inter-regular",
+		fontFamily: 'inter-regular',
 		marginTop: 50,
-		textAlign: "center"
+		textAlign: 'center',
 	},
 	logIn: {
-		color: "rgb(255, 167, 56)"
+		color: 'rgb(255, 167, 56)',
 	},
-
 })
