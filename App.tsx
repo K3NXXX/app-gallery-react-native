@@ -1,7 +1,7 @@
 import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { useCallback } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import Navigation from './src/navigation/Navigation'
 
 export default function App() {
@@ -22,7 +22,7 @@ export default function App() {
 	}
 	return (
 		<View style={styles.container} onLayout={handleOnLayout}>
-			<Navigation />
+				<Navigation />
 		</View>
 	)
 }

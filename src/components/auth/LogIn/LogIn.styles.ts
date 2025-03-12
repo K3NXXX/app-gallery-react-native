@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
 	wrapper: {
 		maxWidth: 500,
 		width: '100%',
-		paddingTop: 80,
+		paddingTop: 30,
 		alignSelf: 'center',
 		paddingHorizontal: 25,
 
@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		paddingVertical: 15,
-		marginTop: 50,
+		marginTop: 20
 	},
 	buttonText: {
 		color: 'white',
@@ -86,4 +86,11 @@ export const styles = StyleSheet.create({
 	logIn: {
 		color: 'rgb(255, 167, 56)',
 	},
+	errorText: {
+		color: "red",
+		fontSize: 14,
+		fontFamily:"inter-regular",
+		marginTop: 3,
+		marginLeft: 5
+	}
 })
