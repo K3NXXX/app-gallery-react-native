@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
 	},
 	descr: {
 		fontFamily: 'inter-regular',
-		color: 'rgb(97, 100, 107)',
+		color: '#61646B',
 		fontSize: 16,
 		marginBottom: 50,
 	},
@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
 		fontFamily: 'inter-bold',
 	},
 	haveAccount: {
-		color: 'rgb(97, 100, 107)',
+		color: '#61646B',
 		fontSize: 16,
 		fontFamily: 'inter-regular',
 		marginTop: 50,

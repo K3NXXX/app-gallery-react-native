@@ -4,6 +4,7 @@ import * as SplashScreen from 'expo-splash-screen'
 import { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Navigation from './src/navigation/Navigation'
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function App() {
 	const queryClient = new QueryClient()
@@ -26,6 +27,7 @@ export default function App() {
 		<QueryClientProvider client={queryClient}>
 			<View style={styles.container} onLayout={handleOnLayout}>
 				<Navigation />
+				<ToastContainer position='bottom-left' />
 			</View>
 		</QueryClientProvider>
 	)

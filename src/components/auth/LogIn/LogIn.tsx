@@ -8,8 +8,8 @@ import EyeShowIcon from '../../../../assets/images/sign-up/eye-show.svg'
 import PasswordIcon from '../../../../assets/images/sign-up/password.svg'
 import { ILoginData } from '../../../@types/auth/login.types'
 import { SCREENS } from '../../../constants/screens.constants'
-import { styles } from './LogIn.styles'
 import { useLoginMutation } from '../../../hooks/auth/useLoginMutation'
+import { styles } from './LogIn.styles'
 
 const LogIn: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(true)
@@ -28,12 +28,12 @@ const LogIn: React.FC = () => {
 		},
 	})
 
-	const {login, loginError} = useLoginMutation()
+	const { login, loginError } = useLoginMutation()
 
 	const onSubmit = (loginData: ILoginData) => {
 		const data = {
 			email: loginData.email,
-			password: loginData.password
+			password: loginData.password,
 		}
 		login(data)
 	}
@@ -107,17 +107,21 @@ const LogIn: React.FC = () => {
 										value={value}
 									/>
 									{showPassword}
-									{showPassword ? (
+									{/* {showPassword ? (
 										<EyeShowIcon
 											onPress={() => setShowPassword(false)}
 											style={styles.eye}
+											width={25}
+											height={25}
 										/>
 									) : (
 										<EyeHideIcon
 											onPress={() => setShowPassword(true)}
 											style={styles.eye}
+											width={25}
+											height={25}
 										/>
-									)}
+									)} */}
 								</View>
 							)}
 							name='password'
@@ -127,7 +131,7 @@ const LogIn: React.FC = () => {
 						)}
 						{loginError && (
 							<Text style={styles.errorText}>Invalid email or password</Text>
-						) }
+						)}
 					</View>
 					<TouchableOpacity
 						onPress={handleSubmit(onSubmit)}
