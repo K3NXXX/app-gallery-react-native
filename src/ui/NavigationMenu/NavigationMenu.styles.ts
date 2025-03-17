@@ -87,4 +87,5 @@ export const styles = StyleSheet.create({
 	iconGallery: {
 		marginVertical: 5
 	},
+	
 })

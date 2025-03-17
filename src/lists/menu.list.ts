@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { SvgProps } from 'react-native-svg'
 import AlbumIcon from '../../assets/images/navigation-menu/album.svg'
 import HomeIcon from '../../assets/images/navigation-menu/home.svg'
-import PhotoIcon from '../../assets/images/navigation-menu/photo.svg'
+import FavIcon from '../../assets/images/navigation-menu/favourite.svg'
 import CreateIcon from '../../assets/images/navigation-menu/plus.svg'
 import ProfileIcon from '../../assets/images/navigation-menu/profile.svg'
 
@@ -22,8 +22,8 @@ export const menuList: IMenuItem[] = [
 	},
 	{
 		id: 2,
-		label: 'Photos',
-		icon: PhotoIcon,
+		label: 'Favourite',
+		icon: FavIcon,
 		link: '',
 	},
 	{

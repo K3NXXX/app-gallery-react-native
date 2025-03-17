@@ -5,6 +5,7 @@ import { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Navigation from './src/navigation/Navigation'
 import { ToastContainer, toast } from 'react-toastify';
+import { ClickOutsideProvider } from 'react-native-click-outside';
 
 export default function App() {
 	const queryClient = new QueryClient()
@@ -25,10 +26,12 @@ export default function App() {
 	}
 	return (
 		<QueryClientProvider client={queryClient}>
-			<View style={styles.container} onLayout={handleOnLayout}>
+			 <ClickOutsideProvider>
+			 <View style={styles.container} onLayout={handleOnLayout}>
 				<Navigation />
-				<ToastContainer position='bottom-left' />
 			</View>
+			 </ClickOutsideProvider>
+		
 		</QueryClientProvider>
 	)
 }

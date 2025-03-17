@@ -160,17 +160,19 @@ const SignUp: React.FC = () => {
 										value={value}
 									/>
 									{showPassword}
-									{/* {showPassword ? (
+									{showPassword ? (
 										<EyeShowIcon
+										width={25} height={25}
 											onPress={() => setShowPassword(false)}
 											style={styles.eye}
 										/>
 									) : (
 										<EyeHideIcon
+										width={25} height={25}
 											onPress={() => setShowPassword(true)}
 											style={styles.eye}
 										/>
-									)} */}
+									)}
 								</View>
 							)}
 							name='password'
@@ -203,17 +205,19 @@ const SignUp: React.FC = () => {
 										value={value}
 									/>
 									{showConfPassword}
-									{/* {showConfPassword ? (
+									{showConfPassword ? (
 										<EyeShowIcon
+										width={25} height={25}
 											onPress={() => setShowConfPassword(false)}
 											style={styles.eye}
 										/>
 									) : (
 										<EyeHideIcon
+										width={25} height={25}
 											onPress={() => setShowConfPassword(true)}
 											style={styles.eye}
 										/>
-									)} */}
+									)}
 								</View>
 							)}
 							name='passwordConfirm'

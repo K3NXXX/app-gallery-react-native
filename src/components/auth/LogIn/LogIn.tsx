@@ -107,7 +107,7 @@ const LogIn: React.FC = () => {
 										value={value}
 									/>
 									{showPassword}
-									{/* {showPassword ? (
+									 {showPassword ? (
 										<EyeShowIcon
 											onPress={() => setShowPassword(false)}
 											style={styles.eye}
@@ -121,7 +121,7 @@ const LogIn: React.FC = () => {
 											width={25}
 											height={25}
 										/>
-									)} */}
+									)} 
 								</View>
 							)}
 							name='password'

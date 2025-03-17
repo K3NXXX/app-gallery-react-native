@@ -4,6 +4,7 @@ import React from 'react'
 import { SCREENS } from '../constants/screens.constants'
 import HomeScreen from '../screens/HomeScreen'
 import LogInScreen from '../screens/LogInScreen'
+import ProfileScreen from '../screens/ProfileScreen'
 import SignUpScreen from '../screens/SignUpScreen'
 
 const Stack = createStackNavigator()
@@ -11,9 +12,14 @@ const Stack = createStackNavigator()
 const Navigation: React.FC = () => {
 	return (
 		<NavigationContainer>
-			<Stack.Navigator initialRouteName={SCREENS.HOME}>
+			<Stack.Navigator initialRouteName={SCREENS.PROFILE}>
 				<Stack.Screen name={SCREENS.SIGNUP} component={SignUpScreen} />
 				<Stack.Screen name={SCREENS.LOGIN} component={LogInScreen} />
+				<Stack.Screen
+					name={SCREENS.PROFILE}
+					options={{ headerShown: false }}
+					component={ProfileScreen}
+				/>
 				<Stack.Screen
 					name={SCREENS.HOME}
 					component={HomeScreen}

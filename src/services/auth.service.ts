@@ -3,7 +3,7 @@ import { ISignUpData } from '../@types/auth/signup.types'
 import { ILoginData } from '../@types/auth/login.types'
 
 class AuthService {
-	private BASE_URL= "http://localhost:7777"
+	private BASE_URL= "http://192.168.0.102:7777"
 
 	async signup(signupData: ISignUpData) {
 		const { data } = await axios.post(`${this.BASE_URL}/auth/register`, signupData)
