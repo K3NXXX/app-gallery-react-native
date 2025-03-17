@@ -3,9 +3,9 @@ import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { ClickOutsideProvider } from 'react-native-click-outside'
+import Toast from 'react-native-toast-message'
 import Navigation from './src/navigation/Navigation'
-import { ToastContainer, toast } from 'react-toastify';
-import { ClickOutsideProvider } from 'react-native-click-outside';
 
 export default function App() {
 	const queryClient = new QueryClient()
@@ -26,12 +26,12 @@ export default function App() {
 	}
 	return (
 		<QueryClientProvider client={queryClient}>
-			 <ClickOutsideProvider>
-			 <View style={styles.container} onLayout={handleOnLayout}>
-				<Navigation />
-			</View>
-			 </ClickOutsideProvider>
-		
+			<ClickOutsideProvider>
+				<View style={styles.container} onLayout={handleOnLayout}>
+					<Navigation />
+				</View>
+			</ClickOutsideProvider>
+			<Toast />
 		</QueryClientProvider>
 	)
 }

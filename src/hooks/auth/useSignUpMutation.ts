@@ -4,6 +4,8 @@ import { ISignUpData } from '../../@types/auth/signup.types'
 import { authService } from '../../services/auth.service'
 import { useNavigation } from '@react-navigation/native'
 import { toast } from 'react-toastify'
+import { SCREENS } from '../../constants/screens.constants'
+import Toast from 'react-native-toast-message'
 
 export const useSignUpMutation = () => {
 	const [emailError, setEmailError] = useState(false)
@@ -17,7 +19,10 @@ export const useSignUpMutation = () => {
 						//@ts-ignore
 						routes: [{ name: SCREENS.HOME }],
 					})
-					toast.success('Signed in successfully')
+					Toast.show({
+						type: 'success',
+						text1: 'Registration successful',
+					  })
 				},
 		onError: (error: any) => {
 			if (error.status === 400) setEmailError(true)

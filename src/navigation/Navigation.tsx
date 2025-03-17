@@ -12,7 +12,7 @@ const Stack = createStackNavigator()
 const Navigation: React.FC = () => {
 	return (
 		<NavigationContainer>
-			<Stack.Navigator initialRouteName={SCREENS.PROFILE}>
+			<Stack.Navigator initialRouteName={SCREENS.SIGNUP}>
 				<Stack.Screen name={SCREENS.SIGNUP} component={SignUpScreen} />
 				<Stack.Screen name={SCREENS.LOGIN} component={LogInScreen} />
 				<Stack.Screen

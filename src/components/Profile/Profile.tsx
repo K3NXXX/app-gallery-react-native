@@ -4,6 +4,7 @@ import NoAvatarIcon from '../../../assets/images/profile/no-avatar.png'
 import EmailIcon from '../../../assets/images/sign-up/email.svg'
 import LogOutIcon from '../../../assets/images/profile/logout.svg'
 import { styles } from '../Profile/Profile.styles'
+import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 
 const Profile: React.FC = () => {
 	return (
@@ -56,6 +57,7 @@ const Profile: React.FC = () => {
 					</View>
 				</View>
 			</View>
+			<NavigationMenu/>
 		</View>
 	)
 }

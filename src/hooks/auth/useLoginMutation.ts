@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
-import { toast } from 'react-toastify'
+import Toast from 'react-native-toast-message'
 import { ILoginData } from '../../@types/auth/login.types'
 import { SCREENS } from '../../constants/screens.constants'
 import { authService } from '../../services/auth.service'
@@ -18,7 +18,10 @@ export const useLoginMutation = () => {
 				//@ts-ignore
 				routes: [{ name: SCREENS.HOME }],
 			})
-			toast.success('Logged in successfully')
+			Toast.show({
+				type: 'success',
+				text1: 'Log in successful',
+			})
 		},
 		onError: (error: any) => {
 			if (error.status === 401) setLoginError(true)

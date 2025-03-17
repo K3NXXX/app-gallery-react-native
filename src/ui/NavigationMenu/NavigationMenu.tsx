@@ -1,22 +1,22 @@
 import * as ImagePicker from 'expo-image-picker'
-import React, { useRef, useState } from 'react'
-import { Image, Pressable, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import { Pressable, Text, TouchableOpacity, View } from 'react-native'
 
+import { useNavigation } from '@react-navigation/native'
+import { useClickOutside } from 'react-native-click-outside'
 import CameraIcon from '../../../assets/images/navigation-menu/camera.svg'
 import GalleryIcon from '../../../assets/images/navigation-menu/gallery-icon.svg'
 import { menuList } from '../../lists/menu.list'
-import { styles } from './NavigationMenu.styles'
-import { useClickOutside } from 'react-native-click-outside'
 import { useImageStore } from '../../zustand/useStore'
+import { styles } from './NavigationMenu.styles'
 
 const NavigationMenu: React.FC = () => {
 	const [addPhoto, setAddPhoto] = useState(false)
+	const { navigate } = useNavigation()
 	const [saveImage, setSaveImage] = useState()
-	const ref = useClickOutside<View>(() => setAddPhoto(false));
+	const ref = useClickOutside<View>(() => setAddPhoto(false))
 
-	const setImage = useImageStore(state => state.setImage) 
-
-
+	const setImage = useImageStore(state => state.setImage)
 
 	const handleUploadImage = async () => {
 		try {
@@ -25,13 +25,13 @@ const NavigationMenu: React.FC = () => {
 				alert('Permission to access camera is required!')
 				return
 			}
-	
+
 			const result = await ImagePicker.launchCameraAsync({
 				cameraType: ImagePicker.CameraType.back,
 				allowsEditing: true,
 				quality: 1,
 			})
-	
+
 			if (!result.canceled) {
 				setImage(result.assets[0].uri)
 			}
@@ -65,13 +65,16 @@ const NavigationMenu: React.FC = () => {
 					</View>
 				</View>
 			)}
-			
-			
 
 			<View style={styles.root}>
 				<View style={styles.wrapper}>
 					{menuList.map(item => (
-						<View style={styles.item} key={item.id}>
+						<TouchableOpacity
+							//@ts-ignore
+							onPress={() => navigate(item.link)}
+							style={styles.item}
+							key={item.id}
+						>
 							{item.id === 3 ? (
 								<View style={styles.addPhotoWrapper}>
 									<TouchableOpacity onPress={() => setAddPhoto(!addPhoto)}>
@@ -82,7 +85,7 @@ const NavigationMenu: React.FC = () => {
 								<item.icon width={25} height={25} style={styles.icon} />
 							)}
 							<Text style={styles.label}>{item.label}</Text>
-						</View>
+						</TouchableOpacity>
 					))}
 				</View>
 			</View>

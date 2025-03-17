@@ -9,9 +9,10 @@ export const styles = StyleSheet.create({
 	wrapper: {
 		maxWidth: 500,
 		width: '100%',
-		paddingTop: 30,
 		alignSelf: 'center',
-		paddingHorizontal: 25
+		paddingHorizontal: 25,
+		paddingVertical: 70
+
 	},
 	title: {
 		fontFamily: 'inter-bold',
