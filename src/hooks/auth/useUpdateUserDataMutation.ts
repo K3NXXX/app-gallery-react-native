@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
+import Toast from 'react-native-toast-message'
 import { IEditData } from '../../@types/auth/user.types'
 import { authService } from '../../services/auth.service'
-import { useState } from 'react'
 
 export const useUpdateUserDataMutation = () => {
 	const [dataEdited, setDataEdited] = useState(true)
@@ -10,8 +11,11 @@ export const useUpdateUserDataMutation = () => {
 		mutationKey: ['updateUserData'],
 		mutationFn: (data: IEditData) => authService.updateUser(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries(['getMe']),
-			setDataEdited(false)
+			queryClient.invalidateQueries(['getMe']), setDataEdited(false)
+			Toast.show({
+				type: 'success',
+				text1: 'Edited data successful',
+			})
 		},
 	})
 	return { updateData, dataEdited }

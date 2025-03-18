@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
 	},
 	search: {
 		position: 'relative',
+		marginBottom: 20
 	},
 	input: {
 		borderRadius: 50,
@@ -48,4 +49,13 @@ export const styles = StyleSheet.create({
 		height: 100,
 		borderRadius: 10,
 	},
+	photoContainer: {
+		width: '31%', 
+		margin: 5,
+	  },
+	  photo: {
+		height: 120, 
+		borderRadius: 10,
+		resizeMode: 'cover', 
+	  },
 })

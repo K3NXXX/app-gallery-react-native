@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
-import { Image, Text, TextInput, View } from 'react-native'
+import { FlatList, Image, Text, TextInput, View } from 'react-native'
 import CloseIcon from '../../../assets/images/home/close-icon.svg'
 import SearchIcon from '../../../assets/images/home/search-icon.svg'
+import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
-import { useImageStore } from '../../zustand/useStore'
 import { styles } from './Home.styles'
+import { useGetMe } from '../../hooks/auth/useGetMe'
 
 const Home: React.FC = () => {
 	const [searchValue, setSearchValue] = useState('')
-	const image = useImageStore(state => state.image)
+	const { allPhotos } = useGetAllPhotos()
+
+
+	const filteredPhotos = allPhotos?.filter(photo =>
+		photo.url.toLowerCase().includes(searchValue.toLowerCase())
+	)
+
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>
@@ -31,12 +38,20 @@ const Home: React.FC = () => {
 						/>
 					)}
 				</View>
-				{image && (
-					<View style={styles.imageContainer}>
-						<Image source={{ uri: image }} style={styles.imagePreview} />
-					</View>
-				)}
+
+				{/* Вивід фото */}
+				<FlatList
+					data={filteredPhotos}
+					keyExtractor={item => item.id.toString()}
+					numColumns={3} //
+					renderItem={({ item }) => (
+						<View style={styles.photoContainer}>
+							<Image source={{ uri: item.url }} style={styles.photo} />
+						</View>
+					)}
+				/>
 			</View>
+
 			<NavigationMenu />
 		</View>
 	)

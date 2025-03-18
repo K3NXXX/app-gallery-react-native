@@ -1,4 +1,5 @@
 import * as ImagePicker from 'expo-image-picker'
+import * as ImageManipulator from 'expo-image-manipulator'
 import React, { useState } from 'react'
 import { Pressable, Text, TouchableOpacity, View } from 'react-native'
 
@@ -9,12 +10,15 @@ import GalleryIcon from '../../../assets/images/navigation-menu/gallery-icon.svg
 import { menuList } from '../../lists/menu.list'
 import { useImageStore } from '../../zustand/useStore'
 import { styles } from './NavigationMenu.styles'
+import { useAddPhotoMutation } from '../../hooks/photos/useAddPhotoMutation'
+import { useGetMe } from '../../hooks/auth/useGetMe'
 
 const NavigationMenu: React.FC = () => {
 	const [addPhoto, setAddPhoto] = useState(false)
 	const { navigate } = useNavigation()
-	const [saveImage, setSaveImage] = useState()
 	const ref = useClickOutside<View>(() => setAddPhoto(false))
+	const { createPhoto } = useAddPhotoMutation()
+	const {userData} = useGetMe()
 
 	const setImage = useImageStore(state => state.setImage)
 
@@ -33,7 +37,16 @@ const NavigationMenu: React.FC = () => {
 			})
 
 			if (!result.canceled) {
-				setImage(result.assets[0].uri)
+				// Compress the image
+				const manipulatedImage = await ImageManipulator.manipulateAsync(
+					result.assets[0].uri,
+					[{ resize: { width: 800 } }], // Resize the image to a smaller width
+					{ compress: 0.5 } // Compress the image to reduce size
+				)
+
+				setImage(manipulatedImage.uri)
+				createPhoto({ userId: userData?.user.id, url: manipulatedImage.uri })
+				console.log(manipulatedImage.uri)
 			}
 		} catch (error: any) {
 			alert('Error uploading image: ' + error.message)
