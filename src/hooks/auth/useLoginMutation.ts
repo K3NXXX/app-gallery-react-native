@@ -5,6 +5,7 @@ import Toast from 'react-native-toast-message'
 import { ILoginData } from '../../@types/auth/login.types'
 import { SCREENS } from '../../constants/screens.constants'
 import { authService } from '../../services/auth.service'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const useLoginMutation = () => {
 	const [loginError, setLoginError] = useState(false)
@@ -12,7 +13,9 @@ export const useLoginMutation = () => {
 	const { mutate: login } = useMutation({
 		mutationKey: ['login'],
 		mutationFn: (data: ILoginData) => authService.login(data),
-		onSuccess: () => {
+		onSuccess: async (data) => {
+			await AsyncStorage.setItem('token', data.token) 
+		    await AsyncStorage.setItem('userData', JSON.stringify(data.user)); 
 			reset({
 				index: 0,
 				//@ts-ignore

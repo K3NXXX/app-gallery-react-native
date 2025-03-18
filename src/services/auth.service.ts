@@ -2,6 +2,8 @@ import axios from 'axios'
 import { ISignUpData } from '../@types/auth/signup.types'
 import { ILoginData } from '../@types/auth/login.types'
 import Config from 'react-native-config';
+import { IEditData, IUser } from '../@types/auth/user.types'
+import api from '../axios/interceptors'
 
 class AuthService {
 	private BASE_URL= process.env.EXPO_PUBLIC_API_URL
@@ -16,6 +18,18 @@ class AuthService {
 		const { data } = await axios.post(`${this.BASE_URL}/auth/login`, loginData)
 		return data
 	}
+
+	async updateUser(userData: IEditData) {
+		const { data } = await api.post(`${this.BASE_URL}/auth/updateUser`, userData)
+		return data
+	}
+
+	
+	async getMe() {
+			const { data } = await api.get(`auth/getMe`)
+			return data
+	}
+
 
 	
 }
