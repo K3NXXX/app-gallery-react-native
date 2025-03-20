@@ -39,11 +39,11 @@ const Home: React.FC = () => {
 					)}
 				</View>
 
-				{/* Вивід фото */}
 				<FlatList
 					data={filteredPhotos}
 					keyExtractor={item => item.id.toString()}
-					numColumns={3} //
+					numColumns={3} 
+					showsVerticalScrollIndicator={false}
 					renderItem={({ item }) => (
 						<View style={styles.photoContainer}>
 							<Image source={{ uri: item.url }} style={styles.photo} />

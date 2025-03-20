@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
 		alignSelf: 'center',
 		paddingHorizontal: 25,
 		flex: 1,
+		paddingBottom: 100
 	},
 	title: {
 		fontSize: 16,
@@ -58,4 +59,5 @@ export const styles = StyleSheet.create({
 		borderRadius: 10,
 		resizeMode: 'cover', 
 	  },
+	  
 })
