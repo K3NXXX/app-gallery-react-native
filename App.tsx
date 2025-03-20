@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { useCallback } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StatusBar, StyleSheet, View } from 'react-native'
 import { ClickOutsideProvider } from 'react-native-click-outside'
 import Toast from 'react-native-toast-message'
 import Navigation from './src/navigation/Navigation'
@@ -29,6 +29,7 @@ export default function App() {
 			<ClickOutsideProvider>
 				<View style={styles.container} onLayout={handleOnLayout}>
 					<Navigation />
+					<StatusBar  />
 				</View>
 			</ClickOutsideProvider>
 			<Toast />

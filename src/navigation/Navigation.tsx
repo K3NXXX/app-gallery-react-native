@@ -6,6 +6,7 @@ import HomeScreen from '../screens/HomeScreen'
 import LogInScreen from '../screens/LogInScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import SignUpScreen from '../screens/SignUpScreen'
+import AlbumsScreen from '../screens/AlbumsScreen'
 
 const Stack = createStackNavigator()
 
@@ -23,6 +24,11 @@ const Navigation: React.FC = () => {
 				<Stack.Screen
 					name={SCREENS.HOME}
 					component={HomeScreen}
+					options={{ headerShown: false }}
+				/>
+					<Stack.Screen
+					name={SCREENS.ALBUMS}
+					component={AlbumsScreen}
 					options={{ headerShown: false }}
 				/>
 			</Stack.Navigator>

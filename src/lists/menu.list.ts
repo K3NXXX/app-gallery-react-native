@@ -35,7 +35,7 @@ export const menuList: IMenuItem[] = [
 		id: 4,
 		label: 'Albums',
 		icon: AlbumIcon,
-		link: '',
+		link: SCREENS.ALBUMS,
 	},
 	{
 		id: 5,

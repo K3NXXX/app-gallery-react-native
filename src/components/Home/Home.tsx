@@ -1,20 +1,30 @@
 import React, { useState } from 'react'
-import { FlatList, Image, Text, TextInput, View } from 'react-native'
+import { FlatList, Image, Text, TextInput, View, TouchableOpacity, Modal } from 'react-native'
 import CloseIcon from '../../../assets/images/home/close-icon.svg'
 import SearchIcon from '../../../assets/images/home/search-icon.svg'
 import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import { styles } from './Home.styles'
-import { useGetMe } from '../../hooks/auth/useGetMe'
+import ImageViewer from 'react-native-image-zoom-viewer'
 
 const Home: React.FC = () => {
 	const [searchValue, setSearchValue] = useState('')
+	const [isModalVisible, setModalVisible] = useState(false)
+	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
 	const { allPhotos } = useGetAllPhotos()
 
-
 	const filteredPhotos = allPhotos?.filter(photo =>
-		photo.url.toLowerCase().includes(searchValue.toLowerCase())
+		photo.name.toLowerCase().includes(searchValue.toLowerCase())
 	)
+
+	const openImageModal = (image: any, index: number) => {
+		setSelectedImageIndex(index)
+		setModalVisible(true)
+	}
+
+	const closeImageModal = () => {
+		setModalVisible(false)
+	}
 
 	return (
 		<View style={styles.root}>
@@ -42,17 +52,29 @@ const Home: React.FC = () => {
 				<FlatList
 					data={filteredPhotos}
 					keyExtractor={item => item.id.toString()}
-					numColumns={3} 
+					numColumns={3}
 					showsVerticalScrollIndicator={false}
-					renderItem={({ item }) => (
-						<View style={styles.photoContainer}>
-							<Image source={{ uri: item.url }} style={styles.photo} />
-						</View>
+					renderItem={({ item, index }) => (
+						<TouchableOpacity  style={styles.photoContainer} onPress={() => openImageModal(item, index)}>
+							<View>
+								<Image source={{ uri: item.url }} style={styles.photo} />
+							</View>
+						</TouchableOpacity>
 					)}
 				/>
 			</View>
 
 			<NavigationMenu />
+
+			<Modal visible={isModalVisible} transparent={true} onRequestClose={closeImageModal}>
+				<ImageViewer
+					imageUrls={filteredPhotos?.map(photo => ({ url: photo.url }))}
+					onSwipeDown={closeImageModal}
+					index={selectedImageIndex}
+					onClick={closeImageModal}
+					renderIndicator={() => <View/>}
+				/>
+			</Modal>
 		</View>
 	)
 }
