@@ -1,12 +1,21 @@
-import { useMutation } from '@tanstack/react-query'
-import { photoService } from '../../services/photos.service'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import Toast from 'react-native-toast-message'
 import { IDeletePhoto } from '../../@types/photos/photos.type'
+import { photoService } from '../../services/photos.service'
 
 export const useDeletePhotoMutation = () => {
-	const {mutate:deletePhoto} = useMutation({
+	const queryClient = useQueryClient()
+	const { mutate: deletePhoto } = useMutation({
 		mutationKey: ['deletePhoto'],
-		mutationFn: (data: IDeletePhoto) => photoService.deletePhoto(data)
+		mutationFn: (data: IDeletePhoto) => photoService.deletePhoto(data),
+		onSuccess: () => {
+			queryClient.invalidateQueries(['getAllPhotos'])
+			Toast.show({
+				type: 'success',
+				text1: 'Photo deleted successful',
+			})
+		},
 	})
 
-	return {deletePhoto}
+	return { deletePhoto }
 }

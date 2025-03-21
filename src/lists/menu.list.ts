@@ -23,9 +23,9 @@ export const menuList: IMenuItem[] = [
 	},
 	{
 		id: 2,
-		label: 'Favourite',
+		label: 'Favourites',
 		icon: FavIcon,
-		link: '',
+		link: SCREENS.FAVOURITES,
 	},
 	{
 		id: 3,

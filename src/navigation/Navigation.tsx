@@ -7,6 +7,7 @@ import LogInScreen from '../screens/LogInScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import SignUpScreen from '../screens/SignUpScreen'
 import AlbumsScreen from '../screens/AlbumsScreen'
+import FavouritesScreen from '../screens/FavouritesScreen'
 
 const Stack = createStackNavigator()
 
@@ -31,6 +32,12 @@ const Navigation: React.FC = () => {
 					component={AlbumsScreen}
 					options={{ headerShown: false }}
 				/>
+					<Stack.Screen
+					name={SCREENS.FAVOURITES}
+					component={FavouritesScreen}
+					options={{ headerShown: false }}
+				/>
+					
 			</Stack.Navigator>
 		</NavigationContainer>
 	)
