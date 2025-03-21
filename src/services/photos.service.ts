@@ -1,4 +1,4 @@
-import { IAddPhoto } from '../@types/photos/photos.type'
+import { IAddPhoto, IDeletePhoto } from '../@types/photos/photos.type'
 import api from '../axios/interceptors'
 
 class PhotoService {
@@ -8,6 +8,14 @@ class PhotoService {
 		const { data } = await api.post(
 			`${this.BASE_URL}/photos/addPhoto`,
 			photoData
+		)
+		return data
+	}
+
+	async deletePhoto(photoId: IDeletePhoto) {
+		const { data } = await api.post(
+			`${this.BASE_URL}/photos/deletePhoto`,
+			photoId
 		)
 		return data
 	}

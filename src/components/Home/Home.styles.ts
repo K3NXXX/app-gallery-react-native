@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
 		alignSelf: 'center',
 		paddingHorizontal: 25,
 		flex: 1,
-		paddingBottom: 100
+		paddingBottom: 100,
 	},
 	title: {
 		fontSize: 16,
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
 	},
 	search: {
 		position: 'relative',
-		marginBottom: 20
+		marginBottom: 20,
 	},
 	input: {
 		borderRadius: 50,
@@ -51,13 +51,37 @@ export const styles = StyleSheet.create({
 		borderRadius: 10,
 	},
 	photoContainer: {
-		width: '31%', 
+		width: '31%',
 		margin: 5,
-	  },
-	  photo: {
-		height: 120, 
+	},
+	photo: {
+		height: 120,
 		borderRadius: 10,
-		resizeMode: 'cover', 
-	  },
-	  
+		resizeMode: 'cover',
+	},
+
+	modalContainer: {
+		flex: 1,
+		backgroundColor: 'rgba(0, 0, 0, 0.9)',
+	},
+	editRow: {
+		position: 'absolute',
+		flexDirection: 'row',
+		backgroundColor: 'white',
+		right: 2,
+		left: 0,
+		zIndex: 10,
+		height: 60,
+		borderEndEndRadius: 20,
+		borderStartEndRadius: 20,
+		borderBottomColor: "rgb(255, 167, 56)",
+		borderWidth: 2,
+		borderLeftColor: "rgb(255, 167, 56)",
+		borderRightColor: "rgb(255, 167, 56)"
+	},
+
+	deleteButton: {
+		padding: 10,
+		borderRadius: 50,
+	},
 })

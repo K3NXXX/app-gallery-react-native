@@ -13,3 +13,7 @@ export interface IPhoto {
 export interface IGetAllPhotos {
 	userId: string
 }
+
+export interface IDeletePhoto {
+	photoId: number
+}

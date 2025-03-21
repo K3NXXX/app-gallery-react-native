@@ -1,17 +1,32 @@
-import React, { useState } from 'react'
-import { FlatList, Image, Text, TextInput, View, TouchableOpacity, Modal } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import {
+	Animated,
+	FlatList,
+	Image,
+	Modal,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+} from 'react-native'
+import ImageViewer from 'react-native-image-zoom-viewer'
 import CloseIcon from '../../../assets/images/home/close-icon.svg'
 import SearchIcon from '../../../assets/images/home/search-icon.svg'
+import TrashIcon from '../../../assets/images/photos/trash-icon.svg'
+import { useDeletePhotoMutation } from '../../hooks/photos/useDeletePhotoMutation'
 import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import { styles } from './Home.styles'
-import ImageViewer from 'react-native-image-zoom-viewer'
 
 const Home: React.FC = () => {
 	const [searchValue, setSearchValue] = useState('')
+	const [isPhotoPressed, setIsPhotoPressed] = useState(false)
 	const [isModalVisible, setModalVisible] = useState(false)
 	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
 	const { allPhotos } = useGetAllPhotos()
+	const { deletePhoto } = useDeletePhotoMutation()
+
+	const [animationValue] = useState(new Animated.Value(-100))
 
 	const filteredPhotos = allPhotos?.filter(photo =>
 		photo.name.toLowerCase().includes(searchValue.toLowerCase())
@@ -24,7 +39,28 @@ const Home: React.FC = () => {
 
 	const closeImageModal = () => {
 		setModalVisible(false)
+		setIsPhotoPressed(false)
 	}
+
+	const handleDeletePhoto = (photoId: number) => {
+		deletePhoto({ photoId: photoId })
+	}
+
+	useEffect(() => {
+		if (isPhotoPressed) {
+			Animated.timing(animationValue, {
+				toValue: 0,
+				duration: 200,
+				useNativeDriver: true,
+			}).start()
+		} else {
+			Animated.timing(animationValue, {
+				toValue: -100,
+				duration: 300,
+				useNativeDriver: true,
+			}).start()
+		}
+	}, [isPhotoPressed])
 
 	return (
 		<View style={styles.root}>
@@ -55,7 +91,10 @@ const Home: React.FC = () => {
 					numColumns={3}
 					showsVerticalScrollIndicator={false}
 					renderItem={({ item, index }) => (
-						<TouchableOpacity  style={styles.photoContainer} onPress={() => openImageModal(item, index)}>
+						<TouchableOpacity
+							style={styles.photoContainer}
+							onPress={() => openImageModal(item, index)}
+						>
 							<View>
 								<Image source={{ uri: item.url }} style={styles.photo} />
 							</View>
@@ -66,14 +105,41 @@ const Home: React.FC = () => {
 
 			<NavigationMenu />
 
-			<Modal visible={isModalVisible} transparent={true} onRequestClose={closeImageModal}>
-				<ImageViewer
-					imageUrls={filteredPhotos?.map(photo => ({ url: photo.url }))}
-					onSwipeDown={closeImageModal}
-					index={selectedImageIndex}
-					onClick={closeImageModal}
-					renderIndicator={() => <View/>}
-				/>
+			<Modal
+				visible={isModalVisible}
+				transparent={true}
+				onRequestClose={closeImageModal}
+			>
+				<View style={styles.modalContainer}>
+					<ImageViewer
+						onLongPress={() => setIsPhotoPressed(true)}
+						imageUrls={filteredPhotos?.map(photo => ({ url: photo.url }))}
+						onSwipeDown={closeImageModal}
+						index={selectedImageIndex}
+						onClick={() => setIsPhotoPressed(prev => !prev)}
+						renderIndicator={() => <View />}
+					/>
+
+					{isPhotoPressed &&
+						filteredPhotos &&
+						filteredPhotos[selectedImageIndex] && (
+							<Animated.View
+								style={[
+									styles.editRow,
+									{ transform: [{ translateY: animationValue }] },
+								]}
+							>
+								<TouchableOpacity
+									onPress={() =>
+										handleDeletePhoto(filteredPhotos[selectedImageIndex].id)
+									}
+									style={styles.deleteButton}
+								>
+									<TrashIcon width={30} height={30} />
+								</TouchableOpacity>
+							</Animated.View>
+						)}
+				</View>
 			</Modal>
 		</View>
 	)

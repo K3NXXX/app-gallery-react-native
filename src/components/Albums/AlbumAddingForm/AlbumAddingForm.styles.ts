@@ -50,16 +50,16 @@ export const styles = StyleSheet.create({
 		right: 10,
 	},
 	button: {
-		backgroundColor: 'rgb(255, 167, 56);',
 		borderRadius: 15,
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'center',
 		paddingVertical: 15,
-		marginTop: 20,
+		borderColor: 'rgb(255, 167, 56)',
+		borderWidth: 2
 	},
 	buttonText: {
-		color: 'white',
+		color: 'rgb(255, 167, 56)',
 		fontSize: 16,
 		fontFamily: 'inter-bold',
 	},
@@ -75,4 +75,22 @@ export const styles = StyleSheet.create({
 		top: 30,
 		right: 30,
 	},
+	uploadButton: {
+
+	},
+	createButton: {
+		borderRadius: 15,
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		paddingVertical: 15,
+		backgroundColor: 'rgb(255, 167, 56)',
+		marginTop: 50
+
+	},
+	createText :{
+		color: 'rgb(255, 255, 255)',
+		fontSize: 16,
+		fontFamily: 'inter-bold',
+	}
 })
