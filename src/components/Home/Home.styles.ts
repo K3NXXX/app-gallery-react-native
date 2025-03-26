@@ -63,6 +63,7 @@ export const styles = StyleSheet.create({
 	modalContainer: {
 		flex: 1,
 		backgroundColor: 'rgba(0, 0, 0, 0.9)',
+		zIndex: 10000, 
 	},
 	editRow: {
 		position: 'absolute',
@@ -81,7 +82,42 @@ export const styles = StyleSheet.create({
 	},
 
 	deleteButton: {
-		padding: 10,
+		padding: 13,
 		borderRadius: 50,
 	},
+	editButton: {
+		backgroundColor: "rgb(255, 167, 60)",
+		padding: 20,
+		position: 'absolute',
+		bottom: 20,
+		right: 20,
+		borderRadius: 20
+	},
+	
+	  filtersContainer: {
+		position: 'absolute',
+		bottom: 120,
+		left: 10,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		width: '80%',
+	  },
+	  filterButton: {
+		fontSize: 16,
+		color: '#fff',
+		padding: 10,
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
+		borderRadius: 5,
+	  },
+	  filteredImage: {
+		width: '100%',
+		height: '100%',
+		borderRadius: 8,
+	  },
+	  filteredImageContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	  },
+	  
 })

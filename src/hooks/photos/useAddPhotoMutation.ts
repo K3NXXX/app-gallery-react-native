@@ -10,10 +10,6 @@ export const useAddPhotoMutation = () => {
 		mutationFn: (data: IAddPhoto) => photoService.addPhoto(data),
 		onSuccess: async data => {
 			queryClient.invalidateQueries(['getAllPhotos'])
-			Toast.show({
-				type: 'success',
-				text1: 'Photo added successful',
-			})
 		},
 		onError: () => {
 			Toast.show({

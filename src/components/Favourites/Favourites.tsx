@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import HeartIcon from '../../../assets/images/favourites/heart-icon.svg'
 import { useGetAllFavouritesPhotoQuery } from '../../hooks/favourites/useGetAllFavouritesPhotoQuery'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
+import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
 import { styles } from './Favourites.styles'
 
 const Favourites: React.FC = () => {
 	const { favouritePhotos } = useGetAllFavouritesPhotoQuery()
+	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
+	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
+
+	const openImageModal = (index: number) => {
+		setSelectedImageIndex(index)
+		setPhotoViewerVisible(true)
+	}
+
+	console.log("selected", selectedImageIndex)
 
 	return (
 		<View style={styles.root}>
@@ -27,7 +37,10 @@ const Favourites: React.FC = () => {
 							numColumns={3}
 							showsVerticalScrollIndicator={false}
 							renderItem={({ item, index }) => (
-								<TouchableOpacity style={styles.photoContainer}>
+								<TouchableOpacity
+									style={styles.photoContainer}
+									onPress={() => openImageModal(index)}
+								>
 									<View>
 										<Image source={{ uri: item.url }} style={styles.photo} />
 									</View>
@@ -37,6 +50,15 @@ const Favourites: React.FC = () => {
 					</View>
 				)}
 			</View>
+
+			<PhotoViewerModal
+				isVisible={isPhotoViewerVisible}
+				photos={favouritePhotos}
+				selectedImageIndex={selectedImageIndex}
+				setSelectedImageIndex={setSelectedImageIndex}
+				onClose={() => setPhotoViewerVisible(false)}
+			/>
+
 			<NavigationMenu />
 		</View>
 	)

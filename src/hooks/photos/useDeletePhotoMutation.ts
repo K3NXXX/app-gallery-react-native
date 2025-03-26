@@ -10,6 +10,7 @@ export const useDeletePhotoMutation = () => {
 		mutationFn: (data: IDeletePhoto) => photoService.deletePhoto(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries(['getAllPhotos'])
+			queryClient.invalidateQueries(['getFavouritesPhoto'])
 			Toast.show({
 				type: 'success',
 				text1: 'Photo deleted successful',
