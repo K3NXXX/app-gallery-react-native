@@ -9,6 +9,9 @@ export const useAddFavouriteMutation = () => {
 	const { mutate: addToFavourite } = useMutation({
 		mutationKey: ['addFavourite'],
 		mutationFn: (data: IAddFavourite) => favouriteService.addToFavourite(data),
+		onError: () => {
+			
+		}
 		
 	})
 

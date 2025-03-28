@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Animated, Modal, TouchableOpacity, View } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import ActiveFavouritePhoto from '../../../assets/images/photos/active-favourite-icon.svg'
+import EditIcon from '../../../assets/images/photos/edit-icon.svg'
 import FavouriteIcon from '../../../assets/images/photos/heart-icon.svg'
 import RenamingIcon from '../../../assets/images/photos/renaming-icon.svg'
 import ShareIcon from '../../../assets/images/photos/share-icon.svg'
@@ -10,8 +11,10 @@ import TrashIcon from '../../../assets/images/photos/trash-icon.svg'
 import { IPhoto } from '../../@types/photos/photos.type'
 import { useAddFavouriteMutation } from '../../hooks/favourites/useAddFavouriteMutation'
 import { useGetAllFavouritesPhotoQuery } from '../../hooks/favourites/useGetAllFavouritesPhotoQuery'
+import { useRemoveFromFavourites } from '../../hooks/favourites/useRemoveFromFavouritesMutation'
 import { useDeletePhotoMutation } from '../../hooks/photos/useDeletePhotoMutation'
 import ConfirmDeletePhoto from '../ConfirmDeletePhoto/ConfirmDeletePhoto'
+import FiltersPanel from '../FiltersPanel/FiltersPanel'
 import RenamingPhoto from '../RenamingPhoto/RenamingPhoto'
 import { styles } from './PhotoViewerModal.styles'
 
@@ -36,6 +39,16 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 	const [animationValue] = useState(new Animated.Value(-100))
 	const [isConfirmPhotoDelete, setIsConfirmPhotoDelete] = useState(false)
 	const [isRenamingPhotoOpened, setIsRenamingPhotoOpened] = useState(false)
+	const [isFiltersOpened, setIsFiltersOpened] = useState(false)
+
+	const { addToFavourite } = useAddFavouriteMutation()
+	const { favouritePhotos } = useGetAllFavouritesPhotoQuery()
+	const { removeFromFavourites } = useRemoveFromFavourites()
+	const { deletePhoto } = useDeletePhotoMutation()
+
+	const isPhotoInFavourites =
+		photos &&
+		favouritePhotos?.some(photo => photo.id === photos[selectedImageIndex]?.id)
 
 	const handleImageChange = (newIndex: number | undefined) => {
 		if (newIndex !== undefined && newIndex !== selectedImageIndex) {
@@ -44,17 +57,30 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 			}, 100)
 		}
 	}
-	const { addToFavourite } = useAddFavouriteMutation()
-	const { favouritePhotos } = useGetAllFavouritesPhotoQuery()
-
-	const isPhotoInFavourites =
-		photos &&
-		favouritePhotos?.some(photo => photo.id === photos[selectedImageIndex]?.id)
-
-
 
 	const handleAddToFavourite = (photoId: number, photoUrl: string) => {
 		addToFavourite({ photoId: photoId })
+	}
+
+	const handleShare = async (imageUrl: string) => {
+		if (await Sharing.isAvailableAsync()) {
+			await Sharing.shareAsync(imageUrl)
+		} else {
+			console.log('Sharing is not available on this device')
+		}
+	}
+
+	const handleDeletePhoto = (photoId: number) => {
+		deletePhoto({ photoId })
+
+		if (photos && photos.length === 1) {
+			onClose()
+		} else {
+			const newIndex = selectedImageIndex > 0 ? selectedImageIndex - 1 : 0
+			setSelectedImageIndex(newIndex)
+		}
+
+		setIsConfirmPhotoDelete(false)
 	}
 
 	useEffect(() => {
@@ -73,28 +99,6 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 		}
 	}, [isPhotoPressed])
 
-	const handleShare = async (imageUrl: string) => {
-		if (await Sharing.isAvailableAsync()) {
-			await Sharing.shareAsync(imageUrl)
-		} else {
-			console.log('Sharing is not available on this device')
-		}
-	}
-	const { deletePhoto } = useDeletePhotoMutation()
-
-	const handleDeletePhoto = (photoId: number) => {
-		deletePhoto({ photoId })
-
-		if (photos && photos.length === 1) {
-			onClose()
-		} else {
-			const newIndex = selectedImageIndex > 0 ? selectedImageIndex - 1 : 0
-			setSelectedImageIndex(newIndex)
-		}
-
-		setIsConfirmPhotoDelete(false)
-	}
-
 	return (
 		<>
 			<Modal visible={isVisible} transparent onRequestClose={onClose}>
@@ -111,58 +115,69 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 					/>
 
 					{isPhotoPressed && photos && photos[selectedImageIndex] && (
-						<Animated.View
-							style={[
-								styles.editRow,
-								{ transform: [{ translateY: animationValue }] },
-							]}
-						>
-							<TouchableOpacity
-								onPress={() => setIsConfirmPhotoDelete(true)}
-								style={styles.deleteButton}
+						<>
+							<Animated.View
+								style={[
+									styles.editRow,
+									{ transform: [{ translateY: animationValue }] },
+								]}
 							>
-								<TrashIcon width={30} height={30} />
-							</TouchableOpacity>
-							<TouchableOpacity
-								onPress={() => handleShare(photos[selectedImageIndex].url)}
-								style={styles.deleteButton}
-							>
-								<ShareIcon width={30} height={30} />
-							</TouchableOpacity>
+								<View style={styles.editRowLeft}>
+									<TouchableOpacity
+										onPress={() => handleShare(photos[selectedImageIndex].url)}
+										style={styles.photoIcons}
+									>
+										<ShareIcon width={30} height={30} />
+									</TouchableOpacity>
 
-							{isPhotoInFavourites ? (
-								<TouchableOpacity
-									onPress={() =>
-										handleAddToFavourite(
-											photos[selectedImageIndex].id,
-											photos[selectedImageIndex].url
-										)
-									}
-									style={styles.deleteButton}
-								>
-									<ActiveFavouritePhoto width={33} height={33} />
-								</TouchableOpacity>
-							) : (
-								<TouchableOpacity
-									onPress={() =>
-										handleAddToFavourite(
-											photos[selectedImageIndex].id,
-											photos[selectedImageIndex].url
-										)
-									}
-									style={styles.deleteButton}
-								>
-									<FavouriteIcon width={33} height={33} />
-								</TouchableOpacity>
-							)}
+									{isPhotoInFavourites ? (
+										<TouchableOpacity
+											onPress={() =>
+												removeFromFavourites({
+													photoId: photos[selectedImageIndex].id,
+												})
+											}
+											style={styles.photoIcons}
+										>
+											<ActiveFavouritePhoto width={33} height={33} />
+										</TouchableOpacity>
+									) : (
+										<TouchableOpacity
+											onPress={() =>
+												handleAddToFavourite(
+													photos[selectedImageIndex].id,
+													photos[selectedImageIndex].url
+												)
+											}
+											style={styles.photoIcons}
+										>
+											<FavouriteIcon width={33} height={33} />
+										</TouchableOpacity>
+									)}
 
+									<TouchableOpacity
+										onPress={() => setIsRenamingPhotoOpened(true)}
+										style={styles.photoIcons}
+									>
+										<RenamingIcon width={28} height={28} />
+									</TouchableOpacity>
+								</View>
+								<View>
+									<TouchableOpacity
+										onPress={() => setIsConfirmPhotoDelete(true)}
+										style={styles.photoIcons}
+									>
+										<TrashIcon width={30} height={30} />
+									</TouchableOpacity>
+								</View>
+							</Animated.View>
 							<TouchableOpacity
-								onPress={() => setIsRenamingPhotoOpened(true)}
-								style={styles.deleteButton}
+								onPress={() => setIsFiltersOpened(true)}
+								style={styles.editButtonWrapper}
 							>
-								<RenamingIcon width={28} height={28} />
+								<EditIcon style={styles.editButton} width={30} height={30} />
 							</TouchableOpacity>
-						</Animated.View>
+						</>
 					)}
 				</View>
 			</Modal>
@@ -179,6 +194,14 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 					setIsRenamingPhotoOpened={setIsRenamingPhotoOpened}
 					currentPhotoName={photos[selectedImageIndex].name}
 					photoId={photos[selectedImageIndex].id}
+				/>
+			)}
+
+			{isFiltersOpened && photos && (
+				<FiltersPanel
+					isFiltersOpened={isFiltersOpened}
+					setIsFiltersOpened={setIsFiltersOpened}
+					currentPhotoUrl={{ uri: photos[selectedImageIndex].url }}
 				/>
 			)}
 		</>

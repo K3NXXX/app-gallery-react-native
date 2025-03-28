@@ -1,4 +1,4 @@
-import { IAddFavourite } from '../@types/favourites/favourites.types'
+import { IAddFavourite, IRemoveFavourite } from '../@types/favourites/favourites.types'
 import api from '../axios/interceptors'
 
 class FavouriteService {
@@ -7,6 +7,14 @@ class FavouriteService {
 	async addToFavourite(photoId: IAddFavourite) {
 		const { data } = await api.post(
 			`${this.BASE_URL}/favourites/addFavourite`,
+			photoId
+		)
+		return data
+	}
+
+	async removeFromFavourite(photoId: IRemoveFavourite) {
+		const { data } = await api.post(
+			`${this.BASE_URL}/favourites/removeFromFavourites`,
 			photoId
 		)
 		return data

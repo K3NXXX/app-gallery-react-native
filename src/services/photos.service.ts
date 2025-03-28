@@ -29,6 +29,8 @@ class PhotoService {
 		const { data } = await api.put(`${this.BASE_URL}/photos/renamePhoto`, renamePhotoData)
 		return data
 	}
+
+	
 }
 
 export const photoService = new PhotoService()
