@@ -17,6 +17,17 @@ export const useAddPhotoMutation = () => {
 				text1: 'An error occurred during adding photo',
 			})
 		},
+		onMutate: () => {
+			Toast.show({
+				type: 'info',
+				text1: 'Adding photo...',
+				text2: 'Please wait',
+				autoHide: false, 
+			})
+		},
+		onSettled: () => {
+			Toast.hide() 
+		},
 	})
 
 	return { createPhoto }

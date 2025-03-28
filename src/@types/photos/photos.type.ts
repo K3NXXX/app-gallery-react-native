@@ -17,3 +17,8 @@ export interface IGetAllPhotos {
 export interface IDeletePhoto {
 	photoId: number
 }
+
+export interface IRenamePhoto {
+	photoId: number
+	newName: string
+}

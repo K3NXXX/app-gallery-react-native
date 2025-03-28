@@ -9,10 +9,7 @@ import {
 } from 'react-native'
 import CloseIcon from '../../../assets/images/home/close-icon.svg'
 import SearchIcon from '../../../assets/images/home/search-icon.svg'
-import { useAddFavouriteMutation } from '../../hooks/favourites/useAddFavouriteMutation'
-import { useDeletePhotoMutation } from '../../hooks/photos/useDeletePhotoMutation'
 import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
-import ConfirmDeletePhoto from '../../ui/ConfirmDeletePhoto/ConfirmDeletePhoto'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
 import { styles } from './Home.styles'
@@ -82,6 +79,7 @@ const Home: React.FC = () => {
 				<NavigationMenu />
 
 				<PhotoViewerModal
+				fromWhichPage='home'
 					isVisible={isPhotoViewerVisible}
 					photos={filteredPhotos}
 					selectedImageIndex={selectedImageIndex}

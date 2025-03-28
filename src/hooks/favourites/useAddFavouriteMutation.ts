@@ -9,12 +9,7 @@ export const useAddFavouriteMutation = () => {
 	const { mutate: addToFavourite } = useMutation({
 		mutationKey: ['addFavourite'],
 		mutationFn: (data: IAddFavourite) => favouriteService.addToFavourite(data),
-		onSuccess: () => {
-			Toast.show({
-				type: 'success',
-				text1: 'Added to favourite successful',
-			})
-		},
+		
 	})
 
 	return { addToFavourite }

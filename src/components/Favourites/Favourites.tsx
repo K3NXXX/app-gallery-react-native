@@ -7,7 +7,7 @@ import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
 import { styles } from './Favourites.styles'
 
 const Favourites: React.FC = () => {
-	const { favouritePhotos } = useGetAllFavouritesPhotoQuery()
+	const { favouritePhotos, error } = useGetAllFavouritesPhotoQuery()
 	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
 	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
 
@@ -16,12 +16,13 @@ const Favourites: React.FC = () => {
 		setPhotoViewerVisible(true)
 	}
 
-	console.log("selected", selectedImageIndex)
+	console.log(favouritePhotos)
+
 
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>
-				{favouritePhotos?.length === 0 ? (
+				{error ? (
 					<View style={styles.noPhotoContainer}>
 						<Text style={styles.title}>Favourites</Text>
 						<Text style={styles.noPhoto}>There is no favourites photo</Text>
@@ -52,6 +53,7 @@ const Favourites: React.FC = () => {
 			</View>
 
 			<PhotoViewerModal
+			fromWhichPage="favourites"
 				isVisible={isPhotoViewerVisible}
 				photos={favouritePhotos}
 				selectedImageIndex={selectedImageIndex}

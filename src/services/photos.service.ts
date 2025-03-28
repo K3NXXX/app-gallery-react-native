@@ -1,4 +1,4 @@
-import { IAddPhoto, IDeletePhoto } from '../@types/photos/photos.type'
+import { IAddPhoto, IDeletePhoto, IRenamePhoto } from '../@types/photos/photos.type'
 import api from '../axios/interceptors'
 
 class PhotoService {
@@ -22,6 +22,11 @@ class PhotoService {
 
 	async getAllPhotos() {
 		const { data } = await api.get(`${this.BASE_URL}/photos/getAllPhotos`)
+		return data
+	}
+
+	async renamePhoto(renamePhotoData: IRenamePhoto) {
+		const { data } = await api.put(`${this.BASE_URL}/photos/renamePhoto`, renamePhotoData)
 		return data
 	}
 }

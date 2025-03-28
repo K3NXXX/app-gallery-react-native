@@ -13,7 +13,6 @@ const ConfirmDeletePhoto: React.FC<IConfirmDeletePhotoProps> = ({
 	handleDeletePhoto,
 	photoId  
 }) => {
-	console.log("photoId", photoId)
 	return (
 		<Modal transparent={true} animationType="fade">
 			<View style={styles.root}>
