@@ -4,8 +4,8 @@ import * as ImagePicker from 'expo-image-picker'
 
 export const handleUploadImage = async (
 	mode: string | undefined,
-	createPhoto: any,
-	userId: number | undefined
+	uploadPhotoFunction: any,
+	isAvatarPhoto?: boolean
 ) => {
 	try {
 		let result: ImagePicker.ImagePickerResult
@@ -15,7 +15,7 @@ export const handleUploadImage = async (
 				mediaTypes: ImagePicker.MediaTypeOptions.Images,
 				allowsEditing: false,
 				quality: 1,
-				allowsMultipleSelection: true,
+				allowsMultipleSelection: isAvatarPhoto ? false : true,
 			})
 		} else {
 			const { status } = await ImagePicker.requestCameraPermissionsAsync()
@@ -37,8 +37,8 @@ export const handleUploadImage = async (
 					[{ resize: { width: 800 } }],
 					{ compress: 0.8 }
 				)
-				return createPhoto({
-					userId: userId,
+				return uploadPhotoFunction({
+				
 					url: manipulatedImage.uri,
 				})
 			})

@@ -6,6 +6,7 @@ export interface IUser {
 		password: string
 		createdAt: string
 		updatedAt: string
+		avatar: string
 	}
 }
 
@@ -14,4 +15,8 @@ export interface IEditData {
 	email: string
 	password: string
 	currentPassword: string
+}
+
+export interface IEditAvatar {
+	url: string
 }

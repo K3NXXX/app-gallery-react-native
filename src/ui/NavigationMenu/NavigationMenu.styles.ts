@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
 		right: 0,
 		bottom: 0,
 		paddingBottom: 40,
-		zIndex: 999
+		zIndex: 1
 	},
 	wrapper: {
 		flexDirection: "row",

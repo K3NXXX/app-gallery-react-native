@@ -15,7 +15,6 @@ const NavigationMenu: React.FC = () => {
 	const [addPhoto, setAddPhoto] = useState(false)
 	const { navigate } = useNavigation()
 	const ref = useClickOutside<View>(() => setAddPhoto(false))
-	const { userData } = useGetMe()
 	const { createPhoto } = useAddPhotoMutation()
 
 	return (
@@ -27,7 +26,7 @@ const NavigationMenu: React.FC = () => {
 						<View style={styles.wayWrapper}>
 							<Pressable
 								onPress={() =>
-									handleUploadImage(undefined, createPhoto, userData?.user.id)
+									handleUploadImage(undefined, createPhoto)
 								}
 							>
 								<View style={[styles.container, styles.firstContainer]}>
@@ -37,7 +36,7 @@ const NavigationMenu: React.FC = () => {
 							</Pressable>
 							<Pressable
 								onPress={() =>
-									handleUploadImage('gallery', createPhoto, userData?.user.id)
+									handleUploadImage('gallery', createPhoto)
 								}
 							>
 								<View style={styles.container}>

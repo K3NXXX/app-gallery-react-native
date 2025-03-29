@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ILoginData } from '../@types/auth/login.types'
 import { ISignUpData } from '../@types/auth/signup.types'
-import { IEditData } from '../@types/auth/user.types'
+import { IEditAvatar, IEditData } from '../@types/auth/user.types'
 import api from '../axios/interceptors'
 
 class AuthService {
@@ -27,6 +27,23 @@ class AuthService {
 		)
 		return data
 	}
+
+	async updateAvatar(avatar: IEditAvatar) {
+		const { data } = await api.post(
+			`${this.BASE_URL}/auth/updateAvatar`,
+			avatar
+		)
+		return data
+	}
+
+	
+	async deleteAvatar() {
+		const { data } = await api.post(
+			`${this.BASE_URL}/auth/deleteAvatar`,
+		)
+		return data
+	}
+
 
 	async getMe() {
 		const { data } = await api.get(`auth/getMe`)

@@ -1,24 +1,46 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Pressable, Text, TouchableOpacity, View } from 'react-native'
+import { useClickOutside } from 'react-native-click-outside'
+import CameraIcon from '../../../assets/images/navigation-menu/camera.svg'
+import GalleryIcon from '../../../assets/images/navigation-menu/gallery-icon.svg'
+import EditIcon from '../../../assets/images/profile/edit-icon.svg'
 import LogOutIcon from '../../../assets/images/profile/logout.svg'
 import NoAvatarIcon from '../../../assets/images/profile/no-avatar.png'
+import PlusIcon from '../../../assets/images/profile/plus-icon.svg'
+import DeleteIcon from '../../../assets/images/profile/trash-icon.svg'
 import EmailIcon from '../../../assets/images/sign-up/email.svg'
 import PasswordIcon from '../../../assets/images/sign-up/password.svg'
 import UserIcon from '../../../assets/images/sign-up/user.svg'
-import { IUser } from '../../@types/auth/user.types'
 import { SCREENS } from '../../constants/screens.constants'
+import { useDeleteUserAvatarMutation } from '../../hooks/auth/useDeleteUserAvatarMutation'
+import { useGetMe } from '../../hooks/auth/useGetMe'
+import { useUpdateUserAvatarMutation } from '../../hooks/auth/useUpdateUserAvatarMutation'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
+import { handleUploadImage } from '../../utils/handleUploadImage'
 import { styles } from '../Profile/Profile.styles'
 import EditDataForm from './EditDataForm/EditDataForm'
-import { useGetMe } from '../../hooks/auth/useGetMe'
 
 const Profile: React.FC = () => {
 	const { reset } = useNavigation()
 	const [openEditForm, setOpenEditForm] = useState(false)
-	const {userData} = useGetMe()
-	console.log(userData)
+	const { userData } = useGetMe()
+	const [isAvatarFormOpened, setIsAvatarOpened] = useState(false)
+	const [isEditAvatarFormOpened, setIsEditAvatarOpened] = useState(false)
+	const { updateAvatar } = useUpdateUserAvatarMutation()
+	const { deleteAvatar, deleteAvatarSuccess } = useDeleteUserAvatarMutation()
+	const avatarFormOpenedRef = useClickOutside<View>(() =>
+		setIsAvatarOpened(false)
+	)
+	const avatarEditFormOpenedRef = useClickOutside<View>(() =>
+		setIsEditAvatarOpened(false)
+	)
+
+	const handleUploadNewAvatar = () => {
+		setIsAvatarOpened(true)
+		setIsEditAvatarOpened(false)
+	}
 
 	const logout = async () => {
 		await AsyncStorage.removeItem('token')
@@ -28,13 +50,43 @@ const Profile: React.FC = () => {
 			routes: [{ name: SCREENS.LOGIN }],
 		})
 	}
-	
+
+	console.log(deleteAvatarSuccess)
+
+	useEffect(() => {
+		if (deleteAvatarSuccess) setIsEditAvatarOpened(false)
+	}, [deleteAvatarSuccess])
+
+
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>
 				<Text style={styles.title}>Your profile</Text>
 				<View style={styles.avatarWrapper}>
-					<Image style={styles.noAvatar} source={NoAvatarIcon} />
+					{userData?.user.avatar ? (
+						<Image
+							style={styles.noAvatar}
+							source={{ uri: userData.user.avatar }}
+						/>
+					) : (
+						<Image style={styles.noAvatar} source={NoAvatarIcon} />
+					)}
+
+					{userData?.user.avatar ? (
+						<TouchableOpacity
+							onPress={() => setIsEditAvatarOpened(true)}
+							style={styles.addIcon}
+						>
+							<EditIcon width={42} height={42} />
+						</TouchableOpacity>
+					) : (
+						<TouchableOpacity
+							onPress={() => setIsAvatarOpened(true)}
+							style={styles.addIcon}
+						>
+							<PlusIcon width={40} height={40} />
+						</TouchableOpacity>
+					)}
 				</View>
 				<View style={styles.info}>
 					<Text style={styles.name}>{userData?.user?.name}</Text>
@@ -79,6 +131,64 @@ const Profile: React.FC = () => {
 				</View>
 			</View>
 			{openEditForm && <EditDataForm setOpenEditForm={setOpenEditForm} />}
+
+			{isAvatarFormOpened && (
+				<View style={styles.modal}>
+					<View ref={avatarFormOpenedRef} style={styles.ways}>
+						<Text style={styles.titlePhoto}>Upload avatar</Text>
+						<View style={styles.wayWrapper}>
+							<Pressable
+								onPress={() => handleUploadImage(undefined, updateAvatar)}
+							>
+								<View style={[styles.container, styles.firstContainer]}>
+									<CameraIcon width={40} height={40} />
+									<Text style={styles.way}>Camera</Text>
+								</View>
+							</Pressable>
+							<Pressable
+								onPress={() => handleUploadImage('gallery', updateAvatar, true)}
+							>
+								<View style={styles.container}>
+									<GalleryIcon
+										style={styles.iconGallery}
+										width={30}
+										height={30}
+									/>
+									<Text style={styles.way}>Gallery</Text>
+								</View>
+							</Pressable>
+						</View>
+					</View>
+				</View>
+			)}
+
+			{isEditAvatarFormOpened && (
+				<View style={styles.modal}>
+					<View ref={avatarEditFormOpenedRef} style={styles.ways}>
+						<Text style={styles.titlePhoto}>Edit avatar</Text>
+						<View style={styles.wayWrapper}>
+							<Pressable
+								onPress={() => handleUploadNewAvatar()}
+							>
+								<View style={[styles.container, styles.firstContainer]}>
+									<CameraIcon width={40} height={40} />
+									<Text style={styles.way}>Upload new</Text>
+								</View>
+							</Pressable>
+							<Pressable onPress={() => deleteAvatar()}>
+								<View style={styles.container}>
+									<DeleteIcon
+										style={styles.iconGallery}
+										width={30}
+										height={30}
+									/>
+									<Text style={styles.way}>Delete avatar</Text>
+								</View>
+							</Pressable>
+						</View>
+					</View>
+				</View>
+			)}
 
 			<NavigationMenu />
 		</View>

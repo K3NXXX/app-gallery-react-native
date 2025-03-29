@@ -48,6 +48,7 @@ const SignUp: React.FC = () => {
 			name: signupData.name,
 			email: signupData.email,
 			password: signupData.password,
+			avatar: ''
 		}
 		signup(data)
 		console.log(signupData)
