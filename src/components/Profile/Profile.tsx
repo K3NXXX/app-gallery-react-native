@@ -51,7 +51,6 @@ const Profile: React.FC = () => {
 		})
 	}
 
-	console.log(deleteAvatarSuccess)
 
 	useEffect(() => {
 		if (deleteAvatarSuccess) setIsEditAvatarOpened(false)

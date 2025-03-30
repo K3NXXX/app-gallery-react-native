@@ -94,30 +94,6 @@ export const styles = StyleSheet.create({
 		borderRadius: 20
 	},
 	
-	  filtersContainer: {
-		position: 'absolute',
-		bottom: 120,
-		left: 10,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		width: '80%',
-	  },
-	  filterButton: {
-		fontSize: 16,
-		color: '#fff',
-		padding: 10,
-		backgroundColor: 'rgba(0, 0, 0, 0.5)',
-		borderRadius: 5,
-	  },
-	  filteredImage: {
-		width: '100%',
-		height: '100%',
-		borderRadius: 8,
-	  },
-	  filteredImageContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	  },
+	
 	  
 })

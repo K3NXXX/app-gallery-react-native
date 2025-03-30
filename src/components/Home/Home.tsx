@@ -1,62 +1,31 @@
 import React, { useState } from 'react'
-import {
-	FlatList,
-	Image,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from 'react-native'
-import CloseIcon from '../../../assets/images/home/close-icon.svg'
-import SearchIcon from '../../../assets/images/home/search-icon.svg'
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
+
 import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
+import PhotosSortPanel from '../../ui/PhotosSortPanel/PhotosSortPanel'
 import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
 import { styles } from './Home.styles'
+import { IPhoto } from '../../@types/photos/photos.type'
 
 const Home: React.FC = () => {
-	const [searchValue, setSearchValue] = useState('')
-	
-	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
-	const { allPhotos } = useGetAllPhotos()
-	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
+	const [filteredPhotos, setFilteredPhotos] = useState<IPhoto[] | undefined>(undefined);
 
-	const filteredPhotos = allPhotos?.filter(photo =>
-		photo.name.toLowerCase().includes(searchValue.toLowerCase())
-	)
+	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
+	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
+	const { allPhotos } = useGetAllPhotos()
 
 	const openImageModal = (image: any, index: number) => {
-		setSelectedImageIndex(index) 
-		setPhotoViewerVisible(true) 
+		setSelectedImageIndex(index)
+		setPhotoViewerVisible(true)
 	}
-
-
-
-
 
 	return (
 		<>
 			<View style={styles.root}>
 				<View style={styles.wrapper}>
 					<Text style={styles.title}>Home</Text>
-					<View style={styles.search}>
-						<TextInput
-							value={searchValue}
-							onChange={e => setSearchValue(e.nativeEvent.text)}
-							placeholderTextColor='#61646B'
-							style={styles.input}
-							placeholder='Search here'
-						/>
-						<SearchIcon width={30} height={30} style={styles.searchIcon} />
-						{searchValue.length > 0 && (
-							<CloseIcon
-								onPress={() => setSearchValue('')}
-								width={27}
-								height={27}
-								style={styles.closeIcon}
-							/>
-						)}
-					</View>
+					<PhotosSortPanel onFilter={setFilteredPhotos} />
 
 					<FlatList
 						data={filteredPhotos}
@@ -79,15 +48,13 @@ const Home: React.FC = () => {
 				<NavigationMenu />
 
 				<PhotoViewerModal
-				fromWhichPage='home'
+					fromWhichPage='home'
 					isVisible={isPhotoViewerVisible}
 					photos={filteredPhotos}
 					selectedImageIndex={selectedImageIndex}
 					setSelectedImageIndex={setSelectedImageIndex}
 					onClose={() => setPhotoViewerVisible(false)}
 				/>
-
-				
 			</View>
 		</>
 	)
