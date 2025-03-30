@@ -13,7 +13,6 @@ const Home: React.FC = () => {
 
 	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
 	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
-	const { allPhotos } = useGetAllPhotos()
 
 	const openImageModal = (image: any, index: number) => {
 		setSelectedImageIndex(index)

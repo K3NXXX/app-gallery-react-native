@@ -8,6 +8,7 @@ export interface IPhoto {
 	userId: number
 	url: string
 	name: string
+	createdAt: string
 }
 
 export interface IGetAllPhotos {

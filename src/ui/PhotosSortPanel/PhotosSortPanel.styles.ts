@@ -128,5 +128,12 @@ export const styles = StyleSheet.create({
 		borderRadius: 100,
 		borderColor: 'black',
 		borderWidth: 2
+	  },
+	  removeFilters: {
+		color: "#ee9938",
+		fontFamily: "inter-bold",
+		fontSize: 16,
+		marginRight: 15,
+		marginTop: 20
 	  }
 })
