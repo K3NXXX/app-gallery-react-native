@@ -24,8 +24,9 @@ const PhotosSortPanel: React.FC<IPhotosSortPanelProps> = ({ onFilter }) => {
   const [isSortByNameOpened, setIsSortByNameOpened] = useState(false);
   const [isSortByDateOpened, setIsSortByDateOpened] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [sortOrderByName, setSortOrderByName] = useState<'asc' | 'desc' | ''>(''); 
+  const [sortOrderByName, setSortOrderByName] = useState<'asc' | 'desc' | ''>('');
   const [selectedRange, setSelectedRange] = useState<string>('');
+  const [filteredPhotos, setFilteredPhotos] = useState<IPhoto[]>([]);
   const { allPhotos } = useGetAllPhotos();
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -68,13 +69,13 @@ const PhotosSortPanel: React.FC<IPhotosSortPanelProps> = ({ onFilter }) => {
   };
 
   const filterByDate = (range: string) => {
-    let filteredPhotos = [];
+    let filtered = [];
     const today = new Date();
     const photos = allPhotos ?? [];
 
     switch (range) {
       case 'today':
-        filteredPhotos = photos.filter(photo => {
+        filtered = photos.filter(photo => {
           const photoDate = new Date(photo.createdAt);
           return photoDate.toDateString() === today.toDateString();
         });
@@ -82,7 +83,7 @@ const PhotosSortPanel: React.FC<IPhotosSortPanelProps> = ({ onFilter }) => {
       case 'yesterday':
         const yesterday = new Date(today);
         yesterday.setDate(today.getDate() - 1);
-        filteredPhotos = photos.filter(photo => {
+        filtered = photos.filter(photo => {
           const photoDate = new Date(photo.createdAt);
           return photoDate.toDateString() === yesterday.toDateString();
         });
@@ -90,7 +91,7 @@ const PhotosSortPanel: React.FC<IPhotosSortPanelProps> = ({ onFilter }) => {
       case 'lastWeek':
         const lastWeek = new Date(today);
         lastWeek.setDate(today.getDate() - 7);
-        filteredPhotos = photos.filter(photo => {
+        filtered = photos.filter(photo => {
           const photoDate = new Date(photo.createdAt);
           return photoDate >= lastWeek;
         });
@@ -98,35 +99,41 @@ const PhotosSortPanel: React.FC<IPhotosSortPanelProps> = ({ onFilter }) => {
       case 'last30Days':
         const last30Days = new Date(today);
         last30Days.setDate(today.getDate() - 30);
-        filteredPhotos = photos.filter(photo => {
+        filtered = photos.filter(photo => {
           const photoDate = new Date(photo.createdAt);
           return photoDate >= last30Days;
         });
         break;
       default:
-        filteredPhotos = photos;
+        filtered = photos;
     }
 
     setSelectedRange(range);
-    onFilter(filteredPhotos)
-	hideSortByDateModal()
+    setFilteredPhotos(filtered);
+    hideSortByDateModal();
   };
 
   useEffect(() => {
-    let filteredPhotos = allPhotos?.filter(photo =>
+    if (!selectedRange && !sortOrderByName && !searchValue) {
+      setFilteredPhotos(allPhotos ?? []);
+    }
+  }, [allPhotos, selectedRange, sortOrderByName, searchValue]);
+
+  useEffect(() => {
+    let filtered = filteredPhotos.filter(photo =>
       photo.name.toLowerCase().includes(searchValue.toLowerCase())
     );
 
-    if (filteredPhotos && sortOrderByName !== '') {
-      filteredPhotos = filteredPhotos.sort((a, b) =>
+    if (filtered && sortOrderByName !== '') {
+      filtered = filtered.sort((a, b) =>
         sortOrderByName === 'asc'
           ? a.name.localeCompare(b.name)
           : b.name.localeCompare(a.name)
       );
     }
 
-    onFilter(filteredPhotos);
-  }, [searchValue, allPhotos, sortOrderByName]);
+    onFilter(filtered);
+  }, [searchValue, filteredPhotos, sortOrderByName]);
 
   return (
     <View>
@@ -171,8 +178,8 @@ const PhotosSortPanel: React.FC<IPhotosSortPanelProps> = ({ onFilter }) => {
           fadeAnim={fadeAnim}
           onClose={hideSortByDateModal}
           allPhotos={allPhotos}
-          onSort={filterByDate} 
-          selectedRange={selectedRange} 
+          onSort={filterByDate}
+          selectedRange={selectedRange}
         />
       )}
     </View>
