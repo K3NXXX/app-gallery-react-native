@@ -1,11 +1,11 @@
 import * as ImageManipulator from 'expo-image-manipulator'
 import * as ImagePicker from 'expo-image-picker'
 
-
 export const handleUploadImage = async (
 	mode: string | undefined,
-	uploadPhotoFunction: any,
-	isAvatarPhoto?: boolean
+	uploadPhotoFunction?: any,
+	fromWhichPage?: string,
+	setAlbumImageUrl?: (url: string) => void
 ) => {
 	try {
 		let result: ImagePicker.ImagePickerResult
@@ -15,7 +15,10 @@ export const handleUploadImage = async (
 				mediaTypes: ImagePicker.MediaTypeOptions.Images,
 				allowsEditing: false,
 				quality: 1,
-				allowsMultipleSelection: isAvatarPhoto ? false : true,
+				allowsMultipleSelection:
+					fromWhichPage === 'profile' || fromWhichPage === 'album'
+						? false
+						: true,
 			})
 		} else {
 			const { status } = await ImagePicker.requestCameraPermissionsAsync()
@@ -37,10 +40,14 @@ export const handleUploadImage = async (
 					[{ resize: { width: 800 } }],
 					{ compress: 0.8 }
 				)
-				return uploadPhotoFunction({
-				
-					url: manipulatedImage.uri,
-				})
+
+				if (fromWhichPage === 'album' && setAlbumImageUrl) {
+					setAlbumImageUrl(manipulatedImage.uri)
+				} else {
+					return uploadPhotoFunction({
+						url: manipulatedImage.uri,
+					})
+				}
 			})
 
 			await Promise.allSettled(uploadPromises)

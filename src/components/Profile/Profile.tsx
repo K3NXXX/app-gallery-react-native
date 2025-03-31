@@ -145,7 +145,7 @@ const Profile: React.FC = () => {
 								</View>
 							</Pressable>
 							<Pressable
-								onPress={() => handleUploadImage('gallery', updateAvatar, true)}
+								onPress={() => handleUploadImage('gallery', updateAvatar, 'profile')}
 							>
 								<View style={styles.container}>
 									<GalleryIcon

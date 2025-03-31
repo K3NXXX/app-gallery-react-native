@@ -16,7 +16,7 @@ const Favourites: React.FC = () => {
 		setPhotoViewerVisible(true)
 	}
 
-	console.log(favouritePhotos)
+	
 
 
 	return (

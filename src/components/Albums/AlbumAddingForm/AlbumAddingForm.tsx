@@ -1,13 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import {
+	Image,
+	Pressable,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+} from 'react-native'
+import { useClickOutside } from 'react-native-click-outside'
+import CloseIcon from '../../../../assets/images/albums/close-icon.svg'
 import DescriptionIcon from '../../../../assets/images/albums/description-icon.svg'
-import ImageIcon from '../../../../assets/images/albums/image -icon.svg'
+import ImageIcon from '../../../../assets/images/albums/image-icon.svg'
 import NameIcon from '../../../../assets/images/albums/name-icon.svg'
-import CloseIcon from '../../../../assets/images/home/close-icon.svg'
+import ReturnIcon from '../../../../assets/images/home/return-icon.svg'
+import CameraIcon from '../../../../assets/images/navigation-menu/camera.svg'
+import GalleryIcon from '../../../../assets/images/navigation-menu/gallery-icon.svg'
 import { ICreateAlbum } from '../../../@types/albums/albums.types'
-import { useGetMe } from '../../../hooks/auth/useGetMe'
+import { handleUploadImage } from '../../../utils/handleUploadImage'
+import { useImageStore } from '../../../zustand/useStore'
 import { styles } from './AlbumAddingForm.styles'
+import { useCreateAlbumMutation } from '../../../hooks/albums/useCreateAlbumMutation'
 
 interface IAlbumAddingFormProps {
 	setOpenAlbumAddingForm: (openAlbumAddingForm: boolean) => void
@@ -16,7 +29,18 @@ interface IAlbumAddingFormProps {
 const AlbumAddingForm: React.FC<IAlbumAddingFormProps> = ({
 	setOpenAlbumAddingForm,
 }) => {
-	const { userData } = useGetMe()
+	const setAlbumImageUrl = useImageStore((state: any) => state.setAlbumImageUrl)
+	const albumImageUrl = useImageStore((state: any) => state.albumImageUrl)
+	const [isUploadImageOpened, setIsUploadImageOpened] = useState(false)
+	const albumFormOpenedRef = useClickOutside<View>(() =>
+		setIsUploadImageOpened(false)
+	)
+	const {createAlbum} = useCreateAlbumMutation()
+
+	const onClose = () => {
+		setOpenAlbumAddingForm(false)
+		setAlbumImageUrl('')
+	}
 
 	const {
 		control,
@@ -32,19 +56,21 @@ const AlbumAddingForm: React.FC<IAlbumAddingFormProps> = ({
 		},
 	})
 
-	const onSubmit = (updatedData: any) => {
+	const onSubmit = (albumData: ICreateAlbum) => {
 		const data = {
-			name: updatedData.name,
-			email: updatedData.email,
-			password: updatedData.password,
-			currentPassword: updatedData.currentPassword,
-		}
+			name: albumData.name,
+			description: albumData.description,
+			imageUrl: albumImageUrl ? albumImageUrl: '',
+			isCover: !!albumImageUrl 
+		} 
+		createAlbum(data)
+		onClose()
 	}
 
 	return (
 		<View style={styles.root}>
-			<CloseIcon
-				onPress={() => setOpenAlbumAddingForm(false)}
+			<ReturnIcon
+				onPress={() => onClose()}
 				width={30}
 				height={30}
 				style={styles.closeIcon}
@@ -71,7 +97,7 @@ const AlbumAddingForm: React.FC<IAlbumAddingFormProps> = ({
 						render={({ field: { onChange, onBlur, value } }) => (
 							<TextInput
 								placeholder='My resorts'
-								placeholderTextColor='rgb(97, 100, 107)'
+								placeholderTextColor='rgb(255, 255, 255)'
 								style={styles.input}
 								onChangeText={onChange}
 								onBlur={onBlur}
@@ -100,7 +126,7 @@ const AlbumAddingForm: React.FC<IAlbumAddingFormProps> = ({
 						render={({ field: { onChange, onBlur, value } }) => (
 							<TextInput
 								placeholder='Your description'
-								placeholderTextColor='rgb(97, 100, 107)'
+								placeholderTextColor='rgb(255, 255, 255)'
 								style={styles.input}
 								onChangeText={onChange}
 								onBlur={onBlur}
@@ -116,23 +142,70 @@ const AlbumAddingForm: React.FC<IAlbumAddingFormProps> = ({
 					)}
 				</View>
 				<View style={styles.top}>
-					<Text style={styles.label}>Album image</Text>
+					<Text style={styles.label}>Album image (optional)</Text>
 					<ImageIcon width={20} height={20} />
 				</View>
-				<TouchableOpacity
-					style={styles.button}
-				>
-					<Text style={styles.buttonText}>Upload image</Text>
-				</TouchableOpacity>
+				<View>
+					{albumImageUrl ? (
+						<View style={styles.albumImageWrapper}>
+							<Image
+								style={styles.albumImage}
+								source={{ uri: albumImageUrl }}
+							/>
+							<TouchableOpacity onPress={() => setAlbumImageUrl('')} style={styles.albumCloseIcon}>
+								<CloseIcon width={30} height={30} />
+							</TouchableOpacity>
+						</View>
+					) : (
+						<TouchableOpacity
+							onPress={() => setIsUploadImageOpened(true)}
+							style={styles.button}
+						>
+							<Text style={styles.buttonText}>Upload image</Text>
+						</TouchableOpacity>
+					)}
+				</View>
 
 				<TouchableOpacity
+					onPress={handleSubmit(onSubmit)}
 					style={styles.createButton}
 				>
 					<Text style={styles.createText}>Create album</Text>
 				</TouchableOpacity>
-
-				
 			</View>
+			{isUploadImageOpened && (
+				<View style={styles.modal}>
+					<View ref={albumFormOpenedRef} style={styles.ways}>
+						<Text style={styles.titlePhoto}>Upload image</Text>
+						<View style={styles.wayWrapper}>
+							<Pressable
+								onPress={() =>
+									handleUploadImage(undefined, null, 'album', setAlbumImageUrl)
+								}
+							>
+								<View style={[styles.container, styles.firstContainer]}>
+									<CameraIcon width={40} height={40} />
+									<Text style={styles.way}>Camera</Text>
+								</View>
+							</Pressable>
+							<Pressable
+								onPress={() =>
+									handleUploadImage('gallery', null, 'album', setAlbumImageUrl)
+								}
+							>
+								<View style={styles.container}>
+									<GalleryIcon
+										style={styles.iconGallery}
+										width={30}
+										height={30}
+									/>
+									<Text style={styles.way}>Gallery</Text>
+								</View>
+							</Pressable>
+						</View>
+					</View>
+				</View>
+			)}
 		</View>
 	)
 }

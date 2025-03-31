@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
 		position: 'absolute',
 		width: '100%',
 		height: '100%',
-		backgroundColor: 'rgb(248, 248, 248)',
+		backgroundColor: 'rgba(0, 0, 0, 0.9)',
 		justifyContent: 'center',
 		alignItems: 'center',
 		zIndex: 100,
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
 	},
 	label: {
 		fontFamily: 'inter-bold',
-		color: 'rgb(39, 42, 49)',
+		color: 'rgb(255, 255, 255)',
 		fontSize: 14,
 		marginRight: 5,
 	},
@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 		paddingVertical: 15,
 		fontFamily: 'inter-regular',
+		color: "white"
 		
 	},
 	top: {
@@ -54,7 +55,7 @@ export const styles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'center',
-		paddingVertical: 15,
+		paddingVertical: 10,
 		borderColor: 'rgb(255, 167, 56)',
 		borderWidth: 2
 	},
@@ -92,5 +93,71 @@ export const styles = StyleSheet.create({
 		color: 'rgb(255, 255, 255)',
 		fontSize: 16,
 		fontFamily: 'inter-bold',
+	},
+	modal: {
+		position: "absolute",
+		width: "100%",
+		height: "100%",
+		backgroundColor: "rgba(0, 0, 0, 0.4)", 
+		justifyContent: "center",
+		alignItems: "center",
+		zIndex: 100,
+	},
+	ways: {
+		backgroundColor: "white",
+		padding: 25,
+		paddingHorizontal: 60,
+		borderRadius: 20,
+		alignItems: 'center',
+		paddingBottom: 40
+	},
+	titlePhoto:{
+		fontFamily: "inter-bold",
+		fontSize: 25,
+		color: "black",
+		marginBottom: 20
+
+	},
+	container: {
+		alignItems: "center",
+		backgroundColor: "#dfe8ef",
+		borderRadius: 20,
+		paddingVertical: 10,
+		paddingHorizontal: 15,
+
+	},
+	firstContainer: {
+		marginRight: 15, 
+
+	},
+	iconGallery: {
+		marginVertical: 5
+	},
+	
+	way: {
+		fontFamily: "inter-medium",
+		fontSize: 17,
+		color: "#000000",
+	
+	},
+	wayWrapper: {
+		flexDirection: "row",
+	},
+	albumImage: {
+		width: 100,
+		height: 100,
+		borderRadius: 12,
+		marginTop: 20,
+		
+		
+	},
+	albumImageWrapper: {
+		position: 'relative',
+		width: 120
+	},
+	albumCloseIcon: {
+		position: "absolute",
+		top: 5,
+		right: 5
 	}
 })
