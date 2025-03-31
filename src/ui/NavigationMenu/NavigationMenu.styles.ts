@@ -6,8 +6,10 @@ export const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 		bottom: 0,
-		paddingBottom: 40,
-		zIndex: 1
+		paddingTop: 20,
+		paddingBottom: 20,
+		zIndex: 1,
+		backgroundColor: '#f7f7f7',
 	},
 	wrapper: {
 		flexDirection: "row",

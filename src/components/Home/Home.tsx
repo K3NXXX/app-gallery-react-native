@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 
-import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
-import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
-import PhotosSortPanel from '../../ui/PhotosSortPanel/PhotosSortPanel'
-import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
-import { styles } from './Home.styles'
 import { IPhoto } from '../../@types/photos/photos.type'
+import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
+import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
+import SortPanel from '../../ui/SortPanel/SortPanel'
+import { styles } from './Home.styles'
 
 const Home: React.FC = () => {
-	const [filteredPhotos, setFilteredPhotos] = useState<IPhoto[] | undefined>(undefined);
+	const [filteredPhotos, setFilteredPhotos] = useState<IPhoto[] | undefined>(
+		undefined
+	)
 
 	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
 	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
@@ -24,7 +25,7 @@ const Home: React.FC = () => {
 			<View style={styles.root}>
 				<View style={styles.wrapper}>
 					<Text style={styles.title}>Home</Text>
-					<PhotosSortPanel onFilter={setFilteredPhotos} />
+					<SortPanel onFilter={setFilteredPhotos} fromWhichPage='home' />
 
 					<FlatList
 						data={filteredPhotos}

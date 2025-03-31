@@ -2,7 +2,7 @@ import React from 'react'
 import { Animated, Modal, Text, TouchableOpacity, View } from 'react-native'
 import ReturnIcon from '../../../assets/images/home/return-icon.svg'
 import SortIcon2 from '../../../assets/images/home/sort-icon2.svg'
-import { styles } from './PhotosSortPanel.styles'
+import { styles } from './SortPanel.styles'
 
 interface SortByNameProps {
 	fadeAnim: Animated.Value
@@ -15,7 +15,7 @@ const SortByName: React.FC<SortByNameProps> = ({
 	fadeAnim,
 	onClose,
 	onSort,
-	sortOrderByName
+	sortOrderByName,
 }) => {
 	const handleSortByName = (order: 'asc' | 'desc' | '') => {
 		onSort(order)

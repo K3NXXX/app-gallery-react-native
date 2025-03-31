@@ -2,14 +2,12 @@ import React from 'react'
 import { Animated, Modal, Text, TouchableOpacity, View } from 'react-native'
 import ReturnIcon from '../../../assets/images/home/return-icon.svg'
 import SortIcon2 from '../../../assets/images/home/sort-icon2.svg'
-import { IPhoto } from '../../@types/photos/photos.type'
-import { styles } from './PhotosSortPanel.styles'
+import { styles } from './SortPanel.styles'
 
 interface SortByDateProps {
 	fadeAnim: Animated.Value
 	onClose: () => void
 	onSort: (filteredPhotos: string) => void
-	allPhotos: IPhoto[] | undefined
 	selectedRange: string
 }
 
@@ -17,7 +15,6 @@ const SortByDate: React.FC<SortByDateProps> = ({
 	fadeAnim,
 	onClose,
 	onSort,
-	allPhotos,
 	selectedRange,
 }) => {
 	return (

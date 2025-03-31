@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native'
 import { useClickOutside } from 'react-native-click-outside'
 import CameraIcon from '../../../assets/images/navigation-menu/camera.svg'
 import GalleryIcon from '../../../assets/images/navigation-menu/gallery-icon.svg'
-import { useGetMe } from '../../hooks/auth/useGetMe'
 import { useAddPhotoMutation } from '../../hooks/photos/useAddPhotoMutation'
 import { menuList } from '../../lists/menu.list'
 import { handleUploadImage } from '../../utils/handleUploadImage'
@@ -25,9 +24,7 @@ const NavigationMenu: React.FC = () => {
 						<Text style={styles.title}>Add photo</Text>
 						<View style={styles.wayWrapper}>
 							<Pressable
-								onPress={() =>
-									handleUploadImage(undefined, createPhoto)
-								}
+								onPress={() => handleUploadImage(undefined, createPhoto)}
 							>
 								<View style={[styles.container, styles.firstContainer]}>
 									<CameraIcon width={40} height={40} />
@@ -35,9 +32,7 @@ const NavigationMenu: React.FC = () => {
 								</View>
 							</Pressable>
 							<Pressable
-								onPress={() =>
-									handleUploadImage('gallery', createPhoto)
-								}
+								onPress={() => handleUploadImage('gallery', createPhoto)}
 							>
 								<View style={styles.container}>
 									<GalleryIcon
