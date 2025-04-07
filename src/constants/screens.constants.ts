@@ -4,5 +4,6 @@ export const SCREENS = {
 	HOME: 'Home',
 	PROFILE: 'Profile',
 	ALBUMS: 'Albums',
-	FAVOURITES: 'Favourites'
+	FAVOURITES: 'Favourites',
+	FULL_ALBUM: 'Full Album'
 }

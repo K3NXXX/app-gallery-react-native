@@ -8,6 +8,9 @@ import ProfileScreen from '../screens/ProfileScreen'
 import SignUpScreen from '../screens/SignUpScreen'
 import AlbumsScreen from '../screens/AlbumsScreen'
 import FavouritesScreen from '../screens/FavouritesScreen'
+import FullAlbumScreen from '../screens/FullAlbumScreen'
+
+
 
 const Stack = createStackNavigator()
 
@@ -35,6 +38,11 @@ const Navigation: React.FC = () => {
 					<Stack.Screen
 					name={SCREENS.FAVOURITES}
 					component={FavouritesScreen}
+					options={{ headerShown: false }}
+				/>
+				<Stack.Screen
+					name={SCREENS.FULL_ALBUM}
+					component={FullAlbumScreen}
 					options={{ headerShown: false }}
 				/>
 					

@@ -45,6 +45,7 @@ const EditDataForm: React.FC<IEditDataFormProps> = ({ setOpenEditForm }) => {
 			password: updatedData.password,
 			currentPassword: updatedData.currentPassword,
 		}
+		console.log("user", data)
 		updateData(data)
 	}
 

@@ -66,6 +66,17 @@ export const styles = StyleSheet.create({
 	albumContainer: {
 		width: "48%",
 		margin: 5,
-		marginBottom: 10
+		marginBottom: 10,
+		borderColor: "transparent",
+		borderStyle: 'solid',
+		borderWidth: 2,
+	},
+	noImageWrapper: {
+		borderColor: "gray",
+		borderStyle: 'solid',
+		borderWidth: 2,
+		alignItems: 'center',
+		borderRadius: 12
+
 	}
 })
