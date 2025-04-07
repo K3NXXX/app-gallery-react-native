@@ -41,4 +41,18 @@ export const styles = StyleSheet.create({
 	descriptionWrapper: {
 		backgroundColor: '#ffbe74',
 	},
+	photo: {
+		height: 120,
+		resizeMode: 'cover',
+		opacity: 1,
+		borderRadius: 12
+	},
+	photoContainer: {
+		width: '31%',
+		margin: 5,
+	},
+	list: {
+		paddingHorizontal: 12,
+		paddingVertical: 12
+	}
 })

@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		zIndex: 100,
+
 	},
 	photoContainer: {
 		width: '31%',
@@ -70,7 +71,7 @@ export const styles = StyleSheet.create({
 	},
 	addRow: {
 		backgroundColor: 'rgba(37, 37, 37, 0.9)',
-		bottom: 40,
+		bottom: 20,
 		position: 'absolute',
 		width: 380,
 		alignSelf: 'center',

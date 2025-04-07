@@ -12,6 +12,7 @@ import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import SortPanel from '../../ui/SortPanel/SortPanel'
 import AlbumAddingForm from './AlbumAddingForm/AlbumAddingForm'
 import { styles } from './Albums.styles'
+import Logo from '../../ui/Logo/Logo'
 
 const Albums: React.FC = () => {
 	const [openAlbumAddingForm, setOpenAlbumAddingForm] = useState(false)
@@ -23,7 +24,6 @@ const Albums: React.FC = () => {
 	const { allAlbums } = useGetAllAlbumsQuery()
 
 
-	console.log("all", allAlbums)
 	useEffect(() => {
 		if (allAlbums) {
 			setFilteredAlbums(allAlbums)
@@ -33,6 +33,7 @@ const Albums: React.FC = () => {
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>
+				<Logo/>
 				<Text style={styles.title}>Albums</Text>
 				{allAlbums?.length === 0 ? (
 					<View style={styles.createAlbum}>

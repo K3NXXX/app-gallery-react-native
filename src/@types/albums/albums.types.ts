@@ -17,8 +17,17 @@ export interface IDeleteAlbum {
 	albumId: number
 }
 
+export interface IGetAlbumPhotos {
+	albumId: number
+}
+
 export interface IEditAlbum {
 	name: string
 	description: string
 	imageUrl: string
+}
+
+export interface IAddPhotoToAlbum {
+	albumId: number
+	photoIds: number[]
 }

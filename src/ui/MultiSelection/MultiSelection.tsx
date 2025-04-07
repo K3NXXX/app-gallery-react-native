@@ -11,18 +11,22 @@ import { FlatList } from 'react-native-gesture-handler'
 import CheckMarkIcon from '../../../assets/images/albums/check-mark-icon.svg'
 import CloseSelectionIcon from '../../../assets/images/albums/close-selection-icon.svg'
 import ReturnIcon from '../../../assets/images/home/return-icon.svg'
+import { useAddPhotoToAlbumMutation } from '../../hooks/albums/useAddPhotoToAlbumMutation'
 import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
 import { styles } from './MultiSelection.styles'
 
 interface IMultiSelectionProps {
 	setIsMultiSelectionOpened: (isMultiSelectionOpened: boolean) => void
+	albumId: number
 }
 
 const MultiSelection: React.FC<IMultiSelectionProps> = ({
 	setIsMultiSelectionOpened,
+	albumId,
 }) => {
 	const { allPhotos } = useGetAllPhotos()
 	const [selectedPhotos, setSelectedPhotos] = useState<number[]>([])
+	const { addPhotoToAlbum } = useAddPhotoToAlbumMutation()
 
 	const toggleSelection = (photoId: number) => {
 		setSelectedPhotos(prevSelectedPhotos =>
@@ -37,6 +41,16 @@ const MultiSelection: React.FC<IMultiSelectionProps> = ({
 			? styles.selectedImageWrapper
 			: styles.photoWrapper
 	}
+
+	const handleAddPhotoToAlbum = () => {
+		const data = {
+			albumId: albumId,
+			photoIds: selectedPhotos,
+		}
+		addPhotoToAlbum(data)
+		setIsMultiSelectionOpened(false)
+	}
+
 
 	return (
 		<Modal transparent={true} animationType='fade'>
@@ -91,7 +105,10 @@ const MultiSelection: React.FC<IMultiSelectionProps> = ({
 					<TouchableOpacity onPress={() => setSelectedPhotos([])}>
 						<CloseSelectionIcon width={25} height={25} />
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.addImagesBtn}>
+					<TouchableOpacity
+						onPress={() => handleAddPhotoToAlbum()}
+						style={styles.addImagesBtn}
+					>
 						<Text style={styles.addImagesBtnText}>Confirm</Text>
 					</TouchableOpacity>
 				</View>

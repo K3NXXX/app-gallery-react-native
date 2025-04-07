@@ -5,6 +5,7 @@ import { useGetAllFavouritesPhotoQuery } from '../../hooks/favourites/useGetAllF
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
 import { styles } from './Favourites.styles'
+import Logo from '../../ui/Logo/Logo'
 
 const Favourites: React.FC = () => {
 	const { favouritePhotos, error } = useGetAllFavouritesPhotoQuery()
@@ -22,6 +23,7 @@ const Favourites: React.FC = () => {
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>
+			<Logo/>
 				{error ? (
 					<View style={styles.noPhotoContainer}>
 						<Text style={styles.title}>Favourites</Text>

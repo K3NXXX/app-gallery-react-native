@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
 	wrapper: {
 		maxWidth: 500,
 		width: '100%',
-		paddingTop: 60,
+		paddingTop: 30,
 		alignSelf: 'center',
 		paddingHorizontal: 25,
 		flex: 1,
@@ -93,7 +93,18 @@ export const styles = StyleSheet.create({
 		right: 20,
 		borderRadius: 20
 	},
-	
+	logo: {
+		flexDirection: "row",
+		alignItems: 'center',
+		marginBottom: 30
+		
+	},
+	logoText: {
+			fontFamily: "inter-bold",
+			fontSize: 20,
+			marginLeft: 10,
+			color: 'rgb(255, 167, 60)'
+	}
 	
 	  
 })

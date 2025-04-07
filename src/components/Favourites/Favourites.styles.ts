@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
 	wrapper: {
 		maxWidth: 500,
 		width: '100%',
-		paddingTop: 60,
+		paddingTop: 30,
 		alignSelf: 'center',
 		paddingHorizontal: 25,
 		flex: 1,
