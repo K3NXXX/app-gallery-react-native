@@ -4,6 +4,8 @@ import {
 	IDeleteAlbum,
 	IEditAlbum,
 	IGetAlbumPhotos,
+	IGetOneAlbum,
+	IRemovePhotoFromAlbum,
 } from '../@types/albums/albums.types'
 import api from '../axios/interceptors'
 
@@ -50,6 +52,22 @@ class AlbumService {
 	async getAlbumPhotos(albumData: IGetAlbumPhotos) {
 		const { data } = await api.post(
 			`${this.BASE_URL}/albums/getAlbumPhotos`,
+			albumData
+		)
+		return data
+	}
+
+	async removePhotoFromAlbum(albumData: IRemovePhotoFromAlbum) {
+		const { data } = await api.post(
+			`${this.BASE_URL}/albums/deletePhotoFromAlbum`,
+			albumData
+		)
+		return data
+	}
+
+	async getOneAlbum(albumData: IGetOneAlbum) {
+		const { data } = await api.post(
+			`${this.BASE_URL}/albums/getOneAlbum`,
 			albumData
 		)
 		return data

@@ -104,6 +104,18 @@ export const styles = StyleSheet.create({
 			fontSize: 20,
 			marginLeft: 10,
 			color: 'rgb(255, 167, 60)'
+	},
+	noPhotosWrapper: {
+		alignItems: "center",
+		paddingTop: 150
+	},
+	noPhotosText1: {
+		fontFamily: 'inter-bold',
+		fontSize: 18
+	},
+	noPhotosText2: {
+		fontFamily: 'inter-bold',
+		fontSize: 18
 	}
 	
 	  

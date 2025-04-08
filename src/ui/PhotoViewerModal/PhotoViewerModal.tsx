@@ -54,7 +54,7 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 		if (newIndex !== undefined && newIndex !== selectedImageIndex) {
 			setTimeout(() => {
 				setSelectedImageIndex(newIndex)
-			}, 100)
+			}, 200)
 		}
 	}
 
@@ -69,7 +69,6 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 			console.log('Sharing is not available on this device')
 		}
 	}
-
 	const handleDeletePhoto = (photoId: number) => {
 		deletePhoto({ photoId })
 
@@ -81,6 +80,19 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 		}
 
 		setIsConfirmPhotoDelete(false)
+	}
+
+	const handleRemoveFromFavourites = (photoId: number) => {
+		removeFromFavourites({ photoId })
+		
+		if (photos) {
+			const nextIndex =
+				selectedImageIndex < photos.length - 1
+					? selectedImageIndex + 1
+					: selectedImageIndex - 1
+			setSelectedImageIndex(nextIndex)
+
+		}
 	}
 
 	useEffect(() => {
@@ -104,7 +116,6 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 			<Modal visible={isVisible} transparent onRequestClose={onClose}>
 				<View style={styles.modalContainer}>
 					<ImageViewer
-						key={photos?.length}
 						onLongPress={() => setIsPhotoPressed(true)}
 						imageUrls={photos?.map(photo => ({ url: photo.url }))}
 						onSwipeDown={onClose}
@@ -133,9 +144,9 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 									{isPhotoInFavourites ? (
 										<TouchableOpacity
 											onPress={() =>
-												removeFromFavourites({
-													photoId: photos[selectedImageIndex].id,
-												})
+												handleRemoveFromFavourites(
+													photos[selectedImageIndex].id
+												)
 											}
 											style={styles.photoIcons}
 										>

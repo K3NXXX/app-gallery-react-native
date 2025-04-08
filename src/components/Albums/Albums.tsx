@@ -68,7 +68,7 @@ const Albums: React.FC = () => {
 									style={styles.albumContainer}
 									onPress={() =>
 										//@ts-ignore
-										navigation.navigate(SCREENS.FULL_ALBUM, { album: item })
+										navigation.navigate(SCREENS.FULL_ALBUM, { albumId: item.id })
 									}
 								>
 									<View>

@@ -5,35 +5,54 @@ import AddImageIcon from '../../../assets/images/albums/add-image.svg'
 import DeleteIcon from '../../../assets/images/albums/delete-icon.svg'
 import EditIcon from '../../../assets/images/albums/edit-icon.svg'
 import ReturnIcon from '../../../assets/images/albums/return-icon.svg'
-import { IAlbum } from '../../@types/albums/albums.types'
+import { IAlbum, IGetOneAlbum } from '../../@types/albums/albums.types'
 import { SCREENS } from '../../constants/screens.constants'
 import { useGetAlbumPhotosMutation } from '../../hooks/albums/useGetAlbumPhotosMutation'
 import ConfirmDeleteAlbum from '../../ui/ConfirmDeleteAlbum/ConfirmDeleteAlbum'
 import MultiSelection from '../../ui/MultiSelection/MultiSelection'
+import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
 import AlbumEditForm from '../Albums/EditAlbumForm/EditAlbumForm'
 import { styles } from './FullAlbum.styles'
+import { useGetOneAlbumMutation } from '../../hooks/albums/useGetOneAlbumMutation'
+import { useEditAlbumDataMutation } from '../../hooks/albums/useEditAlbumDataMutation'
 
-type FullAlbumRouteProp = RouteProp<{ Album: { album: IAlbum } }, 'Album'>
+type FullAlbumRouteProp = RouteProp<{ Album: { albumId: number } }, 'Album'>
 
 const FullAlbum: React.FC = () => {
 	const route = useRoute<FullAlbumRouteProp>()
-	const { album } = route.params
+	const { albumId } = route.params
+
 	const navigation = useNavigation()
 
 	const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false)
 	const [isMultiSelectionOpened, setIsMultiSelectionOpened] = useState(false)
 	const [isEditFormOpen, setIsEditFormOpen] = useState(false)
 
-	const { getAlbumPhotos, albumPhotos } = useGetAlbumPhotosMutation()
+	const {getOneAlbum, albumData} = useGetOneAlbumMutation()
+	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
+	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
+
+
+	const openImageModal = (image: any, index: number) => {
+		setSelectedImageIndex(index)
+		setPhotoViewerVisible(true)
+	}
+
 
 	useEffect(() => {
-		getAlbumPhotos({albumId: album.id})
-	}, [getAlbumPhotos])
+		getOneAlbum({albumId :albumId})
+	}, [albumId])
+
+	if (!albumData) {
+		return <Text>"Loading"</Text>
+	}
+
+
 	return (
 		<View style={styles.root}>
 			<View style={styles.top}>
 				<View style={styles.topLeft}>
-					<Text style={styles.albumName}>{album.name}</Text>
+					<Text style={styles.albumName}>{albumData.name}</Text>
 				</View>
 				<View style={styles.topRight}>
 					<TouchableOpacity
@@ -65,20 +84,26 @@ const FullAlbum: React.FC = () => {
 					</TouchableOpacity>
 				</View>
 			</View>
-			<View>
-				{getAlbumPhotos.length === 0 ? (
+			{albumData?.description && (
+				<View style={styles.descriptionWrapper}>
+					<Text style={styles.description}>Description</Text>
+					<Text style={styles.descriptionText}>{albumData.description}</Text>
+				</View>
+			)}
+
+			<View style={styles.content}>
+				{albumData.photos.length === 0 ? (
 					<View></View>
 				) : (
 					<FlatList
-					style={styles.list}
-						data={albumPhotos}
+						data={albumData.photos}
 						keyExtractor={item => item.id.toString()}
 						numColumns={3}
 						showsVerticalScrollIndicator={false}
 						renderItem={({ item, index }) => (
 							<TouchableOpacity
 								style={styles.photoContainer}
-								// onPress={() => openImageModal(index)}
+								onPress={() => openImageModal(item, index)}
 							>
 								<View>
 									<Image source={{ uri: item.url }} style={styles.photo} />
@@ -88,33 +113,35 @@ const FullAlbum: React.FC = () => {
 					/>
 				)}
 			</View>
-			{album.description && (
-				<View style={styles.descriptionWrapper}>
-					<Text style={styles.description}>Description</Text>
-					<Text style={styles.descriptionText}>{album.description}</Text>
-				</View>
-			)}
-
-			{isConfirmDeleteOpen && (
+			<PhotoViewerModal
+				fromWhichPage='fullAlbum'
+				isVisible={isPhotoViewerVisible}
+				photos={albumData.photos}
+				selectedImageIndex={selectedImageIndex}
+				setSelectedImageIndex={setSelectedImageIndex}
+				onClose={() => setPhotoViewerVisible(false)}
+			/>
+			
+			  {isConfirmDeleteOpen && albumData && (
 				<ConfirmDeleteAlbum
-					albumId={album.id}
+					albumId={albumData.id}
 					setIsConfirmDeleteOpen={setIsConfirmDeleteOpen}
 				/>
 			)}
 
-			{isEditFormOpen && (
+			{isEditFormOpen && albumData && (
 				<AlbumEditForm
-					albumId={album.id}
+					albumId={albumData.id}
 					setIsEditFormOpen={setIsEditFormOpen}
 				/>
-			)}
+			)} 
 
-			{isMultiSelectionOpened && (
+			{isMultiSelectionOpened && albumData && (
 				<MultiSelection
-					albumId={album.id}
+					albumId={albumData.id}
 					setIsMultiSelectionOpened={setIsMultiSelectionOpened}
 				/>
-			)}
+			)} 
 		</View>
 	)
 }

@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
 	},
 	ways: {
 		backgroundColor: "white",
-		padding: 25,
+		padding: 35,
 		paddingHorizontal: 40,
 		borderRadius: 20,
 		alignItems: 'center'
@@ -67,9 +67,10 @@ export const styles = StyleSheet.create({
 	},
 	
 	way: {
-		fontFamily: "inter-regular",
+		fontFamily: "inter-medium",
 		fontSize: 17,
 		color: "#000000",
+		paddingHorizontal: 15
 	
 	},
 	wayWrapper: {

@@ -3,13 +3,14 @@ import Toast from 'react-native-toast-message'
 import { IEditAlbum } from '../../@types/albums/albums.types'
 import { albumService } from '../../services/albums.service'
 
-export const useEditAlbumDataMutation = () => {
+export const useEditAlbumDataMutation = (albumId: number, getOneAlbum: () => void) => {
 	const queryClient = useQueryClient()
 	const { mutate: updateAlbum } = useMutation({
 		mutationKey: ['updateAlbum'],
 		mutationFn: (data: IEditAlbum) => albumService.updateAlbum(data),
-		onSuccess: data => {
-			queryClient.invalidateQueries(['getAllAlbums'])
+		onSuccess: (data) => {
+			queryClient.invalidateQueries(['getOneAlbum'])
+
 
 			Toast.show({
 				type: 'success',

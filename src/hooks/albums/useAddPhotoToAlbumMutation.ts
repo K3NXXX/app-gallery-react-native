@@ -9,7 +9,7 @@ export const useAddPhotoToAlbumMutation = () => {
 		mutationKey: ['addPhotoToAlbum'],
 		mutationFn: (data: IAddPhotoToAlbum) => albumService.addPhotoToAlbum(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries(['getAlbumPhotos'])
+			queryClient.invalidateQueries(['getOneAlbum'])
 			Toast.show({
 				type: 'success',
 				text1: 'Photo added to album successful',

@@ -1,3 +1,5 @@
+import { IPhoto } from '../photos/photos.type'
+
 export interface ICreateAlbum {
 	name: string
 	description?: string
@@ -11,6 +13,7 @@ export interface IAlbum {
 	imageUrl: string
 	id: number
 	isCover: boolean
+	photos: IPhoto[]
 }
 
 export interface IDeleteAlbum {
@@ -30,4 +33,13 @@ export interface IEditAlbum {
 export interface IAddPhotoToAlbum {
 	albumId: number
 	photoIds: number[]
+}
+
+export interface IRemovePhotoFromAlbum {
+	albumId: number
+	photoId: number
+}
+
+export interface IGetOneAlbum {
+	albumId: number
 }

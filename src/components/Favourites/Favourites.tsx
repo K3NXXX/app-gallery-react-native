@@ -1,32 +1,37 @@
-import React, { useState } from 'react'
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
-import HeartIcon from '../../../assets/images/favourites/heart-icon.svg'
-import { useGetAllFavouritesPhotoQuery } from '../../hooks/favourites/useGetAllFavouritesPhotoQuery'
-import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
-import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
-import { styles } from './Favourites.styles'
-import Logo from '../../ui/Logo/Logo'
+import React, { useState, useEffect } from 'react';
+import { FlatList, Image, Text, TouchableOpacity, View, Animated } from 'react-native';
+import HeartIcon from '../../../assets/images/favourites/heart-icon.svg';
+import { useGetAllFavouritesPhotoQuery } from '../../hooks/favourites/useGetAllFavouritesPhotoQuery';
+import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu';
+import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal';
+import { styles } from './Favourites.styles';
+import Logo from '../../ui/Logo/Logo';
 
 const Favourites: React.FC = () => {
-	const { favouritePhotos, error } = useGetAllFavouritesPhotoQuery()
-	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
-	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
+	const { favouritePhotos = [] } = useGetAllFavouritesPhotoQuery();
+	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false);
+	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
+	const fadeAnim = useState(new Animated.Value(0))[0]; // Initial value for opacity: 0
+
+	useEffect(() => {
+		Animated.timing(fadeAnim, {
+			toValue: 1,
+			duration: 700,
+			useNativeDriver: true,
+		}).start();
+	}, [fadeAnim]);
 
 	const openImageModal = (index: number) => {
-		setSelectedImageIndex(index)
-		setPhotoViewerVisible(true)
-	}
-
-	
-
+		setSelectedImageIndex(index);
+		setPhotoViewerVisible(true);
+	};
 
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>
-			<Logo/>
-				{error ? (
+				<Logo />
+				{favouritePhotos.length === 0 ? (
 					<View style={styles.noPhotoContainer}>
-						<Text style={styles.title}>Favourites</Text>
 						<Text style={styles.noPhoto}>There is no favourites photo</Text>
 						<Text style={styles.noPhoto2}>You can add it from gallery</Text>
 						<HeartIcon width={50} height={50} />
@@ -44,9 +49,9 @@ const Favourites: React.FC = () => {
 									style={styles.photoContainer}
 									onPress={() => openImageModal(index)}
 								>
-									<View>
+									<Animated.View style={{ opacity: fadeAnim }}>
 										<Image source={{ uri: item.url }} style={styles.photo} />
-									</View>
+									</Animated.View>
 								</TouchableOpacity>
 							)}
 						/>
@@ -55,7 +60,7 @@ const Favourites: React.FC = () => {
 			</View>
 
 			<PhotoViewerModal
-			fromWhichPage="favourites"
+				fromWhichPage="favourites"
 				isVisible={isPhotoViewerVisible}
 				photos={favouritePhotos}
 				selectedImageIndex={selectedImageIndex}
@@ -65,7 +70,7 @@ const Favourites: React.FC = () => {
 
 			<NavigationMenu />
 		</View>
-	)
-}
+	);
+};
 
-export default Favourites
+export default Favourites;

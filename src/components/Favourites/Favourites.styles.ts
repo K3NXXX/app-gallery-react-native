@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
 		fontFamily: 'inter-medium',
 		color: 'black',
 		textAlign: 'center',
-		marginTop: 100,
+		marginTop: 200,
 	},
 	noPhoto2: {
 		fontSize: 22,

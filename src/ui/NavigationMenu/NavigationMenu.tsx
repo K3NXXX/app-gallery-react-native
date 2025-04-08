@@ -21,7 +21,7 @@ const NavigationMenu: React.FC = () => {
 			{addPhoto && (
 				<View style={styles.modal}>
 					<View ref={ref} style={styles.ways}>
-						<Text style={styles.title}>Add photo</Text>
+						<Text style={styles.title}>Upload photo</Text>
 						<View style={styles.wayWrapper}>
 							<Pressable
 								onPress={() => handleUploadImage(undefined, createPhoto)}

@@ -27,32 +27,49 @@ export const styles = StyleSheet.create({
 		marginRight: 20,
 	},
 	returnButton: {},
-	description: {
-		fontFamily: 'inter-medium',
-		fontSize: 20,
-		textAlign: 'center',
-		paddingVertical: 15,
-	},
-	descriptionText: {
-		fontFamily: 'inter-medium',
-		fontSize: 16,
-		textAlign: 'center',
-	},
 	descriptionWrapper: {
-		backgroundColor: '#ffbe74',
+		marginVertical: 20,
+		marginHorizontal: 20,
+		borderRadius: 12,
+		backgroundColor: '#fff',
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.15,
+		shadowRadius: 10,
+		elevation: 4,
+		paddingVertical: 15,
+		paddingHorizontal: 15,
+		textAlign: 'center',
+		marginTop: 30
+	},
+
+	description: {
+		fontFamily: 'inter-semibold',
+		fontSize: 18,
+		color: '#333',
+		marginBottom: 10,
+		textAlign: 'center',
+	},
+
+	descriptionText: {
+		fontFamily: 'inter-regular',
+		fontSize: 14,
+		color: '#666',
+		lineHeight: 20,
+		textAlign: 'center',
 	},
 	photo: {
 		height: 120,
 		resizeMode: 'cover',
 		opacity: 1,
-		borderRadius: 12
+		borderRadius: 12,
 	},
 	photoContainer: {
 		width: '31%',
 		margin: 5,
 	},
-	list: {
+	content: {
 		paddingHorizontal: 12,
-		paddingVertical: 12
-	}
+		paddingVertical: 12,
+	},
 })
