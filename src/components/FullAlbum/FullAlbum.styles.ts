@@ -12,6 +12,13 @@ export const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
+		borderBottomLeftRadius: 20,
+		borderBottomRightRadius: 20,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.15,
+		shadowRadius: 8,
+		elevation: 6,
 	},
 	topLeft: {},
 	topRight: {
@@ -68,8 +75,26 @@ export const styles = StyleSheet.create({
 		width: '31%',
 		margin: 5,
 	},
+	albumBadge: {
+		backgroundColor: '#fff',
+		paddingHorizontal: 8,
+		paddingVertical: 4,
+		borderRadius: 10,
+		marginLeft: 10,
+		marginTop: 5
+	},
+	albumBadgeText: {
+		color: '#ee9938',
+		fontFamily: 'inter-medium',
+		fontSize: 12,
+	},
+	topLeftWrapper: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
 	content: {
 		paddingHorizontal: 12,
 		paddingVertical: 12,
 	},
+
 })

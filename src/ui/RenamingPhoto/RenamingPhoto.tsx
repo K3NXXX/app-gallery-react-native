@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Modal, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useRenamePhotoMutation } from '../../hooks/photos/useRenamePhotoMutation'
 import { styles } from './RenamingPhoto.styles'
+import { useGetOneAlbumMutation } from '../../hooks/albums/useGetOneAlbumMutation'
+import { useImageStore } from '../../zustand/useStore'
 
 interface IRenamingPhotoProps {
 	setIsRenamingPhotoOpened: (isRenamingPhotoOpened: boolean) => void
@@ -14,10 +16,13 @@ const RenamingPhoto: React.FC<IRenamingPhotoProps> = ({
 	currentPhotoName,
 	photoId,
 }) => {
+	const { albumId } = useImageStore() 
 	const inputRef = useRef<TextInput>(null)
 	const [text, setText] = useState(currentPhotoName)
+	const actualAlbumId = albumId || 0
+	const {getOneAlbum} = useGetOneAlbumMutation()
 	const { renamePhoto, renamingSuccess, renamePhotoError } =
-		useRenamePhotoMutation()
+		useRenamePhotoMutation(actualAlbumId, getOneAlbum)
 
 	useEffect(() => {
 		setTimeout(() => {

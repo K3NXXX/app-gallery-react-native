@@ -2,8 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { IRenamePhoto } from '../../@types/photos/photos.type'
 import { photoService } from '../../services/photos.service'
+import { IGetOneAlbum } from '../../@types/albums/albums.types'
 
-export const useRenamePhotoMutation = () => {
+export const useRenamePhotoMutation = (albumId: number, getOneAlbum: (data: IGetOneAlbum) => void) => {
 	const queryClient = useQueryClient()
 	const [renamePhotoError, setRenamePhotoError] = useState(false)
 	const [renamingSuccess, setRenamingSuccess] = useState(false)
@@ -13,6 +14,7 @@ export const useRenamePhotoMutation = () => {
 		onSuccess: () => {
 			setRenamingSuccess(true)
 			queryClient.invalidateQueries(['getAllPhotos'])
+			getOneAlbum({albumId: albumId})
 			queryClient.invalidateQueries(['getFavouritesPhoto'])
 		},
 		onError(error: any) {

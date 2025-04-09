@@ -58,6 +58,7 @@ class AlbumService {
 	}
 
 	async removePhotoFromAlbum(albumData: IRemovePhotoFromAlbum) {
+		console.log("res", albumData)
 		const { data } = await api.post(
 			`${this.BASE_URL}/albums/deletePhotoFromAlbum`,
 			albumData

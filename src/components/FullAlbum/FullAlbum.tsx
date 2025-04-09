@@ -1,20 +1,26 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
+import {
+	ActivityIndicator,
+	FlatList,
+	Image,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native'
 import AddImageIcon from '../../../assets/images/albums/add-image.svg'
 import DeleteIcon from '../../../assets/images/albums/delete-icon.svg'
 import EditIcon from '../../../assets/images/albums/edit-icon.svg'
 import ReturnIcon from '../../../assets/images/albums/return-icon.svg'
-import { IAlbum, IGetOneAlbum } from '../../@types/albums/albums.types'
 import { SCREENS } from '../../constants/screens.constants'
-import { useGetAlbumPhotosMutation } from '../../hooks/albums/useGetAlbumPhotosMutation'
+import { useGetOneAlbumMutation } from '../../hooks/albums/useGetOneAlbumMutation'
 import ConfirmDeleteAlbum from '../../ui/ConfirmDeleteAlbum/ConfirmDeleteAlbum'
 import MultiSelection from '../../ui/MultiSelection/MultiSelection'
 import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
 import AlbumEditForm from '../Albums/EditAlbumForm/EditAlbumForm'
 import { styles } from './FullAlbum.styles'
-import { useGetOneAlbumMutation } from '../../hooks/albums/useGetOneAlbumMutation'
-import { useEditAlbumDataMutation } from '../../hooks/albums/useEditAlbumDataMutation'
+import { useImageStore } from '../../zustand/useStore'
+import Loading from '../../ui/Loading/Loading'
 
 type FullAlbumRouteProp = RouteProp<{ Album: { albumId: number } }, 'Album'>
 
@@ -28,32 +34,41 @@ const FullAlbum: React.FC = () => {
 	const [isMultiSelectionOpened, setIsMultiSelectionOpened] = useState(false)
 	const [isEditFormOpen, setIsEditFormOpen] = useState(false)
 
-	const {getOneAlbum, albumData} = useGetOneAlbumMutation()
+	const { getOneAlbum, albumData } = useGetOneAlbumMutation()
 	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
 	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
-
+	const { setAlbumId } = useImageStore() 
 
 	const openImageModal = (image: any, index: number) => {
 		setSelectedImageIndex(index)
 		setPhotoViewerVisible(true)
 	}
 
-
 	useEffect(() => {
-		getOneAlbum({albumId :albumId})
+		setAlbumId(albumId)
+		getOneAlbum({ albumId: albumId })
 	}, [albumId])
 
 	if (!albumData) {
-		return <Text>"Loading"</Text>
+		return (
+			<Loading/>
+		)
 	}
-
 
 	return (
 		<View style={styles.root}>
 			<View style={styles.top}>
 				<View style={styles.topLeft}>
-					<Text style={styles.albumName}>{albumData.name}</Text>
+					<View style={styles.topLeftWrapper}>
+						<Text style={styles.albumName}>{albumData.name}</Text>
+						<View style={styles.albumBadge}>
+							<Text style={styles.albumBadgeText}>
+								{albumData.photos.length} 📸
+							</Text>
+						</View>
+					</View>
 				</View>
+
 				<View style={styles.topRight}>
 					<TouchableOpacity
 						onPress={() => setIsMultiSelectionOpened(true)}
@@ -121,8 +136,8 @@ const FullAlbum: React.FC = () => {
 				setSelectedImageIndex={setSelectedImageIndex}
 				onClose={() => setPhotoViewerVisible(false)}
 			/>
-			
-			  {isConfirmDeleteOpen && albumData && (
+
+			{isConfirmDeleteOpen && albumData && (
 				<ConfirmDeleteAlbum
 					albumId={albumData.id}
 					setIsConfirmDeleteOpen={setIsConfirmDeleteOpen}
@@ -133,15 +148,18 @@ const FullAlbum: React.FC = () => {
 				<AlbumEditForm
 					albumId={albumData.id}
 					setIsEditFormOpen={setIsEditFormOpen}
+					getOneAlbum={getOneAlbum}
 				/>
-			)} 
+			)}
 
 			{isMultiSelectionOpened && albumData && (
 				<MultiSelection
 					albumId={albumData.id}
+					setIsEditFormOpen={setIsEditFormOpen}
+					getOneAlbum={getOneAlbum}
 					setIsMultiSelectionOpened={setIsMultiSelectionOpened}
 				/>
-			)} 
+			)}
 		</View>
 	)
 }

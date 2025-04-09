@@ -19,6 +19,7 @@ import { ISignUpData } from '../../../@types/auth/signup.types'
 import { SCREENS } from '../../../constants/screens.constants'
 import { useSignUpMutation } from '../../../hooks/auth/useSignUpMutation'
 import { styles } from './SignUp.styles'
+import { useAuthStore } from '../../../zustand/useAuthStore'
 
 const SignUp: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(true)
@@ -40,8 +41,9 @@ const SignUp: React.FC = () => {
 		},
 	})
 	const password = watch('password')
+	const logIn = useAuthStore((state) => state.login)
 
-	const { signup, emailError } = useSignUpMutation()
+	const { signup, emailError } = useSignUpMutation(logIn)
 
 	const onSubmit = (signupData: ISignUpData) => {
 		const data = {

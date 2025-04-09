@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
 	},
 	createAlbum: {
 		alignItems: 'center',
-		paddingTop: 100
+		paddingTop: 200
 	},
 	text1: {
 		fontSize: 20,
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
 		marginBottom: 10,
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	createNewAlbumText :{
 		color: "white",
@@ -78,5 +78,10 @@ export const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderRadius: 12
 
-	}
+	},
+	loaderWrapper: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 })

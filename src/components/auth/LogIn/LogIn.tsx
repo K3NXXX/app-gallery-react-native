@@ -10,10 +10,14 @@ import { ILoginData } from '../../../@types/auth/login.types'
 import { SCREENS } from '../../../constants/screens.constants'
 import { useLoginMutation } from '../../../hooks/auth/useLoginMutation'
 import { styles } from './LogIn.styles'
+import { useAuthStore } from '../../../zustand/useAuthStore'
 
 const LogIn: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(true)
 	const { navigate } = useNavigation()
+	const logIn = useAuthStore((state) => state.login)
+	
+
 
 	const {
 		control,
@@ -28,7 +32,7 @@ const LogIn: React.FC = () => {
 		},
 	})
 
-	const { login, loginError } = useLoginMutation()
+	const { login, loginError } = useLoginMutation(logIn)
 
 	const onSubmit = (loginData: ILoginData) => {
 		const data = {

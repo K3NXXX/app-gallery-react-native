@@ -11,7 +11,7 @@ const Favourites: React.FC = () => {
 	const { favouritePhotos = [] } = useGetAllFavouritesPhotoQuery();
 	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false);
 	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
-	const fadeAnim = useState(new Animated.Value(0))[0]; // Initial value for opacity: 0
+	const fadeAnim = useState(new Animated.Value(0))[0]; 
 
 	useEffect(() => {
 		Animated.timing(fadeAnim, {

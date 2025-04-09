@@ -1,6 +1,14 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import {
+	ActivityIndicator,
+	Animated,
+	Easing,
+	Image,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import AddAlbumIcon from '../../../assets/images/albums/add-album.svg'
 import CreateIcon from '../../../assets/images/albums/create-album.svg'
@@ -8,34 +16,48 @@ import NoImageIcon from '../../../assets/images/albums/no-image-icon.svg'
 import { IAlbum } from '../../@types/albums/albums.types'
 import { SCREENS } from '../../constants/screens.constants'
 import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
+import Logo from '../../ui/Logo/Logo'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import SortPanel from '../../ui/SortPanel/SortPanel'
 import AlbumAddingForm from './AlbumAddingForm/AlbumAddingForm'
 import { styles } from './Albums.styles'
-import Logo from '../../ui/Logo/Logo'
+import Loading from '../../ui/Loading/Loading'
 
 const Albums: React.FC = () => {
 	const [openAlbumAddingForm, setOpenAlbumAddingForm] = useState(false)
+	const fadeAnim = useState(new Animated.Value(0))[0]
+
 	const [filteredAlbums, setFilteredAlbums] = useState<IAlbum[] | undefined>(
 		undefined
 	)
 
 	const navigation = useNavigation()
-	const { allAlbums } = useGetAllAlbumsQuery()
-
+	const { allAlbums, isLoading, isFetching } = useGetAllAlbumsQuery()
+	console.log("albums", allAlbums)
 
 	useEffect(() => {
 		if (allAlbums) {
 			setFilteredAlbums(allAlbums)
+			Animated.timing(fadeAnim, {
+				toValue: 1,
+				duration: 400,
+				easing: Easing.out(Easing.ease),
+				useNativeDriver: true,
+			}).start()
 		}
 	}, [allAlbums])
+
+	if (isLoading && !isFetching) {
+		return (
+			<Loading/>
+		)
+	}
 
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>
-				<Logo/>
-				<Text style={styles.title}>Albums</Text>
-				{allAlbums?.length === 0 ? (
+				<Logo />
+				{!allAlbums?.length ? (
 					<View style={styles.createAlbum}>
 						<Text style={styles.text1}>There is no albums</Text>
 						<Text style={styles.text2}>Create a new one</Text>
@@ -44,7 +66,8 @@ const Albums: React.FC = () => {
 						</TouchableOpacity>
 					</View>
 				) : (
-					<View>
+					<Animated.View style={{ opacity: fadeAnim }}>
+						<Text style={styles.title}>Albums</Text>
 						<SortPanel<IAlbum>
 							onFilter={setFilteredAlbums}
 							fromWhichPage='albums'
@@ -68,7 +91,9 @@ const Albums: React.FC = () => {
 									style={styles.albumContainer}
 									onPress={() =>
 										//@ts-ignore
-										navigation.navigate(SCREENS.FULL_ALBUM, { albumId: item.id })
+										navigation.navigate(SCREENS.FULL_ALBUM, {
+											albumId: item.id,
+										})
 									}
 								>
 									<View>
@@ -87,7 +112,7 @@ const Albums: React.FC = () => {
 								</TouchableOpacity>
 							)}
 						/>
-					</View>
+					</Animated.View>
 				)}
 			</View>
 			{openAlbumAddingForm && (

@@ -14,11 +14,13 @@ import { styles } from './SortPanel.styles'
 interface IPhotosSortPanelProps<T extends IPhoto | IAlbum> {
 	onFilter: (filteredItems: T[] | undefined) => void
 	fromWhichPage: string
+	setIsLoading?: (isLoading: boolean) => void
 }
 
 const SortPanel = <T extends IPhoto | IAlbum>({
 	onFilter,
 	fromWhichPage,
+	setIsLoading,
 }: IPhotosSortPanelProps<T>) => {
 	const [isSortByNameOpened, setIsSortByNameOpened] = useState(false)
 	const [isSortByDateOpened, setIsSortByDateOpened] = useState(false)
@@ -29,7 +31,7 @@ const SortPanel = <T extends IPhoto | IAlbum>({
 	const [selectedRange, setSelectedRange] = useState<string>('')
 	const [filteredItems, setFilteredItems] = useState<IPhoto[] | IAlbum[]>([])
 	const { allAlbums } = useGetAllAlbumsQuery()
-	const { allPhotos } = useGetAllPhotos()
+	const { allPhotos, isLoading } = useGetAllPhotos()
 	const fadeAnim = useRef(new Animated.Value(0)).current
 
 	const showSortByNameModal = () => {
@@ -146,6 +148,12 @@ const SortPanel = <T extends IPhoto | IAlbum>({
 		//@ts-ignore
 		onFilter(filtered)
 	}, [searchValue, filteredItems, sortOrderByName])
+
+	useEffect(() => {
+		if (setIsLoading) {
+			setIsLoading(isLoading)
+		}
+	}, [isLoading])
 
 	return (
 		<View>

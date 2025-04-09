@@ -3,6 +3,7 @@ import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 
 import NoPhotosIcon from '../../../assets/images/home/no-photos-icon.svg'
 import { IPhoto } from '../../@types/photos/photos.type'
+import Loading from '../../ui/Loading/Loading'
 import Logo from '../../ui/Logo/Logo'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
@@ -13,6 +14,7 @@ const Home: React.FC = () => {
 	const [filteredPhotos, setFilteredPhotos] = useState<IPhoto[] | undefined>(
 		undefined
 	)
+	const [isLoading, setIsLoading] = useState(false)
 
 	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
 	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
@@ -22,20 +24,25 @@ const Home: React.FC = () => {
 		setPhotoViewerVisible(true)
 	}
 
+	
+
 	return (
 		<>
 			<View style={styles.root}>
 				<View style={styles.wrapper}>
 					<Logo />
 					<Text style={styles.title}>Home</Text>
-					<SortPanel onFilter={setFilteredPhotos} fromWhichPage='home' />
+					<SortPanel
+						setIsLoading={setIsLoading}
+						onFilter={setFilteredPhotos}
+						fromWhichPage='home'
+					/>
 
 					{filteredPhotos?.length === 0 ? (
 						<View style={styles.noPhotosWrapper}>
 							<NoPhotosIcon width={50} height={50} />
 							<Text style={styles.noPhotosText1}>There is no photos yet</Text>
 							<Text style={styles.noPhotosText2}>Add some</Text>
-
 						</View>
 					) : (
 						<FlatList

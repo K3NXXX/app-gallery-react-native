@@ -11,6 +11,7 @@ import { FlatList } from 'react-native-gesture-handler'
 import CheckMarkIcon from '../../../assets/images/albums/check-mark-icon.svg'
 import CloseSelectionIcon from '../../../assets/images/albums/close-selection-icon.svg'
 import ReturnIcon from '../../../assets/images/home/return-icon.svg'
+import { IGetOneAlbum } from '../../@types/albums/albums.types'
 import { useAddPhotoToAlbumMutation } from '../../hooks/albums/useAddPhotoToAlbumMutation'
 import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
 import { styles } from './MultiSelection.styles'
@@ -18,15 +19,18 @@ import { styles } from './MultiSelection.styles'
 interface IMultiSelectionProps {
 	setIsMultiSelectionOpened: (isMultiSelectionOpened: boolean) => void
 	albumId: number
+	getOneAlbum: (data: IGetOneAlbum) => void
+	setIsEditFormOpen: (isEditFormOpen: boolean) => void
 }
 
 const MultiSelection: React.FC<IMultiSelectionProps> = ({
 	setIsMultiSelectionOpened,
 	albumId,
+	getOneAlbum
 }) => {
 	const { allPhotos } = useGetAllPhotos()
 	const [selectedPhotos, setSelectedPhotos] = useState<number[]>([])
-	const { addPhotoToAlbum } = useAddPhotoToAlbumMutation()
+	const { addPhotoToAlbum } = useAddPhotoToAlbumMutation(albumId, getOneAlbum)
 
 	const toggleSelection = (photoId: number) => {
 		setSelectedPhotos(prevSelectedPhotos =>
@@ -50,7 +54,6 @@ const MultiSelection: React.FC<IMultiSelectionProps> = ({
 		addPhotoToAlbum(data)
 		setIsMultiSelectionOpened(false)
 	}
-
 
 	return (
 		<Modal transparent={true} animationType='fade'>

@@ -2,6 +2,7 @@ import React from 'react'
 import { Modal, Text, TouchableOpacity, View } from 'react-native'
 import { useDeleteAlbumMutation } from '../../hooks/albums/useDeleteAlbumMutation'
 import { styles } from './ConfirmDeleteAlbum.styles'
+import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
 
 interface IConfirmDeleteAlbumProps {
 	setIsConfirmDeleteOpen: (isConfirmDeleteOpen: boolean) => void
@@ -12,6 +13,7 @@ const ConfirmDeleteAlbum: React.FC<IConfirmDeleteAlbumProps> = ({
 	setIsConfirmDeleteOpen,
 	albumId,
 }) => {
+
 	const { deleteAlbum } = useDeleteAlbumMutation()
 	return (
 		<Modal transparent={true} animationType='fade'>

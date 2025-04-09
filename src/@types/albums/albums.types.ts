@@ -37,7 +37,7 @@ export interface IAddPhotoToAlbum {
 
 export interface IRemovePhotoFromAlbum {
 	albumId: number
-	photoId: number
+	photoIds: number[]
 }
 
 export interface IGetOneAlbum {

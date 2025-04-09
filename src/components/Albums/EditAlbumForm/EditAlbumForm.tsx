@@ -16,7 +16,7 @@ import NameIcon from '../../../../assets/images/albums/name-icon.svg'
 import ReturnIcon from '../../../../assets/images/home/return-icon.svg'
 import CameraIcon from '../../../../assets/images/navigation-menu/camera.svg'
 import GalleryIcon from '../../../../assets/images/navigation-menu/gallery-icon.svg'
-import { ICreateAlbum, IEditAlbum } from '../../../@types/albums/albums.types'
+import { ICreateAlbum, IEditAlbum, IGetOneAlbum } from '../../../@types/albums/albums.types'
 import { useCreateAlbumMutation } from '../../../hooks/albums/useCreateAlbumMutation'
 import { handleUploadImage } from '../../../utils/handleUploadImage'
 import { useImageStore } from '../../../zustand/useStore'
@@ -26,11 +26,14 @@ import { useEditAlbumDataMutation } from '../../../hooks/albums/useEditAlbumData
 interface IAlbumAddingFormProps {
 	setIsEditFormOpen: (isEditFormOpen: boolean) => void
 	albumId: number
+	getOneAlbum: (data: IGetOneAlbum) => void
+
 }
 
 const AlbumEditForm: React.FC<IAlbumAddingFormProps> = ({
 	setIsEditFormOpen,
-	albumId
+	albumId,
+	getOneAlbum
 }) => {
 	const setAlbumImageUrl = useImageStore((state: any) => state.setAlbumImageUrl)
 	const albumImageUrl = useImageStore((state: any) => state.albumImageUrl)
@@ -39,7 +42,7 @@ const AlbumEditForm: React.FC<IAlbumAddingFormProps> = ({
 	const albumFormOpenedRef = useClickOutside<View>(() =>
 		setIsUploadImageOpened(false)
 	)
-	const {  updateAlbum} = useEditAlbumDataMutation()
+	const {  updateAlbum} = useEditAlbumDataMutation(albumId, getOneAlbum)
 	const onClose = () => {
 		setIsEditFormOpen(false)
 		setAlbumImageUrl('')

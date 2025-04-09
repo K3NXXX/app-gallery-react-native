@@ -3,10 +3,10 @@ import { albumService } from '../../services/albums.service'
 import { IAlbum } from '../../@types/albums/albums.types'
 
 export const useGetAllAlbumsQuery =() => {
-	const {data: allAlbums} = useQuery<IAlbum[]>({
+	const {data: allAlbums, isLoading, isFetching } = useQuery<IAlbum[]>({
 		queryKey: ['getAllAlbums'],
 		queryFn: () => albumService.getAllAlbums()
 	}) 
 
-	return {allAlbums}
+	return {allAlbums, isLoading, isFetching}
 }

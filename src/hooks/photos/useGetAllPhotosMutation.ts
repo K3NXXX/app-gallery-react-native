@@ -3,9 +3,9 @@ import { photoService } from '../../services/photos.service'
 import { IPhoto } from '../../@types/photos/photos.type'
 
 export const useGetAllPhotos = () => {
-	const {data: allPhotos} = useQuery<IPhoto[]>({queryKey: ['getAllPhotos'],
+	const {data: allPhotos, isLoading} = useQuery<IPhoto[]>({queryKey: ['getAllPhotos'],
 		queryFn: () => photoService.getAllPhotos() 
 	})
 
-	return {allPhotos}
+	return {allPhotos, isLoading}
 }

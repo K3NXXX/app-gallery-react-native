@@ -34,6 +34,7 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 	setSelectedImageIndex,
 	onClose,
 	fromWhichPage,
+
 }) => {
 	const [isPhotoPressed, setIsPhotoPressed] = useState(false)
 	const [animationValue] = useState(new Animated.Value(-100))
@@ -70,6 +71,9 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 		}
 	}
 	const handleDeletePhoto = (photoId: number) => {
+		if (fromWhichPage === "fullAlbum") {
+			
+		}
 		deletePhoto({ photoId })
 
 		if (photos && photos.length === 1) {
@@ -195,6 +199,7 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 
 			{isConfirmPhotoDelete && photos && (
 				<ConfirmDeletePhoto
+				fromWhichPage={fromWhichPage}
 					setIsConfirmPhotoDelete={setIsConfirmPhotoDelete}
 					handleDeletePhoto={handleDeletePhoto}
 					photoId={photos[selectedImageIndex].id}

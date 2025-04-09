@@ -21,9 +21,11 @@ import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import { handleUploadImage } from '../../utils/handleUploadImage'
 import { styles } from '../Profile/Profile.styles'
 import EditDataForm from './EditDataForm/EditDataForm'
+import { useAuthStore } from '../../zustand/useAuthStore'
 
 const Profile: React.FC = () => {
 	const { reset } = useNavigation()
+	const logOut = useAuthStore((state) => state.logout)
 	const [openEditForm, setOpenEditForm] = useState(false)
 	const { userData } = useGetMe()
 	const [isAvatarFormOpened, setIsAvatarOpened] = useState(false)
@@ -44,6 +46,7 @@ const Profile: React.FC = () => {
 
 	const logout = async () => {
 		await AsyncStorage.removeItem('token')
+		logOut()
 		reset({
 			index: 0,
 			//@ts-ignore
