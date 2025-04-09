@@ -31,9 +31,11 @@ export interface IEditAlbum {
 }
 
 export interface IAddPhotoToAlbum {
-	albumId: number
-	photoIds: number[]
-}
+	albumId?: number;          
+	albumIds?: number[];       
+	photoIds: number[];
+	isCover?: boolean;
+  }
 
 export interface IRemovePhotoFromAlbum {
 	albumId: number

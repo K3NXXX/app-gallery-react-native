@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
 		alignSelf: 'center',
 		paddingHorizontal: 25,
 		flex: 1,
-		paddingBottom: 20,
+		paddingBottom: 40,
 	},
 	title: {
 		fontSize: 16,

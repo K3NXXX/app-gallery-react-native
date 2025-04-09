@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Animated, Modal, TouchableOpacity, View } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import ActiveFavouritePhoto from '../../../assets/images/photos/active-favourite-icon.svg'
+import AddToAlbumIcon from '../../../assets/images/photos/add-to-album-icon.svg'
 import EditIcon from '../../../assets/images/photos/edit-icon.svg'
 import FavouriteIcon from '../../../assets/images/photos/heart-icon.svg'
 import RenamingIcon from '../../../assets/images/photos/renaming-icon.svg'
@@ -17,6 +18,7 @@ import ConfirmDeletePhoto from '../ConfirmDeletePhoto/ConfirmDeletePhoto'
 import FiltersPanel from '../FiltersPanel/FiltersPanel'
 import RenamingPhoto from '../RenamingPhoto/RenamingPhoto'
 import { styles } from './PhotoViewerModal.styles'
+import ChooseAlbumToAddPhoto from '../ChooseAlbumToAddPhoto/ChooseAlbumToAddPhoto'
 
 interface PhotoViewerModalProps {
 	isVisible: boolean
@@ -34,13 +36,13 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 	setSelectedImageIndex,
 	onClose,
 	fromWhichPage,
-
 }) => {
 	const [isPhotoPressed, setIsPhotoPressed] = useState(false)
 	const [animationValue] = useState(new Animated.Value(-100))
 	const [isConfirmPhotoDelete, setIsConfirmPhotoDelete] = useState(false)
 	const [isRenamingPhotoOpened, setIsRenamingPhotoOpened] = useState(false)
 	const [isFiltersOpened, setIsFiltersOpened] = useState(false)
+	const [isChooseAlbumOpened, setIsChooseAlbumOpened] = useState(false)
 
 	const { addToFavourite } = useAddFavouriteMutation()
 	const { favouritePhotos } = useGetAllFavouritesPhotoQuery()
@@ -71,8 +73,7 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 		}
 	}
 	const handleDeletePhoto = (photoId: number) => {
-		if (fromWhichPage === "fullAlbum") {
-			
+		if (fromWhichPage === 'fullAlbum') {
 		}
 		deletePhoto({ photoId })
 
@@ -88,14 +89,13 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 
 	const handleRemoveFromFavourites = (photoId: number) => {
 		removeFromFavourites({ photoId })
-		
+
 		if (photos) {
 			const nextIndex =
 				selectedImageIndex < photos.length - 1
 					? selectedImageIndex + 1
 					: selectedImageIndex - 1
 			setSelectedImageIndex(nextIndex)
-
 		}
 	}
 
@@ -176,6 +176,13 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 									>
 										<RenamingIcon width={28} height={28} />
 									</TouchableOpacity>
+
+									<TouchableOpacity
+										onPress={() => setIsChooseAlbumOpened(true)}
+										style={styles.photoIcons}
+									>
+										<AddToAlbumIcon width={30} height={30} />
+									</TouchableOpacity>
 								</View>
 								<View>
 									<TouchableOpacity
@@ -199,7 +206,7 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 
 			{isConfirmPhotoDelete && photos && (
 				<ConfirmDeletePhoto
-				fromWhichPage={fromWhichPage}
+					fromWhichPage={fromWhichPage}
 					setIsConfirmPhotoDelete={setIsConfirmPhotoDelete}
 					handleDeletePhoto={handleDeletePhoto}
 					photoId={photos[selectedImageIndex].id}
@@ -219,6 +226,9 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 					setIsFiltersOpened={setIsFiltersOpened}
 					currentPhotoUrl={{ uri: photos[selectedImageIndex].url }}
 				/>
+			)}
+			{isChooseAlbumOpened && photos &&  (
+				<ChooseAlbumToAddPhoto  	photoId={photos[selectedImageIndex].id}setIsChooseAlbumOpened={setIsChooseAlbumOpened}/>
 			)}
 		</>
 	)

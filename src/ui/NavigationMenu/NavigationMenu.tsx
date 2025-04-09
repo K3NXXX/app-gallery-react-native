@@ -15,6 +15,7 @@ const NavigationMenu: React.FC = () => {
 	const { navigate } = useNavigation()
 	const ref = useClickOutside<View>(() => setAddPhoto(false))
 	const { createPhoto } = useAddPhotoMutation()
+	
 
 	return (
 		<>
