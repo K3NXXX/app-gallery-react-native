@@ -16,6 +16,7 @@ export const useRenamePhotoMutation = (albumId: number, getOneAlbum: (data: IGet
 			queryClient.invalidateQueries(['getAllPhotos'])
 			getOneAlbum({albumId: albumId})
 			queryClient.invalidateQueries(['getFavouritesPhoto'])
+			queryClient.invalidateQueries(['getOneAlbum'])
 		},
 		onError(error: any) {
 			if (error?.response?.status === 400) setRenamePhotoError(true)

@@ -15,22 +15,24 @@ import { IGetOneAlbum } from '../../@types/albums/albums.types'
 import { useAddPhotoToAlbumMutation } from '../../hooks/albums/useAddPhotoToAlbumMutation'
 import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
 import { styles } from './MultiSelection.styles'
+import { useImageStore } from '../../zustand/useStore'
 
 interface IMultiSelectionProps {
 	setIsMultiSelectionOpened: (isMultiSelectionOpened: boolean) => void
 	albumId: number
-	getOneAlbum: (data: IGetOneAlbum) => void
 	setIsEditFormOpen: (isEditFormOpen: boolean) => void
 }
 
 const MultiSelection: React.FC<IMultiSelectionProps> = ({
 	setIsMultiSelectionOpened,
 	albumId,
-	getOneAlbum
+	
 }) => {
+	const { setAlbumUpdated } = useImageStore()
 	const { allPhotos } = useGetAllPhotos()
 	const [selectedPhotos, setSelectedPhotos] = useState<number[]>([])
-	const { addPhotoToAlbum } = useAddPhotoToAlbumMutation(albumId, getOneAlbum)
+	const { addPhotoToAlbum } = useAddPhotoToAlbumMutation(setAlbumUpdated)
+
 
 	const toggleSelection = (photoId: number) => {
 		setSelectedPhotos(prevSelectedPhotos =>

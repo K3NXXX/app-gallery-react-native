@@ -53,9 +53,7 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 	const { favouritePhotos } = useGetAllFavouritesPhotoQuery()
 	const { removeFromFavourites } = useRemoveFromFavourites()
 	const { deletePhoto } = useDeletePhotoMutation()
-	const {getOneAlbum} = useGetOneAlbumMutation()
-	const {refetch} = useGetAllAlbumsQuery()
-	const { deletePhotoFromAlbum } = useDeletePhotoFromAlbumMutation(albumId, getOneAlbum, refetch)
+	const { deletePhotoFromAlbum } = useDeletePhotoFromAlbumMutation(albumId)
 
 
 	const isPhotoInFavourites =

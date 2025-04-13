@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import {
-	ActivityIndicator,
 	Animated,
 	Easing,
 	Image,
@@ -16,16 +15,20 @@ import NoImageIcon from '../../../assets/images/albums/no-image-icon.svg'
 import { IAlbum } from '../../@types/albums/albums.types'
 import { SCREENS } from '../../constants/screens.constants'
 import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
+import { useGetOneAlbumMutation } from '../../hooks/albums/useGetOneAlbumMutation'
+import Loading from '../../ui/Loading/Loading'
 import Logo from '../../ui/Logo/Logo'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import SortPanel from '../../ui/SortPanel/SortPanel'
+import { useImageStore } from '../../zustand/useStore'
 import AlbumAddingForm from './AlbumAddingForm/AlbumAddingForm'
 import { styles } from './Albums.styles'
-import Loading from '../../ui/Loading/Loading'
+
 
 const Albums: React.FC = () => {
 	const [openAlbumAddingForm, setOpenAlbumAddingForm] = useState(false)
 	const fadeAnim = useState(new Animated.Value(0))[0]
+	const { albumUpdated, setAlbumUpdated } = useImageStore()
 
 	const [filteredAlbums, setFilteredAlbums] = useState<IAlbum[] | undefined>(
 		undefined
@@ -33,7 +36,8 @@ const Albums: React.FC = () => {
 
 	const navigation = useNavigation()
 	const { allAlbums, isLoading, isFetching } = useGetAllAlbumsQuery()
-	console.log("albums", allAlbums)
+	const { data: albumData, refetch } = useGetOneAlbumMutation()
+	console.log('albums', albumData)
 
 	useEffect(() => {
 		if (allAlbums) {
@@ -47,10 +51,10 @@ const Albums: React.FC = () => {
 		}
 	}, [allAlbums])
 
+
+
 	if (isLoading && !isFetching) {
-		return (
-			<Loading/>
-		)
+		return <Loading />
 	}
 
 	return (

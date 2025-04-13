@@ -96,5 +96,18 @@ export const styles = StyleSheet.create({
 		paddingHorizontal: 12,
 		paddingVertical: 12,
 	},
+	createAlbum: {
+		alignItems: 'center',
+		paddingTop: 250
+	},
+	text1: {
+		fontSize: 20,
+		fontFamily: 'inter-medium',
+	},
+	text2: {
+		fontSize: 25,
+		fontFamily: 'inter-bold',
+		marginBottom: 20
+	},
 
 })

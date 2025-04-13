@@ -7,8 +7,7 @@ import {
 import { albumService } from '../../services/albums.service'
 
 export const useAddPhotoToAlbumMutation = (
-	albumId?: number,
-	getOneAlbum?: (data: IGetOneAlbum) => void
+	setAlbumUpdated: (value: boolean) => void
 ) => {
 	const queryClient = useQueryClient()
 	const { mutate: addPhotoToAlbum } = useMutation({
@@ -16,11 +15,7 @@ export const useAddPhotoToAlbumMutation = (
 		mutationFn: (data: IAddPhotoToAlbum) => albumService.addPhotoToAlbum(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries(['getOneAlbum'])
-			getOneAlbum!({albumId: albumId})
-			Toast.show({
-				type: 'success',
-				text1: 'Photo added to album successful',
-			})
+			queryClient.invalidateQueries(['getAllAlbums'])
 		},
 	})
 	return { addPhotoToAlbum }

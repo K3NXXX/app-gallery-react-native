@@ -1,18 +1,18 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { IAlbum, IGetOneAlbum } from '../../@types/albums/albums.types'
 import { albumService } from '../../services/albums.service'
+import { useImageStore } from '../../zustand/useStore'
+
 
 export const useGetOneAlbumMutation = () => {
-	const [albumData, setAlbumData] = useState<IAlbum>()
-	const { mutate: getOneAlbum } = useMutation({
-		mutationKey: ['getOneAlbum'],
-		mutationFn: (data: IGetOneAlbum) => albumService.getOneAlbum(data),
-		onSuccess: ({album}) => {
-			console.log("album got")
-			setAlbumData(album)
-		},
+	const albumId = useImageStore((state) => state.albumId)
+
+	const { data, isLoading, isFetching, refetch } = useQuery<{ album: IAlbum }>({
+		queryKey: ['getOneAlbum', albumId],
+		queryFn: () => albumService.getOneAlbum({ albumId }),
+		enabled: !!albumId,
 	})
 
-	return { getOneAlbum, albumData }
+	return { data, isLoading, isFetching, refetch }
 }

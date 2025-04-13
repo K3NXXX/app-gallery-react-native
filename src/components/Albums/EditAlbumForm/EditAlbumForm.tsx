@@ -26,7 +26,7 @@ import { useEditAlbumDataMutation } from '../../../hooks/albums/useEditAlbumData
 interface IAlbumAddingFormProps {
 	setIsEditFormOpen: (isEditFormOpen: boolean) => void
 	albumId: number
-	getOneAlbum: (data: IGetOneAlbum) => void
+
 
 }
 
