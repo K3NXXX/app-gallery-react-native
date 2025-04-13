@@ -10,15 +10,19 @@ import RenamingIcon from '../../../assets/images/photos/renaming-icon.svg'
 import ShareIcon from '../../../assets/images/photos/share-icon.svg'
 import TrashIcon from '../../../assets/images/photos/trash-icon.svg'
 import { IPhoto } from '../../@types/photos/photos.type'
+import { useDeletePhotoFromAlbumMutation } from '../../hooks/albums/useDeletePhotoFromAlbumMutation'
 import { useAddFavouriteMutation } from '../../hooks/favourites/useAddFavouriteMutation'
 import { useGetAllFavouritesPhotoQuery } from '../../hooks/favourites/useGetAllFavouritesPhotoQuery'
 import { useRemoveFromFavourites } from '../../hooks/favourites/useRemoveFromFavouritesMutation'
 import { useDeletePhotoMutation } from '../../hooks/photos/useDeletePhotoMutation'
+import { useImageStore } from '../../zustand/useStore'
+import ChooseAlbumToAddPhoto from '../ChooseAlbumToAddPhoto/ChooseAlbumToAddPhoto'
 import ConfirmDeletePhoto from '../ConfirmDeletePhoto/ConfirmDeletePhoto'
 import FiltersPanel from '../FiltersPanel/FiltersPanel'
 import RenamingPhoto from '../RenamingPhoto/RenamingPhoto'
 import { styles } from './PhotoViewerModal.styles'
-import ChooseAlbumToAddPhoto from '../ChooseAlbumToAddPhoto/ChooseAlbumToAddPhoto'
+import { useGetOneAlbumMutation } from '../../hooks/albums/useGetOneAlbumMutation'
+import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
 
 interface PhotoViewerModalProps {
 	isVisible: boolean
@@ -43,11 +47,16 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 	const [isRenamingPhotoOpened, setIsRenamingPhotoOpened] = useState(false)
 	const [isFiltersOpened, setIsFiltersOpened] = useState(false)
 	const [isChooseAlbumOpened, setIsChooseAlbumOpened] = useState(false)
+	const albumId = useImageStore(state => state.albumId)
 
 	const { addToFavourite } = useAddFavouriteMutation()
 	const { favouritePhotos } = useGetAllFavouritesPhotoQuery()
 	const { removeFromFavourites } = useRemoveFromFavourites()
 	const { deletePhoto } = useDeletePhotoMutation()
+	const {getOneAlbum} = useGetOneAlbumMutation()
+	const {refetch} = useGetAllAlbumsQuery()
+	const { deletePhotoFromAlbum } = useDeletePhotoFromAlbumMutation(albumId, getOneAlbum, refetch)
+
 
 	const isPhotoInFavourites =
 		photos &&
@@ -73,17 +82,23 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 		}
 	}
 	const handleDeletePhoto = (photoId: number) => {
-		if (fromWhichPage === 'fullAlbum') {
+		if (fromWhichPage === 'fullAlbum' && albumId !== null) {
+			const data = {
+				albumId: albumId,
+				photoId: photoId,
+			}
+			deletePhotoFromAlbum(data)
+		} else {
+			deletePhoto({ photoId })
 		}
-		deletePhoto({ photoId })
-
+	
 		if (photos && photos.length === 1) {
 			onClose()
 		} else {
 			const newIndex = selectedImageIndex > 0 ? selectedImageIndex - 1 : 0
 			setSelectedImageIndex(newIndex)
 		}
-
+	
 		setIsConfirmPhotoDelete(false)
 	}
 
@@ -227,8 +242,11 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 					currentPhotoUrl={{ uri: photos[selectedImageIndex].url }}
 				/>
 			)}
-			{isChooseAlbumOpened && photos &&  (
-				<ChooseAlbumToAddPhoto  	photoId={photos[selectedImageIndex].id}setIsChooseAlbumOpened={setIsChooseAlbumOpened}/>
+			{isChooseAlbumOpened && photos && (
+				<ChooseAlbumToAddPhoto
+					photoId={photos[selectedImageIndex].id}
+					setIsChooseAlbumOpened={setIsChooseAlbumOpened}
+				/>
 			)}
 		</>
 	)

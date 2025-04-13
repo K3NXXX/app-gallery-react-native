@@ -33,7 +33,6 @@ interface IAlbumAddingFormProps {
 const AlbumEditForm: React.FC<IAlbumAddingFormProps> = ({
 	setIsEditFormOpen,
 	albumId,
-	getOneAlbum
 }) => {
 	const setAlbumImageUrl = useImageStore((state: any) => state.setAlbumImageUrl)
 	const albumImageUrl = useImageStore((state: any) => state.albumImageUrl)
@@ -42,7 +41,7 @@ const AlbumEditForm: React.FC<IAlbumAddingFormProps> = ({
 	const albumFormOpenedRef = useClickOutside<View>(() =>
 		setIsUploadImageOpened(false)
 	)
-	const {  updateAlbum} = useEditAlbumDataMutation(albumId, getOneAlbum)
+	const {  updateAlbum} = useEditAlbumDataMutation()
 	const onClose = () => {
 		setIsEditFormOpen(false)
 		setAlbumImageUrl('')

@@ -4,8 +4,7 @@ import { IEditAlbum, IGetOneAlbum } from '../../@types/albums/albums.types'
 import { albumService } from '../../services/albums.service'
 
 export const useEditAlbumDataMutation = (
-	albumId: number,
-	getOneAlbum: (data: IGetOneAlbum) => void
+	
 ) => {
 	const queryClient = useQueryClient()
 	const { mutate: updateAlbum } = useMutation({
@@ -13,7 +12,6 @@ export const useEditAlbumDataMutation = (
 		mutationFn: (data: IEditAlbum) => albumService.updateAlbum(data),
 		onSuccess: data => {
 			queryClient.invalidateQueries(['getOneAlbum'])
-			getOneAlbum({ albumId: albumId })
 
 			Toast.show({
 				type: 'success',

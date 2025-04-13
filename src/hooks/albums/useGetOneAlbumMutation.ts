@@ -9,6 +9,7 @@ export const useGetOneAlbumMutation = () => {
 		mutationKey: ['getOneAlbum'],
 		mutationFn: (data: IGetOneAlbum) => albumService.getOneAlbum(data),
 		onSuccess: ({album}) => {
+			console.log("album got")
 			setAlbumData(album)
 		},
 	})
