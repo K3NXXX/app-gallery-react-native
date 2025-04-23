@@ -1,6 +1,5 @@
 export interface IAddPhoto {
 	url: string
-	userId: number | undefined
 }
 
 export interface IPhoto {

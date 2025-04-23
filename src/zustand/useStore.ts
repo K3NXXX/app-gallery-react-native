@@ -15,7 +15,6 @@ export const useImageStore = create<ImageStore>((set) => ({
   albumImageUrl: '',
   setAlbumImageUrl: (url: string) => set({ albumImageUrl: url }),
   setAlbumId: (id: number) => set({ albumId: id }), 
-
   albumUpdated: false,
 	setAlbumUpdated: (value) => set({ albumUpdated: value }),
 }));

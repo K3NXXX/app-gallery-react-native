@@ -3,7 +3,6 @@ import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 
 import NoPhotosIcon from '../../../assets/images/home/no-photos-icon.svg'
 import { IPhoto } from '../../@types/photos/photos.type'
-import Loading from '../../ui/Loading/Loading'
 import Logo from '../../ui/Logo/Logo'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
@@ -24,13 +23,12 @@ const Home: React.FC = () => {
 		setPhotoViewerVisible(true)
 	}
 
-	
-
 	return (
 		<>
 			<View style={styles.root}>
 				<View style={styles.wrapper}>
 					<Logo />
+					<View style={{ flex: 1 }}></View>
 					<Text style={styles.title}>Home</Text>
 					<SortPanel
 						setIsLoading={setIsLoading}

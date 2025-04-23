@@ -12,6 +12,7 @@ export const useEditAlbumDataMutation = (
 		mutationFn: (data: IEditAlbum) => albumService.updateAlbum(data),
 		onSuccess: data => {
 			queryClient.invalidateQueries(['getOneAlbum'])
+			queryClient.invalidateQueries(['getAllAlbums'])
 
 			Toast.show({
 				type: 'success',

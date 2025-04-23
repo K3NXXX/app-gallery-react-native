@@ -9,20 +9,18 @@ import PasswordIcon from '../../../../assets/images/sign-up/password.svg'
 import { ILoginData } from '../../../@types/auth/login.types'
 import { SCREENS } from '../../../constants/screens.constants'
 import { useLoginMutation } from '../../../hooks/auth/useLoginMutation'
-import { styles } from './LogIn.styles'
 import { useAuthStore } from '../../../zustand/useAuthStore'
+import { styles } from './LogIn.styles'
 
 const LogIn: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(true)
 	const { navigate } = useNavigation()
-	const logIn = useAuthStore((state) => state.login)
-	
-
+	const logIn = useAuthStore(state => state.login)
+	const { login, loginError } = useLoginMutation(logIn)
 
 	const {
 		control,
 		handleSubmit,
-		watch,
 		formState: { errors },
 	} = useForm<ILoginData>({
 		mode: 'onChange',
@@ -32,8 +30,6 @@ const LogIn: React.FC = () => {
 		},
 	})
 
-	const { login, loginError } = useLoginMutation(logIn)
-
 	const onSubmit = (loginData: ILoginData) => {
 		const data = {
 			email: loginData.email,
@@ -41,6 +37,7 @@ const LogIn: React.FC = () => {
 		}
 		login(data)
 	}
+	
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>
@@ -111,7 +108,7 @@ const LogIn: React.FC = () => {
 										value={value}
 									/>
 									{showPassword}
-									 {showPassword ? (
+									{showPassword ? (
 										<EyeShowIcon
 											onPress={() => setShowPassword(false)}
 											style={styles.eye}
@@ -125,7 +122,7 @@ const LogIn: React.FC = () => {
 											width={25}
 											height={25}
 										/>
-									)} 
+									)}
 								</View>
 							)}
 							name='password'
