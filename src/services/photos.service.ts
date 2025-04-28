@@ -1,4 +1,4 @@
-import { IAddPhoto, IDeletePhoto, IRenamePhoto } from '../@types/photos/photos.type'
+import { IAddPhoto, IAddPhotoWithFilters, IDeletePhoto, IRenamePhoto } from '../@types/photos/photos.type'
 import api from '../axios/interceptors'
 
 class PhotoService {
@@ -29,6 +29,15 @@ class PhotoService {
 		const { data } = await api.put(`${this.BASE_URL}/photos/renamePhoto`, renamePhotoData)
 		return data
 	}
+
+	async addPhotoWithFilters(photoFilter: IAddPhotoWithFilters) {
+		const { data } = await api.post(
+			`${this.BASE_URL}/photos/addFiltersToPhoto`,
+			photoFilter
+		)
+		return data
+	}
+
 
 	
 }

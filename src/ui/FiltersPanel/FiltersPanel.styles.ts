@@ -57,7 +57,8 @@ export const styles = StyleSheet.create({
 		paddingBottom: 12,
 		marginBottom: 15,
 		justifyContent: 'space-around',
-		width: '100%',
+		minWidth: '100%',
+		paddingHorizontal: 20
 	},
 	bottomBottom: {
 		flexDirection: 'row',
@@ -67,7 +68,7 @@ export const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 	},
 	buttonFilter: {
-		marginRight: 20,
+		marginRight: 30,
 	},
 	cancel: {
 		color: 'white',

@@ -116,7 +116,13 @@ export const styles = StyleSheet.create({
 	noPhotosText2: {
 		fontFamily: 'inter-bold',
 		fontSize: 18
-	}
-	
+	},
+	surface: {
+		width: 300,
+		height: 300,
+	  },
+	  glview: {
+		flex: 1,
+	  },
 	  
 })

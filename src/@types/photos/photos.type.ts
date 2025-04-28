@@ -22,3 +22,9 @@ export interface IRenamePhoto {
 	photoId: number
 	newName: string
 }
+
+export interface IAddPhotoWithFilters {
+	url: string
+	brightness: number
+}
+
