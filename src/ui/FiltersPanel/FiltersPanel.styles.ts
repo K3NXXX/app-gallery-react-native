@@ -14,7 +14,6 @@ export const styles = StyleSheet.create({
 		paddingBottom: 20,
 	},
 	top: {
-		paddingTop: 150,
 		width: '100%',
 		height: '100%',
 		justifyContent: 'center',
@@ -25,6 +24,7 @@ export const styles = StyleSheet.create({
 		height: 300,
 		justifyContent: 'center',
 		alignItems: 'center',
+
 	},
 
 	bottom: {
@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
 		marginBottom: 15,
 		justifyContent: 'space-around',
 		minWidth: '100%',
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
 	},
 	bottomBottom: {
 		flexDirection: 'row',
@@ -84,9 +84,21 @@ export const styles = StyleSheet.create({
 		borderRadius: 20,
 		backgroundColor: 'rgba(102, 102, 102, 0.5)',
 	},
+	clear: {
+		color: 'white',
+		fontFamily: 'inter-bold',
+		fontSize: 17,
+		paddingVertical: 7,
+		paddingHorizontal: 12,
+		borderRadius: 20,
+		backgroundColor: 'rgba(102, 102, 102, 0.5)',
+		marginRight: 10,
+	},
 	image: {
 		width: 300,
 		height: 500,
+		
+
 	},
 	sliderContainer: {
 		marginVertical: 20,
@@ -101,7 +113,7 @@ export const styles = StyleSheet.create({
 		fontSize: 16,
 		color: '#fff',
 		textAlign: 'center',
-		marginBottom: 10, // Розташування значення над слайдером
+		marginBottom: 10, 
 	},
 	sliderLabel: {
 		color: '#fff',
@@ -117,5 +129,13 @@ export const styles = StyleSheet.create({
 		width: 280,
 		alignSelf: 'center',
 	},
-	
+	bottomButtonsRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		position: 'relative',
+		right: -12
+	},
+	middle: {
+		paddingVertical: 20
+	}
 })
