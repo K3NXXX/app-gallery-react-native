@@ -1,7 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { useGetMe } from '../../../hooks/auth/useGetMe'
+import { useUpdateUserDataMutation } from '../../../hooks/auth/useUpdateUserDataMutation'
 import CloseIcon from '../../../../assets/images/home/close-icon.svg'
 import EmailIcon from '../../../../assets/images/sign-up/email.svg'
 import EyeHideIcon from '../../../../assets/images/sign-up/eye-hide.svg'
@@ -9,9 +10,7 @@ import EyeShowIcon from '../../../../assets/images/sign-up/eye-show.svg'
 import PasswordIcon from '../../../../assets/images/sign-up/password.svg'
 import UserIcon from '../../../../assets/images/sign-up/user.svg'
 import { IEditData } from '../../../@types/auth/user.types'
-import { useUpdateUserDataMutation } from '../../../hooks/auth/useUpdateUserDataMutation'
 import { styles } from './EditDataForm.styles'
-import { useGetMe } from '../../../hooks/auth/useGetMe'
 
 interface IEditDataFormProps {
 	setOpenEditForm: (openEditForm: boolean) => void
@@ -21,7 +20,7 @@ const EditDataForm: React.FC<IEditDataFormProps> = ({ setOpenEditForm }) => {
 	const [showPassword, setShowPassword] = useState(true)
 	const [showCurrentPassword, setShowCurrentPassword] = useState(true)
 	const { updateData, dataEdited } = useUpdateUserDataMutation()
-  const {userData} = useGetMe()
+	const { userData } = useGetMe()
 
 	const {
 		control,
@@ -45,16 +44,12 @@ const EditDataForm: React.FC<IEditDataFormProps> = ({ setOpenEditForm }) => {
 			password: updatedData.password,
 			currentPassword: updatedData.currentPassword,
 		}
-		console.log("user", data)
 		updateData(data)
 	}
 
-  useEffect(() => {
-    setOpenEditForm(dataEdited)
-  }, [dataEdited])
-	
-
-  
+	useEffect(() => {
+		setOpenEditForm(dataEdited)
+	}, [dataEdited])
 
 	return (
 		<View style={styles.root}>

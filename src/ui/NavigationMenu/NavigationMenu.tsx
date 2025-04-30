@@ -12,8 +12,9 @@ import { styles } from './NavigationMenu.styles'
 
 const NavigationMenu: React.FC = () => {
 	const [addPhoto, setAddPhoto] = useState(false)
-	const { navigate } = useNavigation()
 	const ref = useClickOutside<View>(() => setAddPhoto(false))
+	
+	const { navigate } = useNavigation()
 	const { createPhoto } = useAddPhotoMutation()
 	
 

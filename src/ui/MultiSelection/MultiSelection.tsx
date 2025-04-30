@@ -8,14 +8,13 @@ import {
 	View,
 } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
+import { useAddPhotoToAlbumMutation } from '../../hooks/albums/useAddPhotoToAlbumMutation'
+import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
+import { useImageStore } from '../../zustand/useStore'
 import CheckMarkIcon from '../../../assets/images/albums/check-mark-icon.svg'
 import CloseSelectionIcon from '../../../assets/images/albums/close-selection-icon.svg'
 import ReturnIcon from '../../../assets/images/home/return-icon.svg'
-import { IGetOneAlbum } from '../../@types/albums/albums.types'
-import { useAddPhotoToAlbumMutation } from '../../hooks/albums/useAddPhotoToAlbumMutation'
-import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
 import { styles } from './MultiSelection.styles'
-import { useImageStore } from '../../zustand/useStore'
 
 interface IMultiSelectionProps {
 	setIsMultiSelectionOpened: (isMultiSelectionOpened: boolean) => void

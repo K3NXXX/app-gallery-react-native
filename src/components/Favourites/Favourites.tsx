@@ -1,30 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { FlatList, Image, Text, TouchableOpacity, View, Animated } from 'react-native';
-import HeartIcon from '../../../assets/images/favourites/heart-icon.svg';
-import { useGetAllFavouritesPhotoQuery } from '../../hooks/favourites/useGetAllFavouritesPhotoQuery';
-import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu';
-import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal';
-import { styles } from './Favourites.styles';
-import Logo from '../../ui/Logo/Logo';
+import React, { useEffect, useState } from 'react'
+import {
+	Animated,
+	FlatList,
+	Image,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native'
+import Logo from '../../ui/Logo/Logo'
+import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
+import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
+import { useGetAllFavouritesPhotoQuery } from '../../hooks/favourites/useGetAllFavouritesPhotoQuery'
+import HeartIcon from '../../../assets/images/favourites/heart-icon.svg'
+import { styles } from './Favourites.styles'
 
 const Favourites: React.FC = () => {
-	const { favouritePhotos = [] } = useGetAllFavouritesPhotoQuery();
-	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false);
-	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
-	const fadeAnim = useState(new Animated.Value(0))[0]; 
+	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
+	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
+	const { favouritePhotos = [] } = useGetAllFavouritesPhotoQuery()
+	const fadeAnim = useState(new Animated.Value(0))[0]
+
+	const openImageModal = (index: number) => {
+		setSelectedImageIndex(index)
+		setPhotoViewerVisible(true)
+	}
 
 	useEffect(() => {
 		Animated.timing(fadeAnim, {
 			toValue: 1,
 			duration: 700,
 			useNativeDriver: true,
-		}).start();
-	}, [fadeAnim]);
+		}).start()
+	}, [fadeAnim])
 
-	const openImageModal = (index: number) => {
-		setSelectedImageIndex(index);
-		setPhotoViewerVisible(true);
-	};
+
 
 	return (
 		<View style={styles.root}>
@@ -60,7 +69,7 @@ const Favourites: React.FC = () => {
 			</View>
 
 			<PhotoViewerModal
-				fromWhichPage="favourites"
+				fromWhichPage='favourites'
 				isVisible={isPhotoViewerVisible}
 				photos={favouritePhotos}
 				selectedImageIndex={selectedImageIndex}
@@ -70,7 +79,7 @@ const Favourites: React.FC = () => {
 
 			<NavigationMenu />
 		</View>
-	);
-};
+	)
+}
 
-export default Favourites;
+export default Favourites

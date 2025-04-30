@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
-
-import NoPhotosIcon from '../../../assets/images/home/no-photos-icon.svg'
-import { IPhoto } from '../../@types/photos/photos.type'
 import Logo from '../../ui/Logo/Logo'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
 import SortPanel from '../../ui/SortPanel/SortPanel'
+import NoPhotosIcon from '../../../assets/images/home/no-photos-icon.svg'
+import { IPhoto } from '../../@types/photos/photos.type'
 import { styles } from './Home.styles'
 
 const Home: React.FC = () => {
@@ -14,7 +13,6 @@ const Home: React.FC = () => {
 		undefined
 	)
 	const [isLoading, setIsLoading] = useState(false)
-
 	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
 	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
 

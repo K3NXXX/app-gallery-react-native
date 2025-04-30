@@ -6,20 +6,19 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native'
-
-import { useNavigation } from '@react-navigation/native'
 import { Controller, useForm } from 'react-hook-form'
 import { TextInput } from 'react-native-gesture-handler'
+import { useSignUpMutation } from '../../../hooks/auth/useSignUpMutation'
+import { useAuthStore } from '../../../zustand/useAuthStore'
+import { useNavigation } from '@react-navigation/native'
+import { SCREENS } from '../../../constants/screens.constants'
 import EmailIcon from '../../../../assets/images/sign-up/email.svg'
 import EyeHideIcon from '../../../../assets/images/sign-up/eye-hide.svg'
 import EyeShowIcon from '../../../../assets/images/sign-up/eye-show.svg'
 import PasswordIcon from '../../../../assets/images/sign-up/password.svg'
 import UserIcon from '../../../../assets/images/sign-up/user.svg'
 import { ISignUpData } from '../../../@types/auth/signup.types'
-import { SCREENS } from '../../../constants/screens.constants'
-import { useSignUpMutation } from '../../../hooks/auth/useSignUpMutation'
 import { styles } from './SignUp.styles'
-import { useAuthStore } from '../../../zustand/useAuthStore'
 
 const SignUp: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(true)
@@ -40,21 +39,23 @@ const SignUp: React.FC = () => {
 			passwordConfirm: '',
 		},
 	})
-	const password = watch('password')
-	const logIn = useAuthStore((state) => state.login)
-
-	const { signup, emailError } = useSignUpMutation(logIn)
 
 	const onSubmit = (signupData: ISignUpData) => {
 		const data = {
 			name: signupData.name,
 			email: signupData.email,
 			password: signupData.password,
-			avatar: ''
+			avatar: '',
 		}
 		signup(data)
 		console.log(signupData)
 	}
+
+	const password = watch('password')
+	const logIn = useAuthStore(state => state.login)
+	const { signup, emailError } = useSignUpMutation(logIn)
+
+
 	return (
 		<KeyboardAvoidingView behavior='padding' style={{ flex: 1 }}>
 			<ScrollView

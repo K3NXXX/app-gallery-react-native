@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Animated, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import SortByDate from './SortByDate'
+import SortByName from './SortByName'
+import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
+import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
+import { IAlbum } from '../../@types/albums/albums.types'
+import { IPhoto } from '../../@types/photos/photos.type'
 import CloseIcon from '../../../assets/images/home/close-icon.svg'
 import SearchIcon from '../../../assets/images/home/search-icon.svg'
 import SortIcon from '../../../assets/images/home/sort-icon.svg'
-import { IAlbum } from '../../@types/albums/albums.types'
-import { IPhoto } from '../../@types/photos/photos.type'
-import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
-import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
-import SortByDate from './SortByDate'
-import SortByName from './SortByName'
 import { styles } from './SortPanel.styles'
 
 interface IPhotosSortPanelProps<T extends IPhoto | IAlbum> {
@@ -30,6 +30,7 @@ const SortPanel = <T extends IPhoto | IAlbum>({
 	)
 	const [selectedRange, setSelectedRange] = useState<string>('')
 	const [filteredItems, setFilteredItems] = useState<IPhoto[] | IAlbum[]>([])
+	
 	const { allAlbums } = useGetAllAlbumsQuery()
 	const { allPhotos, isLoading } = useGetAllPhotos()
 	const fadeAnim = useRef(new Animated.Value(0)).current

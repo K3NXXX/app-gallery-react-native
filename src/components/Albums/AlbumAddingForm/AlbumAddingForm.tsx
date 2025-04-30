@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
 import {
 	Image,
 	Pressable,
@@ -8,7 +7,11 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native'
+import { Controller, useForm } from 'react-hook-form'
 import { useClickOutside } from 'react-native-click-outside'
+import { useCreateAlbumMutation } from '../../../hooks/albums/useCreateAlbumMutation'
+import { handleUploadImage } from '../../../utils/handleUploadImage'
+import { useImageStore } from '../../../zustand/useStore'
 import CloseIcon from '../../../../assets/images/albums/close-icon.svg'
 import DescriptionIcon from '../../../../assets/images/albums/description-icon.svg'
 import ImageIcon from '../../../../assets/images/albums/image-icon.svg'
@@ -17,10 +20,7 @@ import ReturnIcon from '../../../../assets/images/home/return-icon.svg'
 import CameraIcon from '../../../../assets/images/navigation-menu/camera.svg'
 import GalleryIcon from '../../../../assets/images/navigation-menu/gallery-icon.svg'
 import { ICreateAlbum } from '../../../@types/albums/albums.types'
-import { handleUploadImage } from '../../../utils/handleUploadImage'
-import { useImageStore } from '../../../zustand/useStore'
 import { styles } from './AlbumAddingForm.styles'
-import { useCreateAlbumMutation } from '../../../hooks/albums/useCreateAlbumMutation'
 
 interface IAlbumAddingFormProps {
 	setOpenAlbumAddingForm: (openAlbumAddingForm: boolean) => void
@@ -29,13 +29,13 @@ interface IAlbumAddingFormProps {
 const AlbumAddingForm: React.FC<IAlbumAddingFormProps> = ({
 	setOpenAlbumAddingForm,
 }) => {
+	const [isUploadImageOpened, setIsUploadImageOpened] = useState(false)
 	const setAlbumImageUrl = useImageStore((state: any) => state.setAlbumImageUrl)
 	const albumImageUrl = useImageStore((state: any) => state.albumImageUrl)
-	const [isUploadImageOpened, setIsUploadImageOpened] = useState(false)
 	const albumFormOpenedRef = useClickOutside<View>(() =>
 		setIsUploadImageOpened(false)
 	)
-	const {createAlbum} = useCreateAlbumMutation()
+	const { createAlbum } = useCreateAlbumMutation()
 
 	const onClose = () => {
 		setOpenAlbumAddingForm(false)
@@ -45,7 +45,6 @@ const AlbumAddingForm: React.FC<IAlbumAddingFormProps> = ({
 	const {
 		control,
 		handleSubmit,
-		watch,
 		formState: { errors },
 	} = useForm<ICreateAlbum>({
 		mode: 'onChange',
@@ -60,9 +59,9 @@ const AlbumAddingForm: React.FC<IAlbumAddingFormProps> = ({
 		const data = {
 			name: albumData.name,
 			description: albumData.description,
-			imageUrl: albumImageUrl ? albumImageUrl: '',
-			isCover: !!albumImageUrl 
-		} 
+			imageUrl: albumImageUrl ? albumImageUrl : '',
+			isCover: !!albumImageUrl,
+		}
 		createAlbum(data)
 		onClose()
 	}
@@ -152,7 +151,10 @@ const AlbumAddingForm: React.FC<IAlbumAddingFormProps> = ({
 								style={styles.albumImage}
 								source={{ uri: albumImageUrl }}
 							/>
-							<TouchableOpacity onPress={() => setAlbumImageUrl('')} style={styles.albumCloseIcon}>
+							<TouchableOpacity
+								onPress={() => setAlbumImageUrl('')}
+								style={styles.albumCloseIcon}
+							>
 								<CloseIcon width={30} height={30} />
 							</TouchableOpacity>
 						</View>

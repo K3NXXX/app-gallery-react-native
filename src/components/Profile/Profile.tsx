@@ -1,8 +1,16 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { Image, Pressable, Text, TouchableOpacity, View } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
+import EditDataForm from './EditDataForm/EditDataForm'
+import { useNavigation } from '@react-navigation/native'
 import { useClickOutside } from 'react-native-click-outside'
+import { useDeleteUserAvatarMutation } from '../../hooks/auth/useDeleteUserAvatarMutation'
+import { useGetMe } from '../../hooks/auth/useGetMe'
+import { useUpdateUserAvatarMutation } from '../../hooks/auth/useUpdateUserAvatarMutation'
+import { handleUploadImage } from '../../utils/handleUploadImage'
+import { useAuthStore } from '../../zustand/useAuthStore'
+import { SCREENS } from '../../constants/screens.constants'
 import CameraIcon from '../../../assets/images/navigation-menu/camera.svg'
 import GalleryIcon from '../../../assets/images/navigation-menu/gallery-icon.svg'
 import EditIcon from '../../../assets/images/profile/edit-icon.svg'
@@ -13,25 +21,19 @@ import DeleteIcon from '../../../assets/images/profile/trash-icon.svg'
 import EmailIcon from '../../../assets/images/sign-up/email.svg'
 import PasswordIcon from '../../../assets/images/sign-up/password.svg'
 import UserIcon from '../../../assets/images/sign-up/user.svg'
-import { SCREENS } from '../../constants/screens.constants'
-import { useDeleteUserAvatarMutation } from '../../hooks/auth/useDeleteUserAvatarMutation'
-import { useGetMe } from '../../hooks/auth/useGetMe'
-import { useUpdateUserAvatarMutation } from '../../hooks/auth/useUpdateUserAvatarMutation'
-import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
-import { handleUploadImage } from '../../utils/handleUploadImage'
 import { styles } from '../Profile/Profile.styles'
-import EditDataForm from './EditDataForm/EditDataForm'
-import { useAuthStore } from '../../zustand/useAuthStore'
 
 const Profile: React.FC = () => {
-	const { reset } = useNavigation()
-	const logOut = useAuthStore((state) => state.logout)
-	const [openEditForm, setOpenEditForm] = useState(false)
-	const { userData } = useGetMe()
 	const [isAvatarFormOpened, setIsAvatarOpened] = useState(false)
 	const [isEditAvatarFormOpened, setIsEditAvatarOpened] = useState(false)
+	const [openEditForm, setOpenEditForm] = useState(false)
+
+	const { reset } = useNavigation()
+	const { userData } = useGetMe()
 	const { updateAvatar } = useUpdateUserAvatarMutation()
 	const { deleteAvatar, deleteAvatarSuccess } = useDeleteUserAvatarMutation()
+	const logOut = useAuthStore((state) => state.logout)
+	
 	const avatarFormOpenedRef = useClickOutside<View>(() =>
 		setIsAvatarOpened(false)
 	)

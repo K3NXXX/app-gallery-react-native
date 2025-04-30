@@ -8,13 +8,13 @@ import {
 	View,
 } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
+import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
+import { useAddPhotoToAlbumMutation } from '../../hooks/albums/useAddPhotoToAlbumMutation'
 import CheckMarkIcon from '../../../assets/images/albums/check-mark-icon.svg'
 import CloseSelectionIcon from '../../../assets/images/albums/close-selection-icon.svg'
 import NoImageIcon from '../../../assets/images/albums/no-image-icon.svg'
 import ReturnIcon from '../../../assets/images/home/return-icon.svg'
-import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
 import { styles } from './ChooseAlbumToAddPhoto.styles'
-import { useAddPhotoToAlbumMutation } from '../../hooks/albums/useAddPhotoToAlbumMutation'
 
 interface IChooseAlbumToAddPhoto {
 	setIsChooseAlbumOpened: (isChooseAlbumOpened: boolean) => void

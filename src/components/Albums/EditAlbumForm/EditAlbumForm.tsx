@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
 import {
 	Image,
 	Pressable,
@@ -8,7 +7,11 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native'
+import { Controller, useForm } from 'react-hook-form'
 import { useClickOutside } from 'react-native-click-outside'
+import { useEditAlbumDataMutation } from '../../../hooks/albums/useEditAlbumDataMutation'
+import { handleUploadImage } from '../../../utils/handleUploadImage'
+import { useImageStore } from '../../../zustand/useStore'
 import CloseIcon from '../../../../assets/images/albums/close-icon.svg'
 import DescriptionIcon from '../../../../assets/images/albums/description-icon.svg'
 import ImageIcon from '../../../../assets/images/albums/image-icon.svg'
@@ -16,32 +19,27 @@ import NameIcon from '../../../../assets/images/albums/name-icon.svg'
 import ReturnIcon from '../../../../assets/images/home/return-icon.svg'
 import CameraIcon from '../../../../assets/images/navigation-menu/camera.svg'
 import GalleryIcon from '../../../../assets/images/navigation-menu/gallery-icon.svg'
-import { ICreateAlbum, IEditAlbum, IGetOneAlbum } from '../../../@types/albums/albums.types'
-import { useCreateAlbumMutation } from '../../../hooks/albums/useCreateAlbumMutation'
-import { handleUploadImage } from '../../../utils/handleUploadImage'
-import { useImageStore } from '../../../zustand/useStore'
+import { IEditAlbum } from '../../../@types/albums/albums.types'
 import { styles } from './EditAlbumForm.styles'
-import { useEditAlbumDataMutation } from '../../../hooks/albums/useEditAlbumDataMutation'
 
 interface IAlbumAddingFormProps {
 	setIsEditFormOpen: (isEditFormOpen: boolean) => void
 	albumId: number
-
-
 }
 
 const AlbumEditForm: React.FC<IAlbumAddingFormProps> = ({
 	setIsEditFormOpen,
 	albumId,
 }) => {
-	const setAlbumImageUrl = useImageStore((state: any) => state.setAlbumImageUrl)
-	const albumImageUrl = useImageStore((state: any) => state.albumImageUrl)
 	const [errorMessage, setErrorMessage] = useState('')
 	const [isUploadImageOpened, setIsUploadImageOpened] = useState(false)
+	const setAlbumImageUrl = useImageStore((state: any) => state.setAlbumImageUrl)
+	const albumImageUrl = useImageStore((state: any) => state.albumImageUrl)
 	const albumFormOpenedRef = useClickOutside<View>(() =>
 		setIsUploadImageOpened(false)
 	)
-	const {  updateAlbum} = useEditAlbumDataMutation()
+	const { updateAlbum } = useEditAlbumDataMutation()
+
 	const onClose = () => {
 		setIsEditFormOpen(false)
 		setAlbumImageUrl('')
@@ -50,7 +48,6 @@ const AlbumEditForm: React.FC<IAlbumAddingFormProps> = ({
 	const {
 		control,
 		handleSubmit,
-		watch,
 		formState: { errors },
 	} = useForm<IEditAlbum>({
 		mode: 'onChange',
@@ -64,8 +61,8 @@ const AlbumEditForm: React.FC<IAlbumAddingFormProps> = ({
 	const onSubmit = (albumData: IEditAlbum) => {
 		const descriptionFilled = albumData.description?.trim() !== ''
 		if (!albumData.name.trim() && !descriptionFilled && !albumImageUrl) {
-			setErrorMessage('Please enter a name, description, or upload an image');
-			return;
+			setErrorMessage('Please enter a name, description, or upload an image')
+			return
 		}
 
 		setErrorMessage('')
@@ -75,8 +72,6 @@ const AlbumEditForm: React.FC<IAlbumAddingFormProps> = ({
 			description: albumData.description,
 			imageUrl: albumImageUrl ? albumImageUrl : '',
 		}
-		console.log(data)
-
 		updateAlbum(data)
 		onClose()
 	}

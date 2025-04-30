@@ -10,8 +10,8 @@ import {
 import { captureRef } from 'react-native-view-shot'
 import BrightnessIcon from '../../../assets/images/filters/brightness-icon.svg'
 import ContrastIcon from '../../../assets/images/filters/contrast-icon.svg'
-import CropIcon from '../../../assets/images/filters/crop-icon.svg'
 import GrayscaleIcon from '../../../assets/images/filters/grayscale-icon.svg'
+import MirrorIcon from '../../../assets/images/filters/mirror-icon.svg'
 import RotateIcon from '../../../assets/images/filters/rotate-icon.svg'
 import SaturationIcon from '../../../assets/images/filters/saturation-icon.svg'
 import SepiaIcon from '../../../assets/images/filters/sepia-icon.svg'
@@ -35,14 +35,17 @@ const FiltersPanel: React.FC<IFiltersPanelProps> = ({
 	const [contrast, setContrast] = useState(1)
 	const [saturation, setSaturation] = useState(1)
 	const [sepia, setSepia] = useState(0)
+	const [isMirrored, setIsMirrored] = useState(false)
+
 	const [showBrightnessSlider, setShowBrightnessSlider] = useState(false)
 	const [showContrastSlider, setShowContrastSlider] = useState(false)
 	const [showSaturationSlider, setShowSaturationSlider] = useState(false)
 	const [showSepiaSlider, setShowSepiaSlider] = useState(false)
 	const [grayscale, setGrayscale] = useState(0)
 	const [showGrayscaleSlider, setShowGrayscaleSlider] = useState(false)
-	const { createPhoto } = useAddPhotoMutation()
 	const [isFilterCancel, setIsFilterCancel] = useState(false)
+
+	const { createPhoto } = useAddPhotoMutation()
 	const imageViewRef = useRef<View>(null)
 
 	const hasFilters =
@@ -50,7 +53,8 @@ const FiltersPanel: React.FC<IFiltersPanelProps> = ({
 		contrast !== 1 ||
 		saturation !== 1 ||
 		sepia !== 0 ||
-		grayscale !== 0
+		grayscale !== 0 ||
+		isMirrored === true
 
 	const handleGrayscaleChange = (value: number[]) => {
 		setGrayscale(value[0])
@@ -91,6 +95,7 @@ const FiltersPanel: React.FC<IFiltersPanelProps> = ({
 		setShowSaturationSlider(false)
 		setShowSepiaSlider(false)
 		setShowGrayscaleSlider(false)
+		setIsMirrored(false)
 	}
 
 	const handleCancelFilters = () => {
@@ -132,6 +137,7 @@ const FiltersPanel: React.FC<IFiltersPanelProps> = ({
 									filter: `brightness(${
 										1 + brightness
 									}) contrast(${contrast}) saturate(${saturation}) sepia(${sepia}) grayscale(${grayscale})`,
+									transform: [{ scaleX: isMirrored ? -1 : 1 }],
 								},
 							]}
 							source={{ uri: currentPhotoUrl.uri }}
@@ -153,12 +159,15 @@ const FiltersPanel: React.FC<IFiltersPanelProps> = ({
 								</View>
 							</TouchableOpacity>
 
-							<TouchableOpacity style={styles.buttonFilter}>
+							<TouchableOpacity
+								style={styles.buttonFilter}
+								onPress={() => setIsMirrored(!isMirrored)}
+							>
 								<View style={styles.buttonWrapper}>
 									<View style={styles.iconWrapper}>
-										<CropIcon width={30} height={30} />
+										<MirrorIcon width={30} height={30} />
 									</View>
-									<Text style={styles.buttonText}>Cropping</Text>
+									<Text style={styles.buttonText}>Mirror</Text>
 								</View>
 							</TouchableOpacity>
 

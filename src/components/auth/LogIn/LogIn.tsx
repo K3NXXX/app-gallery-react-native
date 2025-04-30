@@ -1,21 +1,21 @@
-import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { Controller, useForm } from 'react-hook-form'
+import { useLoginMutation } from '../../../hooks/auth/useLoginMutation'
+import { useAuthStore } from '../../../zustand/useAuthStore'
+import { SCREENS } from '../../../constants/screens.constants'
 import EmailIcon from '../../../../assets/images/sign-up/email.svg'
 import EyeHideIcon from '../../../../assets/images/sign-up/eye-hide.svg'
 import EyeShowIcon from '../../../../assets/images/sign-up/eye-show.svg'
 import PasswordIcon from '../../../../assets/images/sign-up/password.svg'
 import { ILoginData } from '../../../@types/auth/login.types'
-import { SCREENS } from '../../../constants/screens.constants'
-import { useLoginMutation } from '../../../hooks/auth/useLoginMutation'
-import { useAuthStore } from '../../../zustand/useAuthStore'
 import { styles } from './LogIn.styles'
 
 const LogIn: React.FC = () => {
+	const logIn = useAuthStore(state => state.login)
 	const [showPassword, setShowPassword] = useState(true)
 	const { navigate } = useNavigation()
-	const logIn = useAuthStore(state => state.login)
 	const { login, loginError } = useLoginMutation(logIn)
 
 	const {
@@ -37,7 +37,7 @@ const LogIn: React.FC = () => {
 		}
 		login(data)
 	}
-	
+
 	return (
 		<View style={styles.root}>
 			<View style={styles.wrapper}>

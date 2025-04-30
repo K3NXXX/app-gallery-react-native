@@ -1,5 +1,5 @@
-import { Slider } from '@miblanchard/react-native-slider'
 import React from 'react'
+import { Slider } from '@miblanchard/react-native-slider'
 import { Text, View } from 'react-native'
 import { styles } from './FilterSlider.styles'
 

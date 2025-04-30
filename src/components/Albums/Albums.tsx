@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import {
 	Animated,
@@ -8,36 +7,29 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native'
-import { FlatList } from 'react-native-gesture-handler'
-import AddAlbumIcon from '../../../assets/images/albums/add-album.svg'
-import CreateIcon from '../../../assets/images/albums/create-album.svg'
-import NoImageIcon from '../../../assets/images/albums/no-image-icon.svg'
-import { IAlbum } from '../../@types/albums/albums.types'
-import { SCREENS } from '../../constants/screens.constants'
-import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
-import { useGetOneAlbumMutation } from '../../hooks/albums/useGetOneAlbumMutation'
 import Loading from '../../ui/Loading/Loading'
 import Logo from '../../ui/Logo/Logo'
 import NavigationMenu from '../../ui/NavigationMenu/NavigationMenu'
 import SortPanel from '../../ui/SortPanel/SortPanel'
-import { useImageStore } from '../../zustand/useStore'
 import AlbumAddingForm from './AlbumAddingForm/AlbumAddingForm'
+import { FlatList } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/native'
+import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
+import { SCREENS } from '../../constants/screens.constants'
+import AddAlbumIcon from '../../../assets/images/albums/add-album.svg'
+import CreateIcon from '../../../assets/images/albums/create-album.svg'
+import NoImageIcon from '../../../assets/images/albums/no-image-icon.svg'
+import { IAlbum } from '../../@types/albums/albums.types'
 import { styles } from './Albums.styles'
-
 
 const Albums: React.FC = () => {
 	const [openAlbumAddingForm, setOpenAlbumAddingForm] = useState(false)
-	const fadeAnim = useState(new Animated.Value(0))[0]
-	const { albumUpdated, setAlbumUpdated } = useImageStore()
-
 	const [filteredAlbums, setFilteredAlbums] = useState<IAlbum[] | undefined>(
 		undefined
 	)
-
+	const fadeAnim = useState(new Animated.Value(0))[0]
 	const navigation = useNavigation()
 	const { allAlbums, isLoading, isFetching } = useGetAllAlbumsQuery()
-	const { data: albumData, refetch } = useGetOneAlbumMutation()
-	console.log('albums', albumData)
 
 	useEffect(() => {
 		if (allAlbums) {
@@ -50,8 +42,6 @@ const Albums: React.FC = () => {
 			}).start()
 		}
 	}, [allAlbums])
-
-
 
 	if (isLoading && !isFetching) {
 		return <Loading />

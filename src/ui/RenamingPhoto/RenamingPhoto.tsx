@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Modal, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useRenamePhotoMutation } from '../../hooks/photos/useRenamePhotoMutation'
-import { styles } from './RenamingPhoto.styles'
 import { useGetOneAlbumMutation } from '../../hooks/albums/useGetOneAlbumMutation'
 import { useImageStore } from '../../zustand/useStore'
+import { styles } from './RenamingPhoto.styles'
 
 interface IRenamingPhotoProps {
 	setIsRenamingPhotoOpened: (isRenamingPhotoOpened: boolean) => void
@@ -24,6 +24,16 @@ const RenamingPhoto: React.FC<IRenamingPhotoProps> = ({
 	const { renamePhoto, renamingSuccess, renamePhotoError } =
 		useRenamePhotoMutation(actualAlbumId, getOneAlbum)
 
+
+		const handleRename = () => {
+			const data = {
+				photoId: photoId,
+				newName: text,
+			}
+			renamePhoto(data)
+		}
+	
+
 	useEffect(() => {
 		setTimeout(() => {
 			if (inputRef.current) {
@@ -33,14 +43,7 @@ const RenamingPhoto: React.FC<IRenamingPhotoProps> = ({
 		}, 100)
 	}, [])
 
-	const handleRename = () => {
-		const data = {
-			photoId: photoId,
-			newName: text,
-		}
-		renamePhoto(data)
-	}
-
+	
 	useEffect(() => {
 		if (renamingSuccess) setIsRenamingPhotoOpened(false)
 	}, [renamingSuccess])

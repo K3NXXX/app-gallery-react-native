@@ -1,37 +1,35 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
-import AddImageIcon from '../../../assets/images/albums/add-image.svg'
-import DeleteIcon from '../../../assets/images/albums/delete-icon.svg'
-import EditIcon from '../../../assets/images/albums/edit-icon.svg'
-import ReturnIcon from '../../../assets/images/albums/return-icon.svg'
-import { SCREENS } from '../../constants/screens.constants'
-import { useGetOneAlbumMutation } from '../../hooks/albums/useGetOneAlbumMutation'
-import ConfirmDeleteAlbum from '../../ui/ConfirmDeleteAlbum/ConfirmDeleteAlbum'
 import Loading from '../../ui/Loading/Loading'
+import ConfirmDeleteAlbum from '../../ui/ConfirmDeleteAlbum/ConfirmDeleteAlbum'
 import MultiSelection from '../../ui/MultiSelection/MultiSelection'
 import PhotoViewerModal from '../../ui/PhotoViewerModal/PhotoViewerModal'
 import { useImageStore } from '../../zustand/useStore'
+import { useGetOneAlbumMutation } from '../../hooks/albums/useGetOneAlbumMutation'
+import { SCREENS } from '../../constants/screens.constants'
 import AlbumEditForm from '../Albums/EditAlbumForm/EditAlbumForm'
+import AddImageIcon from '../../../assets/images/albums/add-image.svg'
+import DeleteIcon from '../../../assets/images/albums/delete-icon.svg'
+import EditIcon from '../../../assets/images/albums/edit-icon.svg'
+import NoAlbumIcon from '../../../assets/images/albums/no-album-icon.svg'
+import ReturnIcon from '../../../assets/images/albums/return-icon.svg'
 import { styles } from './FullAlbum.styles'
-import NoAlbumIcon from "../../../assets/images/albums/no-album-icon.svg"
 
 type FullAlbumRouteProp = RouteProp<{ Album: { albumId: number } }, 'Album'>
 
 const FullAlbum: React.FC = () => {
-	const route = useRoute<FullAlbumRouteProp>()
-	const { albumId } = route.params
-
-	const navigation = useNavigation()
-
 	const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false)
 	const [isMultiSelectionOpened, setIsMultiSelectionOpened] = useState(false)
-	const [isEditFormOpen, setIsEditFormOpen] = useState(false)
-
-	const { data } = useGetOneAlbumMutation()
-	const albumData = data?.album
 	const [isPhotoViewerVisible, setPhotoViewerVisible] = useState(false)
 	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
+	const [isEditFormOpen, setIsEditFormOpen] = useState(false)
+
+	const route = useRoute<FullAlbumRouteProp>()
+	const { albumId } = route.params
+	const { data } = useGetOneAlbumMutation()
+	const navigation = useNavigation()
+	const albumData = data?.album
 	const { setAlbumId } = useImageStore()
 
 	const openImageModal = (image: any, index: number) => {
@@ -100,12 +98,11 @@ const FullAlbum: React.FC = () => {
 
 			<View style={styles.content}>
 				{albumData.photos.length === 0 ? (
-						<View style={styles.createAlbum}>
+					<View style={styles.createAlbum}>
 						<Text style={styles.text1}>There is no photos in album</Text>
 						<Text style={styles.text2}>Add some</Text>
 						<TouchableOpacity onPress={() => setIsMultiSelectionOpened(true)}>
-						<NoAlbumIcon width={50} height={50}/>
-
+							<NoAlbumIcon width={50} height={50} />
 						</TouchableOpacity>
 					</View>
 				) : (
