@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import {
-	Image,
+	Animated,
 	Modal,
 	ScrollView,
 	Text,
@@ -36,6 +36,8 @@ const FiltersPanel: React.FC<IFiltersPanelProps> = ({
 	const [saturation, setSaturation] = useState(1)
 	const [sepia, setSepia] = useState(0)
 	const [isMirrored, setIsMirrored] = useState(false)
+	const rotation = useRef(new Animated.Value(0)).current
+	const [rotationAngle, setRotationAngle] = useState(0)
 
 	const [showBrightnessSlider, setShowBrightnessSlider] = useState(false)
 	const [showContrastSlider, setShowContrastSlider] = useState(false)
@@ -54,7 +56,8 @@ const FiltersPanel: React.FC<IFiltersPanelProps> = ({
 		saturation !== 1 ||
 		sepia !== 0 ||
 		grayscale !== 0 ||
-		isMirrored === true
+		isMirrored === true ||
+		rotationAngle !== 0
 
 	const handleGrayscaleChange = (value: number[]) => {
 		setGrayscale(value[0])
@@ -76,6 +79,37 @@ const FiltersPanel: React.FC<IFiltersPanelProps> = ({
 		setSepia(value[0])
 	}
 
+	const rotateImage = () => {
+		const newAngle = (rotationAngle + 90) % 360
+		setRotationAngle(newAngle)
+
+		Animated.timing(rotation, {
+			toValue: newAngle,
+			duration: 300,
+			useNativeDriver: true,
+		}).start()
+	}
+
+	const animatedStyle = {
+		transform: [
+			{ scaleX: isMirrored ? -1 : 1 },
+			{
+				rotate: rotation.interpolate({
+					inputRange: [0, 360],
+					outputRange: ['0deg', '360deg'],
+				}),
+			},
+			{
+				scale: rotation.interpolate({
+					inputRange: [0, 90, 180, 270, 360],
+					outputRange: [1, 0.7, 1, 0.7, 1], // Adjust these values as needed
+				}),
+			},
+		],
+	};
+	
+	
+
 	const handleConfirmFilter = () => {
 		setShowBrightnessSlider(false)
 		setShowContrastSlider(false)
@@ -96,6 +130,12 @@ const FiltersPanel: React.FC<IFiltersPanelProps> = ({
 		setShowSepiaSlider(false)
 		setShowGrayscaleSlider(false)
 		setIsMirrored(false)
+		setRotationAngle(0)
+		Animated.timing(rotation, {
+			toValue: 0,
+			duration: 300,
+			useNativeDriver: true,
+		}).start();
 	}
 
 	const handleCancelFilters = () => {
@@ -129,15 +169,15 @@ const FiltersPanel: React.FC<IFiltersPanelProps> = ({
 			<Modal visible={isFiltersOpened} transparent>
 				<View style={styles.root}>
 					<View ref={imageViewRef} collapsable={false}>
-						<Image
+						<Animated.Image
 							style={[
 								styles.image,
-								//@ts-ignore
+								// @ts-ignore
 								{
 									filter: `brightness(${
 										1 + brightness
 									}) contrast(${contrast}) saturate(${saturation}) sepia(${sepia}) grayscale(${grayscale})`,
-									transform: [{ scaleX: isMirrored ? -1 : 1 }],
+									...animatedStyle,
 								},
 							]}
 							source={{ uri: currentPhotoUrl.uri }}
@@ -150,7 +190,10 @@ const FiltersPanel: React.FC<IFiltersPanelProps> = ({
 							showsHorizontalScrollIndicator={false}
 							contentContainerStyle={styles.bottomTop}
 						>
-							<TouchableOpacity style={styles.buttonFilter}>
+							<TouchableOpacity
+								style={styles.buttonFilter}
+								onPress={rotateImage}
+							>
 								<View style={styles.buttonWrapper}>
 									<View style={styles.iconWrapper}>
 										<RotateIcon width={30} height={30} />
