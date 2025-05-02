@@ -1,27 +1,28 @@
+import * as Sharing from 'expo-sharing'
 import React, { useEffect, useState } from 'react'
 import { Animated, Modal, TouchableOpacity, View } from 'react-native'
-import * as Sharing from 'expo-sharing'
 import ImageViewer from 'react-native-image-zoom-viewer'
-import FiltersPanel from '../FiltersPanel/FiltersPanel'
-import RenamingPhoto from '../RenamingPhoto/RenamingPhoto'
+import ActiveFavouritePhoto from '../../../assets/images/photos/active-favourite-icon.svg'
+import AddToAlbumIcon from '../../../assets/images/photos/add-to-album-icon.svg'
+import EditIcon from '../../../assets/images/photos/edit-icon.svg'
+import HashtagIcon from '../../../assets/images/photos/hashtag-icon.svg'
+import FavouriteIcon from '../../../assets/images/photos/heart-icon.svg'
+import RenamingIcon from '../../../assets/images/photos/renaming-icon.svg'
+import ShareIcon from '../../../assets/images/photos/share-icon.svg'
+import TrashIcon from '../../../assets/images/photos/trash-icon.svg'
+import { IPhoto } from '../../@types/photos/photos.type'
 import { useDeletePhotoFromAlbumMutation } from '../../hooks/albums/useDeletePhotoFromAlbumMutation'
 import { useAddFavouriteMutation } from '../../hooks/favourites/useAddFavouriteMutation'
 import { useGetAllFavouritesPhotoQuery } from '../../hooks/favourites/useGetAllFavouritesPhotoQuery'
 import { useRemoveFromFavourites } from '../../hooks/favourites/useRemoveFromFavouritesMutation'
 import { useDeletePhotoMutation } from '../../hooks/photos/useDeletePhotoMutation'
 import { useImageStore } from '../../zustand/useStore'
+import AddHashTagsForm from '../AddHashTagsForm/AddHashTagsForm'
 import ChooseAlbumToAddPhoto from '../ChooseAlbumToAddPhoto/ChooseAlbumToAddPhoto'
 import ConfirmDeletePhoto from '../ConfirmDeletePhoto/ConfirmDeletePhoto'
-import ActiveFavouritePhoto from '../../../assets/images/photos/active-favourite-icon.svg'
-import AddToAlbumIcon from '../../../assets/images/photos/add-to-album-icon.svg'
-import EditIcon from '../../../assets/images/photos/edit-icon.svg'
-import FavouriteIcon from '../../../assets/images/photos/heart-icon.svg'
-import RenamingIcon from '../../../assets/images/photos/renaming-icon.svg'
-import ShareIcon from '../../../assets/images/photos/share-icon.svg'
-import TrashIcon from '../../../assets/images/photos/trash-icon.svg'
-import { IPhoto } from '../../@types/photos/photos.type'
+import FiltersPanel from '../FiltersPanel/FiltersPanel'
+import RenamingPhoto from '../RenamingPhoto/RenamingPhoto'
 import { styles } from './PhotoViewerModal.styles'
-
 
 interface PhotoViewerModalProps {
 	isVisible: boolean
@@ -44,6 +45,8 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 	const [animationValue] = useState(new Animated.Value(-100))
 	const [isConfirmPhotoDelete, setIsConfirmPhotoDelete] = useState(false)
 	const [isRenamingPhotoOpened, setIsRenamingPhotoOpened] = useState(false)
+	const [isAddingHashtagFormOpened, setIsAddingHashtagFormOpened] =
+		useState(false)
 	const [isFiltersOpened, setIsFiltersOpened] = useState(false)
 	const [isChooseAlbumOpened, setIsChooseAlbumOpened] = useState(false)
 	const albumId = useImageStore(state => state.albumId)
@@ -53,7 +56,6 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 	const { removeFromFavourites } = useRemoveFromFavourites()
 	const { deletePhoto } = useDeletePhotoMutation()
 	const { deletePhotoFromAlbum } = useDeletePhotoFromAlbumMutation(albumId)
-
 
 	const isPhotoInFavourites =
 		photos &&
@@ -88,14 +90,14 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 		} else {
 			deletePhoto({ photoId })
 		}
-	
+
 		if (photos && photos.length === 1) {
 			onClose()
 		} else {
 			const newIndex = selectedImageIndex > 0 ? selectedImageIndex - 1 : 0
 			setSelectedImageIndex(newIndex)
 		}
-	
+
 		setIsConfirmPhotoDelete(false)
 	}
 
@@ -195,6 +197,12 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 									>
 										<AddToAlbumIcon width={30} height={30} />
 									</TouchableOpacity>
+									<TouchableOpacity
+										onPress={() => setIsAddingHashtagFormOpened(true)}
+										style={styles.photoIcons}
+									>
+										<HashtagIcon width={30} height={30} />
+									</TouchableOpacity>
 								</View>
 								<View>
 									<TouchableOpacity
@@ -243,6 +251,12 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 				<ChooseAlbumToAddPhoto
 					photoId={photos[selectedImageIndex].id}
 					setIsChooseAlbumOpened={setIsChooseAlbumOpened}
+				/>
+			)}
+			{isAddingHashtagFormOpened && photos && (
+				<AddHashTagsForm
+					photoId={photos[selectedImageIndex].id}
+					setIsAddingHashtagFormOpened={setIsAddingHashtagFormOpened}
 				/>
 			)}
 		</>

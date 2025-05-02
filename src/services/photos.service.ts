@@ -1,4 +1,10 @@
-import { IAddPhoto, IAddPhotoWithFilters, IDeletePhoto, IRenamePhoto } from '../@types/photos/photos.type'
+import {
+	IAddPhoto,
+	IAddPhotoWithFilters,
+	IAddTagsToPhoto,
+	IDeletePhoto,
+	IRenamePhoto,
+} from '../@types/photos/photos.type'
 import api from '../axios/interceptors'
 
 class PhotoService {
@@ -26,7 +32,10 @@ class PhotoService {
 	}
 
 	async renamePhoto(renamePhotoData: IRenamePhoto) {
-		const { data } = await api.put(`${this.BASE_URL}/photos/renamePhoto`, renamePhotoData)
+		const { data } = await api.put(
+			`${this.BASE_URL}/photos/renamePhoto`,
+			renamePhotoData
+		)
 		return data
 	}
 
@@ -38,8 +47,13 @@ class PhotoService {
 		return data
 	}
 
-
-	
+	async addTagsToPhoto(tagsData: IAddTagsToPhoto) {
+		const { data } = await api.post(
+			`${this.BASE_URL}/photos/addTagsToPhoto`,
+			tagsData
+		)
+		return data
+	}
 }
 
 export const photoService = new PhotoService()

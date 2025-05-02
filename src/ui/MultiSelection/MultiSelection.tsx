@@ -27,10 +27,9 @@ const MultiSelection: React.FC<IMultiSelectionProps> = ({
 	albumId,
 	
 }) => {
-	const { setAlbumUpdated } = useImageStore()
 	const { allPhotos } = useGetAllPhotos()
 	const [selectedPhotos, setSelectedPhotos] = useState<number[]>([])
-	const { addPhotoToAlbum } = useAddPhotoToAlbumMutation(setAlbumUpdated)
+	const { addPhotoToAlbum } = useAddPhotoToAlbumMutation()
 
 
 	const toggleSelection = (photoId: number) => {

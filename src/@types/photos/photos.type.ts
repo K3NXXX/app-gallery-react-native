@@ -8,6 +8,7 @@ export interface IPhoto {
 	url: string
 	name: string
 	createdAt: string
+	hashtags: IHashtag[]
 }
 
 export interface IGetAllPhotos {
@@ -26,5 +27,15 @@ export interface IRenamePhoto {
 export interface IAddPhotoWithFilters {
 	url: string
 	brightness: number
+}
+
+export interface IAddTagsToPhoto {
+	photoId: number
+	tags: string[]
+}
+
+export interface IHashtag {
+	id: number
+	name: string
 }
 
