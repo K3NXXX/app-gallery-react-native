@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		position: 'relative',
-		marginBottom: 250
+		marginBottom: 12
 	},
 	tag: {
 		backgroundColor: '#4A90E2',
@@ -98,6 +98,15 @@ export const styles = StyleSheet.create({
 		paddingVertical: 14,
 		paddingHorizontal: 30,
 		borderRadius: 15,
-		width: 300
+		width: 300,
+		marginTop: 150
+	  },
+	  existingHashtags: {
+
+	  },
+	  existingText: {
+		color: 'rgb(255, 167, 56)',
+		fontFamily: 'inter-bold',
+		fontSize: 18,
 	  }
 })

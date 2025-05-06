@@ -34,6 +34,11 @@ export interface IAddTagsToPhoto {
 	tags: string[]
 }
 
+export interface IDeleteTagFromPhoto {
+	photoId: number
+	hashtagId: number
+}
+
 export interface IHashtag {
 	id: number
 	name: string

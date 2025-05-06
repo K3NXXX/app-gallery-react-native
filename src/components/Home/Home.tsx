@@ -20,6 +20,7 @@ const Home: React.FC = () => {
 		setSelectedImageIndex(index)
 		setPhotoViewerVisible(true)
 	}
+
 	return (
 		<>
 			<View style={styles.root}>

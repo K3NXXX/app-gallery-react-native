@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Animated, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import SortByDate from './SortByDate'
-import SortByName from './SortByName'
-import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
-import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
-import { IAlbum } from '../../@types/albums/albums.types'
-import { IPhoto } from '../../@types/photos/photos.type'
 import CloseIcon from '../../../assets/images/home/close-icon.svg'
 import SearchIcon from '../../../assets/images/home/search-icon.svg'
 import SortIcon from '../../../assets/images/home/sort-icon.svg'
+import { IAlbum } from '../../@types/albums/albums.types'
+import { IPhoto } from '../../@types/photos/photos.type'
+import { useGetAllAlbumsQuery } from '../../hooks/albums/useGetAllAlbumsQuery'
+import { useGetAllPhotos } from '../../hooks/photos/useGetAllPhotosMutation'
+import SortByDate from './SortByDate'
+import SortByName from './SortByName'
 import { styles } from './SortPanel.styles'
 
 interface IPhotosSortPanelProps<T extends IPhoto | IAlbum> {
@@ -30,7 +30,7 @@ const SortPanel = <T extends IPhoto | IAlbum>({
 	)
 	const [selectedRange, setSelectedRange] = useState<string>('')
 	const [filteredItems, setFilteredItems] = useState<IPhoto[] | IAlbum[]>([])
-	
+
 	const { allAlbums } = useGetAllAlbumsQuery()
 	const { allPhotos, isLoading } = useGetAllPhotos()
 	const fadeAnim = useRef(new Animated.Value(0)).current
@@ -135,10 +135,45 @@ const SortPanel = <T extends IPhoto | IAlbum>({
 	])
 
 	useEffect(() => {
-		let filtered = filteredItems.filter(item =>
-			item.name.toLowerCase().includes(searchValue.toLowerCase())
-		)
-
+		if (searchValue.trim() === '#') {
+			onFilter(filteredItems)
+			return
+		}
+	
+		let filtered = filteredItems
+	
+		if (searchValue.startsWith('#')) {
+			const rawQueries = searchValue
+				.split('#')
+				.map(t => t.trim().toLowerCase())
+				.filter(Boolean)
+	
+			const fullTags = rawQueries.slice(0, -1)
+			const partialTag = rawQueries[rawQueries.length - 1]
+	
+			filtered = filteredItems.filter(item => {
+				if (!('hashtags' in item)) return false
+	
+				const hashtags = item.hashtags.map(tag =>
+					tag.name.replace('#', '').toLowerCase()
+				)
+	
+				// перевірка повного збігу попередніх тегів
+				const hasAllFullTags = fullTags.every(tag => hashtags.includes(tag))
+	
+				// перевірка часткового збігу останнього тегу
+				const hasPartialTag = hashtags.some(tag =>
+					tag.startsWith(partialTag)
+				)
+	
+				return hasAllFullTags && hasPartialTag
+			})
+		} else {
+			filtered = filteredItems.filter(item =>
+				item.name.toLowerCase().includes(searchValue.toLowerCase())
+			)
+		}
+	
 		if (filtered && sortOrderByName !== '') {
 			filtered = filtered.sort((a, b) =>
 				sortOrderByName === 'asc'
@@ -146,9 +181,13 @@ const SortPanel = <T extends IPhoto | IAlbum>({
 					: b.name.localeCompare(a.name)
 			)
 		}
-		//@ts-ignore
+	
 		onFilter(filtered)
 	}, [searchValue, filteredItems, sortOrderByName])
+	
+	
+	
+	
 
 	useEffect(() => {
 		if (setIsLoading) {

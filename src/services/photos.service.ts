@@ -3,6 +3,7 @@ import {
 	IAddPhotoWithFilters,
 	IAddTagsToPhoto,
 	IDeletePhoto,
+	IDeleteTagFromPhoto,
 	IRenamePhoto,
 } from '../@types/photos/photos.type'
 import api from '../axios/interceptors'
@@ -50,6 +51,14 @@ class PhotoService {
 	async addTagsToPhoto(tagsData: IAddTagsToPhoto) {
 		const { data } = await api.post(
 			`${this.BASE_URL}/photos/addTagsToPhoto`,
+			tagsData
+		)
+		return data
+	}
+
+	async deleteTagFromPhoto(tagsData: IDeleteTagFromPhoto) {
+		const { data } = await api.post(
+			`${this.BASE_URL}/photos/deleteTagFromPhoto`,
 			tagsData
 		)
 		return data

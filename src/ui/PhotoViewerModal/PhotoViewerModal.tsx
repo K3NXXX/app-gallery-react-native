@@ -257,6 +257,7 @@ const PhotoViewerModal: React.FC<PhotoViewerModalProps> = ({
 				<AddHashTagsForm
 					photoId={photos[selectedImageIndex].id}
 					setIsAddingHashtagFormOpened={setIsAddingHashtagFormOpened}
+					existingPhotoHashtags = {photos[selectedImageIndex].hashtags}
 				/>
 			)}
 		</>
